@@ -1,0 +1,2 @@
+com.qding.insurance.message.OrderPayedMessageJob
+com.qding.insurance.message.OrderCancelMessageJob

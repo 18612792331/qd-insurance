@@ -1,0 +1,20 @@
+package com.qding.insurance.rpc.response;
+
+import com.qding.framework.common.api.struct.response.BaseResponse;
+import com.qding.insurance.domain.CompensateRecord;
+
+public class CompensateRecordResponse extends BaseResponse{
+
+	private static final long serialVersionUID = 7521437823783316940L;
+	
+	private CompensateRecord compensateRecord;
+
+	public CompensateRecord getCompensateRecord() {
+		return compensateRecord;
+	}
+
+	public void setCompensateRecord(CompensateRecord compensateRecord) {
+		this.compensateRecord = compensateRecord;
+	}
+
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommitComments>	<CommitComment>理赔管理api-根据id返回理赔详情</CommitComment>
+	<CommitComment>理赔管理rpc service-根据id返回理赔详情</CommitComment>
+	<CommitComment>理赔管理service-根据id返回理赔详情</CommitComment>
+	<CommitComment>理赔管理-根据id返回理赔详情</CommitComment>
+	<CommitComment>API 根据平台订单号查询订单详情</CommitComment>
+	<CommitComment>RPC根据平台订单号查询订单详情</CommitComment>
+	<CommitComment>service dao根据平台订单号查询订单详情</CommitComment>
+	<CommitComment>理赔优化</CommitComment>
+	<CommitComment>理赔信息sql修改</CommitComment>
+	<CommitComment>单证状态生效/失效</CommitComment>
+</CommitComments>

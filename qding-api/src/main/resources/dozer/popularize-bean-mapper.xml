@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	
+	 <mapping>
+		<class-a>com.qding.brick.pojo.biz.BankInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_2.struct.popularize.BankDto</class-b>
+		<field>
+			<a>name</a>
+			<b>bankName</b>
+		</field>
+		 <field>
+			 <a>id</a>
+			 <b>bankId</b>
+		 </field>
+		 <field>
+			 <a>queryKey</a>
+			 <b>bankQueryKeyWord</b>
+		 </field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.popularize.struct.response.GetPopularizeAccountByMIdResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_2.struct.popularize.response.data.GetPopularizeQuickMarkInfoResponseData</class-b>
+		<field>
+			<a>account</a>
+			<b>entity</b>
+		</field>
+
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.popularize.struct.bean.PopularizeAccount</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_2.struct.popularize.PopularizeUserPassDto</class-b>
+		<field>
+			<a>name</a>
+			<b>userName</b>
+		</field>
+		<field>
+			<a>openTime</a>
+			<b>registerAt</b>
+		</field>
+		<field>
+			<a>idNumber</a>
+			<b>identityCard</b>
+		</field>
+
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_2.struct.popularize.request.SubmitPopularizeApplyRequest</class-a>
+		<class-b>com.qding.popularize.struct.request.AddPopularizeAccountRequest</class-b>
+		<field>
+			<a>userName</a>
+			<b>name</b>
+		</field>
+		<field>
+			<a>identityCard</a>
+			<b>idNumber</b>
+		</field>
+		<field>
+			<a>identityCard</a>
+			<b>idNumber</b>
+		</field>
+		<field>
+			<a>bankCardNum</a>
+			<b>bankCardNo</b>
+		</field>
+
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_4_0.struct.popularize.request.SubmitPopularizeApplyRequest</class-a>
+		<class-b>com.qding.popularize.struct.request.AddPopularizeAccountRequest</class-b>
+		<field>
+			<a>userName</a>
+			<b>name</b>
+		</field>
+		<field>
+			<a>identityCard</a>
+			<b>idNumber</b>
+		</field>
+		<field>
+			<a>identityCard</a>
+			<b>idNumber</b>
+		</field>
+		<field>
+			<a>bankCardNum</a>
+			<b>bankCardNo</b>
+		</field>
+
+	</mapping>
+
+</mappings>

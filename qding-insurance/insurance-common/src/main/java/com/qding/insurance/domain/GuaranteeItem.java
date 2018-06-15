@@ -1,0 +1,57 @@
+package com.qding.insurance.domain;
+
+import java.io.Serializable;
+
+public class GuaranteeItem implements Serializable{
+    private static final long serialVersionUID = 131620959161409851L;
+
+    private String id;
+
+    private String itemTitle;
+
+    private String wareId;
+
+    private Integer itemType;
+
+    private Integer compensateType;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id == null ? null : id.trim();
+    }
+
+    public String getItemTitle() {
+        return itemTitle;
+    }
+
+    public void setItemTitle(String itemTitle) {
+        this.itemTitle = itemTitle == null ? null : itemTitle.trim();
+    }
+
+    public String getWareId() {
+        return wareId;
+    }
+
+    public void setWareId(String wareId) {
+        this.wareId = wareId == null ? null : wareId.trim();
+    }
+
+    public Integer getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(Integer itemType) {
+        this.itemType = itemType;
+    }
+
+    public Integer getCompensateType() {
+        return compensateType;
+    }
+
+    public void setCompensateType(Integer compensateType) {
+        this.compensateType = compensateType;
+    }
+}

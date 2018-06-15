@@ -1,0 +1,368 @@
+package com.qding.insurance.service.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alibaba.druid.util.StringUtils;
+import com.qding.framework.common.basemodel.ResultPage;
+import com.qding.insurance.dao.CompensateRecordMapper;
+import com.qding.insurance.dao.PolicyGuaranteeItemMapper;
+import com.qding.insurance.dao.PolicyGuaranteePlanMapper;
+import com.qding.insurance.domain.CompensateRecord;
+import com.qding.insurance.domain.PolicyGuaranteeItem;
+import com.qding.insurance.domain.PolicyGuaranteePlan;
+import com.qding.insurance.param.CompensateRecordParam;
+import com.qding.insurance.param.CompensateRecordRec;
+import com.qding.insurance.service.ICompensateRecordService;
+import com.qding.insurance.util.Constant;
+import com.qding.insurance.vo.CompensateRecordPageResult;
+import com.qding.insurance.vo.CompensateRecordResult;
+
+@Service("compensateRecordService")
+public class CompensateRecordServiceImpl implements ICompensateRecordService {
+
+	@Autowired
+	private CompensateRecordMapper compensateRecordMapper;
+	@Autowired
+	private PolicyGuaranteePlanMapper policyGuaranteePlanMapper;
+	@Autowired
+	private PolicyGuaranteeItemMapper policyGuaranteeItemMapper;
+
+	@Override
+	public List<CompensateRecord> getResultByPolicyId(String policyId) {
+
+		return compensateRecordMapper.selectResultByPolicyId(policyId);
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void insertCompensateRecord(CompensateRecordRec compensateRecordrec) throws Exception {
+		if (null != compensateRecordrec) {
+
+			// 检查必要参数: 订单ID 保障内容ID 记录状态
+			Boolean mustParam = !StringUtils.isEmpty(compensateRecordrec.getGuaranteeItemId())
+					&& !StringUtils.isEmpty(compensateRecordrec.getPolicyId())
+					&& null != compensateRecordrec.getStatus();
+
+			if (mustParam) {
+
+				// 理赔状态，1：已锁定，2：已完成，3：已撤销
+				Integer status = compensateRecordrec.getStatus();
+
+				// 单证保障权益
+				PolicyGuaranteePlan policyGuaranteePlan;
+
+				// 单证保障内容
+				PolicyGuaranteeItem policyGuaranteeItem;
+
+				policyGuaranteePlan = policyGuaranteePlanMapper.selectByguaranteeItemId(
+						compensateRecordrec.getGuaranteeItemId(), compensateRecordrec.getPolicyId());
+				policyGuaranteeItem = policyGuaranteeItemMapper
+						.selectByPrimaryKey(compensateRecordrec.getGuaranteeItemId());
+
+				if (policyGuaranteePlan == null) {
+					throw new Exception("单证保障权益获取失败");
+				}
+				if (policyGuaranteeItem == null) {
+					throw new Exception("单证保证内容获取失败");
+				}
+				// 理赔方式
+				Integer compensateType = policyGuaranteeItem.getCompensateType();
+
+				// 根据单证ID和保障内容ID 查询理赔记录,如果有已锁定状态的理赔记录,才能添加已完成的记录
+
+				List<String> hasLocked = compensateRecordMapper.selectByPolicyIdAndGuaranteeItemId(
+						compensateRecordrec.getPolicyId(), compensateRecordrec.getGuaranteeItemId());
+
+				// 已锁定
+				if (status == 1) {
+					// 理赔方式 - 按金额
+					if (compensateType == 1) {
+						// 剩余权益数 判断
+						double balance = Double.valueOf(policyGuaranteePlan.getBalanceValue())
+								- Double.valueOf(compensateRecordrec.getPaidMoney());
+						if (balance >= 0) {
+
+							// 锁定值
+							policyGuaranteePlan.setLockValue(compensateRecordrec.getPaidMoney());
+							// 剩余值
+							policyGuaranteePlan.setBalanceValue(balance + "");
+							policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+							compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+							compensateRecordrec.setCreateAt(new Date());
+							compensateRecordMapper.insertSelective(compensateRecordrec);
+
+						} else {
+							throw new Exception("权益值不足");
+						}
+
+						// 理赔方式 - 按次数
+					} else if (compensateType == 2) {
+						// 剩余权益数 判断
+						Integer balance = Integer.valueOf(policyGuaranteePlan.getBalanceValue())
+								- Integer.valueOf(compensateRecordrec.getPaidMoney());
+						if (balance >= 0) {
+
+							// 单证保障权利
+							policyGuaranteePlan.setLockValue(compensateRecordrec.getPaidMoney());
+							policyGuaranteePlan.setBalanceValue(balance + "");
+							policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+							compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+							compensateRecordrec.setCreateAt(new Date());
+							compensateRecordMapper.insertSelective(compensateRecordrec);
+
+						} else {
+							throw new Exception("权益值不足");
+						}
+
+					}
+
+					// 已完成
+				} else if (status == 2) {
+
+					if (hasLocked != null && hasLocked.size() > 0) {
+						// 理赔方式 - 按金额
+						if (compensateType == 1) {
+
+							Double lockValue = Double.valueOf(policyGuaranteePlan.getLockValue());
+							// 锁定值清零
+							policyGuaranteePlan.setLockValue(0 + "");
+							// 已理赔数
+							Double paidValue = Double.valueOf(policyGuaranteePlan.getPaidValue());
+							policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+							policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+							// 添加理赔记录
+							compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+							compensateRecordrec.setCreateAt(new Date());
+							compensateRecordMapper.insertSelective(compensateRecordrec);
+
+							// 理赔方式 - 按次数
+						} else if (compensateType == 2) {
+
+							Integer lockValue = Integer.valueOf(policyGuaranteePlan.getLockValue());
+							// 锁定值清零
+							policyGuaranteePlan.setLockValue(0 + "");
+							// 已理赔数
+							Integer paidValue = Integer.valueOf(policyGuaranteePlan.getPaidValue());
+							policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+
+							policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+							// 添加理赔记录
+							compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+							compensateRecordMapper.insertSelective(compensateRecordrec);
+
+						}
+
+					} else {
+						throw new Exception("参数有误-没有已锁定状态的理赔记录,不能添加已完成记录");
+					}
+
+					// 已撤销
+				} else if (status == 3) {
+
+					if (hasLocked != null && hasLocked.size() > 0) {
+						// 理赔方式 - 按金额
+						if (compensateType == 1) {
+
+							Double lockValue = Double.valueOf(policyGuaranteePlan.getLockValue());
+							// 锁定值清零
+							policyGuaranteePlan.setLockValue(0 + "");
+							// 剩余权益数
+							Double balanceValue = Double.valueOf(policyGuaranteePlan.getBalanceValue());
+							policyGuaranteePlan.setPaidValue((balanceValue + lockValue) + "");
+
+							policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+							// 添加理赔记录
+							compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+							compensateRecordrec.setCreateAt(new Date());
+							compensateRecordMapper.insertSelective(compensateRecordrec);
+
+							// 理赔方式 - 按次数
+						} else if (compensateType == 2) {
+
+							Integer lockValue = Integer.valueOf(policyGuaranteePlan.getLockValue());
+							// 锁定值清零
+							policyGuaranteePlan.setLockValue(0 + "");
+							// 剩余权益数
+							Integer balanceValue = Integer.valueOf(policyGuaranteePlan.getBalanceValue());
+							policyGuaranteePlan.setPaidValue((balanceValue + lockValue) + "");
+
+							policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+							// 添加理赔记录
+							compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+							compensateRecordMapper.insertSelective(compensateRecordrec);
+
+						}
+
+					} else {
+						throw new Exception("参数有误-没有已锁定状态的理赔记录,不能添加已撤销记录");
+					}
+
+				} else {
+					throw new Exception("参数有误-状态有误");
+				}
+
+			} else {
+
+				throw new Exception("参数异常-缺少必要参数");
+			}
+
+		}
+	}
+
+	@Override
+	public ResultPage<CompensateRecordPageResult> getResultPage(CompensateRecordParam param) {
+
+		ResultPage<CompensateRecordPageResult> resultPage = null;
+		// 查询总数
+		Integer totalCount = compensateRecordMapper.countByParam(param);
+		// 查询列表
+		List<CompensateRecordPageResult> list = compensateRecordMapper.selectByParam(param);
+
+		resultPage = new ResultPage<CompensateRecordPageResult>(totalCount, param.getSize(), param.getPage(), list);
+
+		return resultPage;
+	}
+
+	@Override
+	public CompensateRecord findById(String id) {
+		return compensateRecordMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public void updateDataStatus(String id, int dataStatus) throws Exception {
+		if (dataStatus != 1 && dataStatus != 2) {
+			throw new Exception("数据状态错误");
+		}
+		compensateRecordMapper.updateDataStatus(id, dataStatus);
+
+	}
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Override
+	public void updateDataStatusFinished(String id) throws Exception {
+		CompensateRecord compensateRecord = compensateRecordMapper.selectByPrimaryKey(id);
+		Integer status = compensateRecord.getStatus();
+
+		// 已锁定状态
+		if (status == 1) {
+			// 单证保障权益
+			PolicyGuaranteePlan policyGuaranteePlan = policyGuaranteePlanMapper
+					.selectByguaranteeItemId(compensateRecord.getGuaranteeItemId(), compensateRecord.getPolicyId());
+			// 单证保障内容
+			PolicyGuaranteeItem policyGuaranteeItem = policyGuaranteeItemMapper
+					.selectByPrimaryKey(compensateRecord.getGuaranteeItemId());
+
+			// 理赔方式
+			Integer compensateType = policyGuaranteeItem.getCompensateType();
+
+			// 理赔方式 - 按金额
+			if (compensateType == 1) {
+
+				Double lockValue = Double.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 已理赔数
+				Double paidValue = Double.valueOf(policyGuaranteePlan.getPaidValue());
+				policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(id,2);
+
+				// 理赔方式 - 按次数
+			} else if (compensateType == 2) {
+
+				Integer lockValue = Integer.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 已理赔数
+				Integer paidValue = Integer.valueOf(policyGuaranteePlan.getPaidValue());
+				policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(id,2);
+
+			}
+
+		} else {
+			throw new Exception("数据状态错误");
+
+		}
+
+	}
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Override
+	public void updateDataStatusCanceled(String id) throws Exception {
+		CompensateRecord compensateRecord = compensateRecordMapper.selectByPrimaryKey(id);
+		Integer status = compensateRecord.getStatus();
+
+		// 已锁定状态
+		if (status == 1) {
+			// 单证保障权益
+			PolicyGuaranteePlan policyGuaranteePlan = policyGuaranteePlanMapper
+					.selectByguaranteeItemId(compensateRecord.getGuaranteeItemId(), compensateRecord.getPolicyId());
+			// 单证保障内容
+			PolicyGuaranteeItem policyGuaranteeItem = policyGuaranteeItemMapper
+					.selectByPrimaryKey(compensateRecord.getGuaranteeItemId());
+
+			// 理赔方式
+			Integer compensateType = policyGuaranteeItem.getCompensateType();
+
+			// 理赔方式 - 按金额
+			if (compensateType == 1) {
+
+				Double lockValue = Double.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 剩余权益数
+				Double balanceValue = Double.valueOf(policyGuaranteePlan.getBalanceValue());
+				policyGuaranteePlan.setPaidValue((balanceValue + lockValue) + "");
+
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(id,3);
+
+				// 理赔方式 - 按次数
+			} else if (compensateType == 2) {
+
+				Integer lockValue = Integer.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 剩余权益数
+				Integer balanceValue = Integer.valueOf(policyGuaranteePlan.getBalanceValue());
+				policyGuaranteePlan.setPaidValue((balanceValue + lockValue) + "");
+
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(id,3);
+
+			}
+
+		} else {
+			throw new Exception("数据状态错误");
+
+		}
+		
+	}
+
+	@Override
+	public List<CompensateRecordResult> findByPolicyGuaranteeItemId(String policyGuaranteeItemId) {
+		
+		return compensateRecordMapper.selectResultByPolicyGuaranteeItemId(policyGuaranteeItemId);
+	}
+}

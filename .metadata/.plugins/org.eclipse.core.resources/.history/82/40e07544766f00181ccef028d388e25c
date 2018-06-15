@@ -1,0 +1,96 @@
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import com.alibaba.dubbo.config.ApplicationConfig;
+import com.alibaba.dubbo.config.RegistryConfig;
+import com.alibaba.fastjson.JSONObject;
+import com.qding.framework.common.dubbo.QDDubboProxyFactory;
+import com.qding.insurance.domain.InsurancePolicy;
+import com.qding.insurance.domain.InsuranceSku;
+import com.qding.insurance.rpc.IInsuranceOrderRpcService;
+import com.qding.insurance.rpc.IInsurancePolicyRpc;
+import com.qding.insurance.rpc.request.InsuranceOrderInsureRequest;
+import com.qding.insurance.rpc.response.InsuranceOrderDetailResponse;
+import com.qding.insurance.vo.GuaranteeItemVo;
+import com.qding.insurance.vo.GuaranteePlanResultVo;
+import com.qding.insurance.vo.GuaranteePlanVo;
+
+public class IInsuranceOrderRpcTest {
+ 
+    IInsuranceOrderRpcService orderRpc;
+    
+    @Before
+    public void init() {
+        // 当前应用配置
+        ApplicationConfig application = new ApplicationConfig();
+        application.setName("orderRpc-test");
+        application.setOwner("");
+ 
+        // 连接注册中心配置
+        RegistryConfig registry = new RegistryConfig();
+        registry.setTimeout(10000);
+        registry.setProtocol("zookeeper");
+        registry.setAddress(" 10.37.251.221:2181,10.37.251.221:2182,10.37.251.222:2181");//dev
+//        registry.setAddress("10.37.253.31:2181,10.37.253.31:2182,10.37.253.31:2183");//qa
+ 
+        // QDDubboProxyFactory不能重用
+        orderRpc = (IInsuranceOrderRpcService) new QDDubboProxyFactory(application, registry).create(IInsuranceOrderRpcService.class,null);
+    }
+    
+    @Test
+    public void checkWheaterInsuredTest() throws Exception {
+    	String roomId = "888";
+    	boolean result = orderRpc.checkWheatherInsured(roomId);
+    	System.out.println(result);
+    }
+    
+    @Test
+    public void getGuaranteePlanBySkuInfo() throws Exception {
+    	String projectType = "project_longfor";
+    	String styleType = "style_2";
+    	String timeType = "time_2Y";
+    	GuaranteePlanResultVo resultVo = orderRpc.getGuaranteePlanBySkuInfo(projectType, styleType, timeType);
+    	if (resultVo != null) {
+			InsuranceSku sku = resultVo.getSku();
+			if (sku != null) {
+				System.out.println("+++++++++++++++++++" + sku.getSkuName());
+			}else {
+				System.out.println("+++++++++++++++++++   sku is null");
+			}
+			
+			List<GuaranteePlanVo> planVoList = resultVo.getPlanVoList();
+			if (planVoList != null && planVoList.size() > 0) {
+				for (GuaranteePlanVo guaranteePlanVo : planVoList) {
+					GuaranteeItemVo itemVo = guaranteePlanVo.getItemVo();
+					System.out.println("+++++++++++++++++++" + itemVo.getGuaranteeObjectList().size());
+				}
+			}else {
+				System.out.println("+++++++++++++++++ list is null or size is 0");
+			}
+		}else {
+			System.out.println("+++++++++++++++++++   result is null");
+		}
+    }
+    
+    @Test
+    public void insureTest() throws Exception {
+    	InsuranceOrderInsureRequest request = new InsuranceOrderInsureRequest();
+    	request.setMemberId("999000");
+    	request.setMemberName("佩奇");
+    	request.setWareId("8aa57bb763d828c30163d828c3080000");
+    	request.setSkuId("8aa57bb763d9b1200163d9d1b9c20020");
+    	request.setCityId("111");
+    	request.setProjectId("58");
+    	request.setPolicyActAt("2018-08-10 12:20:20");
+    	orderRpc.insure(request);
+    	System.out.println("++++++++++投保完成+++++++++++++");
+    }
+    @Test
+    public void getInsOrderDetailByOderNo(){
+    	InsuranceOrderDetailResponse insOderDetailByOrderNo = orderRpc.getInsOderDetailByOrderNo("NG17800011806081740208532");
+    	System.out.println(JSONObject.toJSONString(insOderDetailByOrderNo));
+    }
+}
+  

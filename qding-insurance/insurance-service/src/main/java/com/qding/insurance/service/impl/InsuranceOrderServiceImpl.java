@@ -1,0 +1,302 @@
+package com.qding.insurance.service.impl;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.qding.basis.user.api.util.QDStringUtil;
+import com.qding.framework.common.basemodel.ResultPage;
+import com.qding.insurance.dao.GuaranteeItemMapper;
+import com.qding.insurance.dao.GuaranteeObjectMapper;
+import com.qding.insurance.dao.GuaranteePlanMapper;
+import com.qding.insurance.dao.InsuranceOrderMapper;
+import com.qding.insurance.dao.InsurancePolicyMapper;
+import com.qding.insurance.dao.InsuranceSkuMapper;
+import com.qding.insurance.dao.InsuranceWareMapper;
+import com.qding.insurance.domain.GuaranteeObject;
+import com.qding.insurance.domain.InsuranceOrder;
+import com.qding.insurance.domain.InsurancePolicy;
+import com.qding.insurance.domain.InsuranceSku;
+import com.qding.insurance.domain.InsuranceWare;
+import com.qding.insurance.param.InsuranceOrderParam;
+import com.qding.insurance.rpc.request.InsuranceOrderInsureRequest;
+import com.qding.insurance.service.IGuaranteeService;
+import com.qding.insurance.service.IInsuranceOrderService;
+import com.qding.insurance.service.IInsuranceSkuService;
+import com.qding.insurance.service.IInsuranceWareService;
+import com.qding.insurance.util.Constant;
+import com.qding.insurance.vo.GuaranteeItemVo;
+import com.qding.insurance.vo.GuaranteePlanResultVo;
+import com.qding.insurance.vo.GuaranteePlanVo;
+import com.qding.insurance.vo.InsuranceDetailByOrderNoVo;
+import com.qding.insurance.vo.InsuranceOrderDetailVo;
+import com.qding.insurance.vo.InsuranceOrderPageResult;
+import com.qding.oder.dto.OrderGeneratorDto;
+import com.qding.oder.dto.SubOrderDto;
+import com.qding.order.domain.OrderBase;
+import com.qding.order.service.IRemoteOrderSavingOptimizerService;
+import com.qding.order.struct.response.SaveOrderResponse;
+
+@Service("insuranceOrderService")
+public class InsuranceOrderServiceImpl implements IInsuranceOrderService {
+	private static final Logger logger = Logger.getLogger(InsuranceOrderServiceImpl.class);
+
+	@Autowired
+	private InsuranceOrderMapper orderMapper;
+	
+	@Autowired
+	private InsurancePolicyMapper policyMapper;
+	
+	@Autowired
+	private InsuranceSkuMapper skuMapper;
+	
+	@Autowired
+	private GuaranteePlanMapper planMapper;
+	
+	@Autowired
+	private InsuranceWareMapper wareMapper;
+	
+	@Autowired
+	private IGuaranteeService guaranteeService;
+	
+	@Autowired
+	private GuaranteeItemMapper itemMapper;
+	
+	@Autowired
+	private GuaranteeObjectMapper objectMapper;
+	
+	@Autowired
+	private IInsuranceWareService wareService;
+	
+	@Autowired
+	private IInsuranceSkuService skuService;
+	
+	@Autowired
+	private IRemoteOrderSavingOptimizerService remoteOrderSavingService;
+	
+	@Override
+	public ResultPage<InsuranceOrderPageResult> getResultPage(
+			InsuranceOrderParam param) {
+		ResultPage<InsuranceOrderPageResult> resultPage = null;
+        // 查询总数
+        Integer totalCount = orderMapper.countByParam(param);
+        // 查询列表
+        List<InsuranceOrderPageResult> list = orderMapper.selectByParam(param);
+        
+        resultPage = new ResultPage<InsuranceOrderPageResult>(totalCount, param.getSize(),
+               param.getPage(), list);
+        
+        return resultPage;
+	}
+
+	@Override
+	public InsuranceOrderDetailVo getOrderDetailById(String id) {
+		return orderMapper.selectDetailById(id);
+	}
+
+	@Override
+	public boolean checkWheatherInsured(String roomId) {
+		//根据房间号查询保单，状态为投保中、未生效、已生效都视为已投保
+		List<InsurancePolicy> policyList = policyMapper.selectByRoomId(roomId);
+		if (CollectionUtils.isNotEmpty(policyList)) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public GuaranteePlanResultVo getGuaranteePlanBySkuInfo(String projectType,
+			String styleType, String timeType) {
+		GuaranteePlanResultVo planResultVo = new GuaranteePlanResultVo();
+		//根据社区类型、款式类型、保障期限查询SKU
+		InsuranceSku sku = null;
+		HashMap<String, Object> params = new HashMap<String, Object>();
+		params.put("projectType", projectType);
+		params.put("styleType", styleType);
+		params.put("timeType", timeType);
+		List<InsuranceSku> skuList = skuMapper.selectBySkuTypes(params);
+		if (CollectionUtils.isNotEmpty(skuList)) {
+			sku = skuList.get(0);
+			planResultVo.setSku(sku);
+		}
+		
+		List<GuaranteePlanVo> planList = null;	//要返回的GuaranteePlanVo列表
+		GuaranteeItemVo itemVo = null;	//要返回的GuaranteeItemVo
+		if (sku != null) {
+			//根据货品ID查询到对应的保险计划列表
+			planList = planMapper.selectBySkuId(sku.getId());
+			if (CollectionUtils.isNotEmpty(planList)) {
+				//根据保障内容ID查询对应的保障内容和保障对象
+				for (GuaranteePlanVo vo : planList) {
+					//每一个保障计划对应一个保障内容
+					String guaranteeItemId = vo.getGuaranteeItemId();
+					itemVo = itemMapper.selectVoById(guaranteeItemId);
+					//根据itemId查询保障对象
+					List<GuaranteeObject> objectList = objectMapper.selectByWareAndItem(itemVo.getWareId(), itemVo.getId());
+					itemVo.setGuaranteeObjectList(objectList);
+					
+					vo.setItemVo(itemVo);
+				}
+			}
+		}
+		planResultVo.setPlanVoList(planList);
+		
+		return planResultVo;
+	}
+
+	@Override
+	public void saveOrder(InsuranceOrder order) {
+		orderMapper.insertSelective(order);
+		logger.info("保存保险订单成功");
+	}
+
+	@Override
+	public void insure(InsuranceOrderInsureRequest request) throws Exception {
+		//根据商品ID查询商品信息
+		InsuranceWare ware = wareService.getById(request.getWareId());
+		
+		//根据货品ID查询货品信息
+		InsuranceSku sku = skuService.getById(request.getSkuId());
+		
+		//设置订单参数
+		InsuranceOrder order = setOrderParameters(request, ware, sku);
+		
+		//保存订单
+		this.saveOrder(order);
+		
+		//同步订单到平台
+		String platOrderNo = saveOrderToPlatform(request, sku);
+		
+		//更新平台订单号
+		if (QDStringUtil.isNotBlank(platOrderNo)) {
+			order.setOrderNo(platOrderNo);
+			orderMapper.updateByPrimaryKeySelective(order);
+		}
+		
+	}
+
+	private String saveOrderToPlatform(InsuranceOrderInsureRequest request,
+			InsuranceSku sku) throws Exception {
+		logger.info("同步平台订单");
+		//设置子订单信息
+		List<SubOrderDto> platSubOrderDtoList = new ArrayList<SubOrderDto>();
+		SubOrderDto platSubOrderDto = new SubOrderDto();
+        platSubOrderDto.setWareSkuId(sku.getBrickSkuId()); // skuId
+        platSubOrderDto.setSkuName(sku.getSkuName());
+        platSubOrderDto.setWareCount(1);
+        platSubOrderDtoList.add(platSubOrderDto);
+        
+        //设置平台订单信息
+		OrderGeneratorDto orderDto = new OrderGeneratorDto();
+		orderDto.setSubOrderlist(platSubOrderDtoList);
+		orderDto.setMid(request.getMemberId());
+		if (QDStringUtil.isNotBlank(request.getCityId())) {
+			orderDto.setRegionId(Long.valueOf(request.getCityId()));
+		}
+		orderDto.setRegionName(request.getCityName());
+		if (QDStringUtil.isNotBlank(request.getProjectId())) {
+			orderDto.setProjectId(Long.valueOf(request.getProjectId()));
+		}
+		orderDto.setProjectName(request.getProjectName());
+		orderDto.setSourceType(0);	//app下单
+		orderDto.setProductNo(Constant.PRODUCT_NO_BX);	//保险业态
+		
+		//调用保存平台订单接口
+		SaveOrderResponse saveOrderResponse = remoteOrderSavingService.saveOrder(orderDto);
+		if (saveOrderResponse.getReturnInfo().getCode() != 200) {
+            logger.error("[savePlatformOrder] 调用平台创建订单接口异常:" + saveOrderResponse.getReturnInfo().getMessage());
+            throw new Exception("同步订单到平台失败，message:["+saveOrderResponse.getReturnInfo().getMessage()+"]");
+        }else {
+        	logger.info("[savePlatformOrder] 调用平台创建订单接口成功");
+		}
+		
+		if (saveOrderResponse.getOrderDetailDto() != null) {
+			OrderBase base = saveOrderResponse.getOrderDetailDto().getOrderBase();
+			if (base != null) {
+				logger.info("返回的平台订单号为：" + base.getCode());
+				return base.getCode();
+			}
+		}
+		return null;
+	}
+
+	private InsuranceOrder setOrderParameters(InsuranceOrderInsureRequest request,
+			InsuranceWare ware, InsuranceSku sku) {
+		logger.info("设置保存订单的参数");
+		InsuranceOrder order = new InsuranceOrder();
+		order.setId(Constant.ID_GENERATOR.generate());
+		order.setWareId(request.getWareId());
+		order.setStatus(Constant.ORDER_STATUS_UNAPAID); //未支付
+		order.setPayStatus(Constant.ORDER_PAY_STATUS_UNAPAID);	//未支付
+		order.setCreateAt(new Date());
+		if (ware != null) {
+			order.setWareName(ware.getTitle());
+		}
+		order.setSkuId(request.getSkuId());
+		if (sku != null) {
+			order.setSkuName(sku.getSkuName());
+			order.setOrderMoney(sku.getPrice());
+		}
+		//设置投保人信息
+		order.setMemberId(request.getMemberId());
+		order.setMemberName(request.getMemberName());
+		order.setMemberIdcard(request.getMemberIdcard());
+		order.setMemberPhone(request.getMemberPhone());
+		//设置被保险人信息
+		order.setInsurantRelation(request.getInsurantRelation());
+		order.setInsurantPhone(request.getInsurantPhone());
+		order.setInsurantName(request.getInsurantName());
+		order.setInsurantIdcard(request.getInsurantIdCard());
+		//设置受益人信息，默认与投保人一致
+		order.setBenefitPhone(request.getBenefitPhone());
+		order.setBenefitName(request.getBenefitName());
+		order.setBenefitIdcard(request.getBenefitIdCard());
+		//设置城市、社区、房屋信息
+		order.setCityId(request.getCityId());
+		order.setCityName(request.getCityName());
+		order.setProjectId(request.getProjectId());
+		order.setProjectName(request.getProjectName());
+		order.setRoomId(request.getRoomId());
+		order.setRoomAddress(request.getRoomAddress());
+		order.setMemberEmail(request.getMemberEmail());
+		//保单生效日期
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
+			if (QDStringUtil.isNotBlank(request.getPolicyActAt())) {
+				order.setPolicyActAt(sdf.parse(request.getPolicyActAt() + " 00:00:00"));
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return order;
+	}
+
+
+	@Override
+	public InsuranceDetailByOrderNoVo getInsOderDetailByOrderNo(String orderNo) {
+		logger.info("查询保险订单详情"+orderNo);
+		InsuranceDetailByOrderNoVo order = orderMapper.selectOrderByOrderNo(orderNo);
+		return order;
+	}
+
+
+    @Override
+    public InsuranceOrder getByOrderNo(String orderNo) {
+        return orderMapper.getByOrderNo(orderNo);
+    }
+
+    @Override
+    public void updateSelected(InsuranceOrder order) {
+        orderMapper.updateByPrimaryKeySelective(order);
+    }
+
+
+}

@@ -1,0 +1,19 @@
+package com.qding.insurance.rpc;
+
+import com.qding.insurance.rpc.response.CompensateRecordListResponse;
+import com.qding.insurance.rpc.response.CompensateRecordResponse;
+
+public interface ICompensateRecordRpc {
+
+	/**
+	 * 获取用户保单理赔列表   单证ID（必有），理赔状态（可空）  查询理赔记录
+	 */
+	public CompensateRecordListResponse getCompensateRecord(String policyID,String status);
+	
+	public CompensateRecordResponse getCompensateRecordById(String id);
+	
+	
+	
+	
+
+}

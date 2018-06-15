@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.InsuranceSkuMapper">
+  <resultMap id="BaseResultMap" type="com.qding.insurance.domain.InsuranceSku">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="brick_sku_id" jdbcType="BIGINT" property="brickSkuId" />
+    <result column="sku_name" jdbcType="VARCHAR" property="skuName" />
+    <result column="ware_id" jdbcType="VARCHAR" property="wareId" />
+    <result column="project_type" jdbcType="VARCHAR" property="projectType" />
+    <result column="style_type" jdbcType="VARCHAR" property="styleType" />
+    <result column="time_type" jdbcType="VARCHAR" property="timeType" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="picc_code" jdbcType="VARCHAR" property="piccCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, brick_sku_id, sku_name, ware_id, project_type, style_type, time_type, price,picc_code
+  </sql>
+  
+  <delete id="deleteByWareId" parameterType="java.lang.String">
+    delete from insurance_sku
+    where ware_id = #{wareId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="batchInsert" parameterType="java.util.List">
+        insert into insurance_sku 
+        (ID, sku_name, ware_id, project_type, style_type, time_type, price,picc_code)
+        VALUES
+     <foreach collection="list" item="model"  separator=",">
+        (#{model.id,jdbcType=VARCHAR}, #{model.skuName,jdbcType=VARCHAR}, #{model.wareId,jdbcType=VARCHAR}, 
+      #{model.projectType,jdbcType=VARCHAR}, #{model.styleType,jdbcType=VARCHAR}, #{model.timeType,jdbcType=VARCHAR}, 
+      #{model.price,jdbcType=VARCHAR},#{model.piccCode,jdbcType=VARCHAR})
+     </foreach>
+  </insert>
+  
+  <select id="selectByWareId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from insurance_sku
+    where ware_id = #{wareId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from insurance_sku
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from insurance_sku
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.qding.insurance.domain.InsuranceSku">
+    insert into insurance_sku (ID, sku_name, ware_id, 
+      project_type, style_type, time_type, 
+      price,picc_code)
+    values (#{id,jdbcType=VARCHAR}, #{skuName,jdbcType=VARCHAR}, #{wareId,jdbcType=VARCHAR}, 
+      #{projectType,jdbcType=VARCHAR}, #{styleType,jdbcType=VARCHAR}, #{timeType,jdbcType=VARCHAR}, 
+      #{price,jdbcType=VARCHAR},#{piccCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qding.insurance.domain.InsuranceSku">
+    insert into insurance_sku
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="skuName != null">
+        sku_name,
+      </if>
+      <if test="wareId != null">
+        ware_id,
+      </if>
+      <if test="projectType != null">
+        project_type,
+      </if>
+      <if test="styleType != null">
+        style_type,
+      </if>
+      <if test="timeType != null">
+        time_type,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="piccCode != null">
+        picc_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null">
+        #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="wareId != null">
+        #{wareId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null">
+        #{projectType,jdbcType=VARCHAR},
+      </if>
+      <if test="styleType != null">
+        #{styleType,jdbcType=VARCHAR},
+      </if>
+      <if test="timeType != null">
+        #{timeType,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=VARCHAR},
+      </if>
+      <if test="piccCode != null">
+        #{piccCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.InsuranceSku">
+    update insurance_sku
+    <set>
+      <if test="brickSkuId != null">
+        brick_sku_id = #{brickSkuId,jdbcType=BIGINT},
+      </if>
+      <if test="skuName != null">
+        sku_name = #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="wareId != null">
+        ware_id = #{wareId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectType != null">
+        project_type = #{projectType,jdbcType=VARCHAR},
+      </if>
+      <if test="styleType != null">
+        style_type = #{styleType,jdbcType=VARCHAR},
+      </if>
+      <if test="timeType != null">
+        time_type = #{timeType,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.InsuranceSku">
+    update insurance_sku
+    set sku_name = #{skuName,jdbcType=VARCHAR},
+      ware_id = #{wareId,jdbcType=VARCHAR},
+      project_type = #{projectType,jdbcType=VARCHAR},
+      style_type = #{styleType,jdbcType=VARCHAR},
+      time_type = #{timeType,jdbcType=VARCHAR},
+      price = #{price,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectBySkuTypes" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from insurance_sku
+    where project_type = #{projectType}
+    and style_type = #{styleType}
+    and time_type = #{timeType}
+  </select>
+  
+  
+  <select id="getByBrickSkuId" parameterType="String" resultMap="BaseResultMap">
+  select 
+    <include refid="Base_Column_List" />
+    from insurance_sku
+    where brick_sku_id =#{brickSkuId}
+  </select>
+</mapper>

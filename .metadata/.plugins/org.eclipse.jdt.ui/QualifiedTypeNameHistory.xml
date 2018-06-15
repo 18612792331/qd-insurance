@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="com.qding.insurance.rpc.ICompensateRecordRpc"/>
+<fullyQualifiedTypeName name="org.junit.Test"/>
+<fullyQualifiedTypeName name="com.alibaba.fastjson.JSONObject"/>
+<fullyQualifiedTypeName name="org.apache.log4j.Logger"/>
+<fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+<fullyQualifiedTypeName name="com.qding.insurance.rpc.response.CompensateRecordListResponse"/>
+<fullyQualifiedTypeName name="com.qding.framework.common.api.struct.ReturnInfo"/>
+<fullyQualifiedTypeName name="com.qding.framework.common.constants.HttpStatus"/>
+<fullyQualifiedTypeName name="com.qding.insurance.service.IInsurancePolicyService"/>
+<fullyQualifiedTypeName name="com.qding.insurance.domain.CompensateRecord"/>
+<fullyQualifiedTypeName name="com.qding.insurance.util.Constant"/>
+<fullyQualifiedTypeName name="com.qding.insurance.domain.InsurancePolicy"/>
+<fullyQualifiedTypeName name="com.qding.insurance.vo.CompensateRecordVo"/>
+<fullyQualifiedTypeName name="com.qding.insurance.service.ICompensateRecordService"/>
+<fullyQualifiedTypeName name="com.qding.insurance.schedule.PolicyActOrExpireJob"/>
+<fullyQualifiedTypeName name="com.qding.insurance.domain.InsuranceOrder"/>
+<fullyQualifiedTypeName name="com.qding.brick.domain.ware.provider.struct.response.ReturnInfo"/>
+<fullyQualifiedTypeName name="com.qding.insurance.rpc.response.InsuranceOrderDetailResponse"/>
+<fullyQualifiedTypeName name="com.qding.api.call.app.qding.v4_1_0.struct.insurance.response.data.InsuranceOrderDetailResponseData"/>
+<fullyQualifiedTypeName name="com.qding.api.call.app.qding.v4_1_0.struct.insurance.request.InsuranceOrderDetailRequest"/>
+<fullyQualifiedTypeName name="org.apache.commons.lang3.StringUtils"/>
+<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<fullyQualifiedTypeName name="com.qding.insurance.vo.InsuranceDetailByOrderNoVo"/>
+<fullyQualifiedTypeName name="com.qding.api.call.app.qding.v4_1_0.struct.insurance.response.data.MemberAndInsurantInfo"/>
+<fullyQualifiedTypeName name="com.qding.api.call.app.qding.v4_1_0.struct.insurance.request.CompensateRecordRequest"/>
+<fullyQualifiedTypeName name="com.qding.api.call.app.qding.v4_1_0.struct.insurance.request.CompensateRecordByIdRequest"/>
+<fullyQualifiedTypeName name="com.qding.api.call.app.qding.v4_1_0.struct.insurance.response.data.ComResponseByIdResponseData"/>
+</qualifiedTypeNameHistroy>

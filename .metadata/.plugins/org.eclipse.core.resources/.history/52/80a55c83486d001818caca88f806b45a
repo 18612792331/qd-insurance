@@ -1,0 +1,73 @@
+package com.qding.insurance.dao;
+
+import java.util.List;
+import java.util.HashMap;
+
+import com.qding.insurance.domain.InsurancePolicy;
+import com.qding.insurance.param.InsurancePolicyParam;
+import com.qding.insurance.vo.InsurancePolicyDetailInfo;
+import com.qding.insurance.vo.InsurancePolicyInfo;
+import com.qding.insurance.vo.InsurancePolicyPageResult;
+import com.qding.insurance.vo.PolicyGuaranteePlanBalanceInfo;
+import com.qding.insurance.vo.RoomInsureStatusInfo;
+import com.qding.insurance.param.InsurancePolicyParam;
+
+public interface InsurancePolicyMapper {
+	int deleteByPrimaryKey(String id);
+
+	int insert(InsurancePolicy record);
+
+	int insertSelective(InsurancePolicy record);
+
+	InsurancePolicy selectByPrimaryKey(String id);
+
+	int updateByPrimaryKeySelective(InsurancePolicy record);
+
+	int updateByPrimaryKey(InsurancePolicy record);
+
+	Integer countByParam(InsurancePolicyParam param);
+
+	List<InsurancePolicyPageResult> selectByParam(InsurancePolicyParam param);
+
+	/**
+	 * 根据单证ID获取剩余权益信息
+	 */
+	PolicyGuaranteePlanBalanceInfo getBalanceInfo(String id);
+
+	/**
+	 * 根据平台订单号获取结果
+	 */
+	InsurancePolicy getResultByOrderID(String orderID);
+
+	/**
+	 * 根据房屋ID获取房屋投保状态
+	 */
+	List<RoomInsureStatusInfo> getRoomInsureStatusByRoomID(String roomID);
+
+	/**
+	 * 查询用户保单列表
+	 */
+	List<InsurancePolicyInfo> getUserInsurancePolicyList(String memberId);
+
+	/**
+	 *根据ID查询保单详细信息
+	 */
+	InsurancePolicyDetailInfo getInsurancePolicyDetailInfo(String id);
+	/**
+	 * 根据房屋ID查看是否房屋投保记录
+	 * @param params
+	 * @return
+	 */
+	List<InsurancePolicy> selectByRoomId(String roomId);
+	
+	/**
+	 * 单证到期生效
+	 * @param policyStatusUnenforced
+	 * @return
+	 */
+	List<InsurancePolicy> selectByStatus(Integer policyStatusUnenforced);
+
+	void updateByStatus(InsurancePolicy policy);
+
+
+}

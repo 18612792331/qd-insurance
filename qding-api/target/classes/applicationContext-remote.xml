@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.1.xsd"
+       default-autowire="byName">
+
+
+    <bean id="dictionaryClient" class="com.qding.rpc.client.config.spring.RpcClientRegisterBean">
+        <property name="target" value="com.qding.thrift.service.dictionary.RPCDictionaryService"/>
+        <!-- 默认直连IP端口设置 -->
+        <property name="remoteIp" value="${api.thrift.dictionary.ip}"/>
+        <property name="remotePort" value="${api.thrift.dictionary.port}"/>
+        <!-- ZK设置 -->
+        <property name="zkHosts" value=""/>
+        <property name="version" value="1.0"/>
+        <!-- 连接池设置 -->
+        <property name="waitTimeOut" value="10000"/>
+        <property name="socketTimeOut" value="10000"/>
+        <property name="maxPoolSize" value="10"/>
+        <property name="maxIdle" value="5"/>
+        <property name="minIdle" value="3"/>
+        <property name="idleTimeSeconds" value="1800"/>
+    </bean>
+
+    <bean id="dictionaryService" class="com.qding.dictionary.client.DictionaryClient">
+        <property name="client" ref="dictionaryClient"/>
+    </bean>
+
+    <bean id="hotcycleClient" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <!-- 请求代理Servlet路径 -->
+        <property name="serviceUrl">
+            <value>${api.hassion.hotcycle}/remote</value>
+        </property>
+        <!-- 接口定义 -->
+        <property name="serviceInterface">
+            <value>com.qding.hotcycle.service.IHotCycleRemoteService</value>
+        </property>
+    </bean>
+
+    <bean id="gcMemberClient" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <!-- 请求代理Servlet路径 -->
+        <property name="serviceUrl">
+            <value>${api.hassion.hotcycle}/gcmember</value>
+        </property>
+        <!-- 接口定义 -->
+        <property name="serviceInterface">
+            <value>com.qding.hotcycle.service.IGCMemberRemoteService</value>
+        </property>
+    </bean>
+
+    <bean id="gcRoomClient" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <!-- 请求代理Servlet路径 -->
+        <property name="serviceUrl">
+            <value>${api.hassion.hotcycle}/gcroom</value>
+        </property>
+        <!-- 接口定义 -->
+        <property name="serviceInterface">
+            <value>com.qding.hotcycle.service.IGCRoomRemoteService</value>
+        </property>
+    </bean>
+
+    <!-- 客户端Hessian代理工厂Bean -->
+<!--    <bean id="memberRoomRemoteClient" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        &lt;!&ndash; 请求代理Servlet路径 &ndash;&gt;
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/memberRoomRService</value>
+        </property>
+        &lt;!&ndash; 接口定义 &ndash;&gt;
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRMemberRoomService</value>
+        </property>
+    </bean>-->
+
+    <!-- 客户端Hessian代理工厂Bean -->
+<!--    <bean id="memberProjectRemoteClient" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        &lt;!&ndash; 请求代理Servlet路径 &ndash;&gt;
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/memberProjectRService</value>
+        </property>
+        &lt;!&ndash; 接口定义 &ndash;&gt;
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRMemberProjectService</value>
+        </property>
+    </bean>-->
+
+    <!-- 客户端Hessian代理工厂Bean -->
+<!--    <bean id="invitationRemoteClient" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        &lt;!&ndash; 请求代理Servlet路径 &ndash;&gt;
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/invitationRService</value>
+        </property>
+        &lt;!&ndash; 接口定义 &ndash;&gt;
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRInvitationService</value>
+        </property>
+    </bean>-->
+
+    <!-- 客户端Hessian代理工厂Bean -->
+<!--
+    <bean id="memberRemoteServiceClient" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        &lt;!&ndash; 请求代理Servlet路径 &ndash;&gt;
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/memberRService</value>
+        </property>
+        &lt;!&ndash; 接口定义 &ndash;&gt;
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRMemberService</value>
+        </property>
+    </bean>
+-->
+
+    <!-- 客户端Hessian代理工厂Bean -->
+<!--    <bean id="suggestionRemoteClient" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        &lt;!&ndash; 请求代理Servlet路径 &ndash;&gt;
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/memberSuggestionRService</value>
+        </property>
+        &lt;!&ndash; 接口定义 &ndash;&gt;
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRMemberSuggestionService</value>
+        </property>
+    </bean>-->
+
+    <!-- 客户端Hessian代理工厂Bean -->
+<!--    <bean id="smsRemoteClient" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        &lt;!&ndash; 请求代理Servlet路径 &ndash;&gt;
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/smsRService</value>
+        </property>
+        &lt;!&ndash; 接口定义 &ndash;&gt;
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRSmsService</value>
+        </property>
+    </bean>-->
+
+    <!-- 客户端Hessian代理工厂Bean -->
+   <!-- <bean id="RRoomBindRemoteClient" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        &lt;!&ndash; 请求代理Servlet路径 &ndash;&gt;
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/roomBindApplyRpc</value>
+        </property>
+        &lt;!&ndash; 接口定义 &ndash;&gt;
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRRoomBindApplyService</value>
+        </property>
+    </bean>-->
+
+<!--    <bean id="memberAddressService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/memberAddressRService</value>
+        </property>
+
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRMemberAddressService</value>
+        </property>
+    </bean>-->
+    
+<!--     <bean id="memberAddressSelfdService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/memberAddressSelfdService</value>
+        </property>
+
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRMemberAddressSelfdService</value>
+        </property>
+    </bean>-->
+
+    <bean id="memberPopularizeService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <!-- 请求代理Servlet路径 -->
+        <property name="serviceUrl">
+            <value>${api.hassion.popularize.base}/memberPopularizeService</value>
+        </property>
+        <!-- 接口定义 -->
+        <property name="serviceInterface">
+            <value>com.qding.popularize.remote.MemberPopularizeRemoteService</value>
+        </property>
+    </bean>
+
+
+<!--    <bean id="roomBindQRcodeService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        &lt;!&ndash; 请求代理Servlet路径 &ndash;&gt;
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/roomBindQRcodeRpc</value>
+        </property>
+        &lt;!&ndash; 接口定义 &ndash;&gt;
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRRoomBindQRcodeService</value>
+        </property>
+    </bean>-->
+
+
+    <bean id="auctionRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <!-- 请求代理Servlet路径 -->
+        <property name="serviceUrl">
+            <value>${api.hassion.auction.base}/auctionRpc</value>
+        </property>
+        <!-- 接口定义 -->
+        <property name="serviceInterface">
+            <value>com.qding.auction.rpc.service.IAuctionRpcService</value>
+        </property>
+    </bean>
+
+    <bean id="alipayRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <!-- 请求代理Servlet路径 -->
+        <property name="serviceUrl">
+            <value>${api.hassion.alipay.base}/fuwuchuangServiceR</value>
+        </property>
+        <!-- 接口定义 -->
+        <property name="serviceInterface">
+            <value>com.qding.fuwuchuang.service.IFuwuchuangService</value>
+        </property>
+    </bean>
+
+
+    <bean id="grouponRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <!-- 请求代理Servlet路径 -->
+        <property name="serviceUrl">
+            <value>${api.hassion.groupon.base}/product</value>
+        </property>
+        <!-- 接口定义 -->
+        <property name="serviceInterface">
+            <value>com.qding.groupon.remote.ProductRemoteService</value>
+        </property>
+    </bean>
+
+    <!-- 保洁业态订单 rpc-->
+    <bean id="cleanRpcSerivce" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.clean.base}/bizP</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <!-- 洗衣业态订单 rpc-->
+    <bean id="washRpcSerivce" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.wash.base}/orderService</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <!-- 旅游业态订单rpc-->
+    <bean id="travelRpcSerivce" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.travel.base}/bizP</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <!-- 洗车业态订单 rpc-->
+    <bean id="washCarRpcSerivce" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.washcar.base}/bizP</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <!-- 阶梯团购业态订单 rpc-->
+    <bean id="tgRpcSerivce" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.tg.base}/productOrder</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <!-- 通用业态订单 rpc-->
+    <bean id="cbRpcSerivce" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.cb.base}/productOrder</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <!-- 团购业态订单 rpc-->
+    <bean id="sgRpcSerivce" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.sg.base}/productOrder</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <bean id="integralRpcSerivce" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hessian.integral.base}/integral</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+     <!--- 待切换 -->
+    <bean id="businessOrderService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+
+        <property name="serviceUrl">
+            <value>${api.hassion.cb.base}/iorder</value>
+        </property>
+
+        <property name="serviceInterface">
+            <value>com.qding.business.service.IRemoteOrderService</value>
+        </property>
+    </bean>
+    
+    <bean id="evaluationRemote" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+
+        <property name="serviceUrl">
+            <value>${api.hassion.pinglunpingtai.base}/qdappRpcService</value>
+        </property>
+
+        <property name="serviceInterface">
+            <value>com.qding.evaluation.remote.qdapp.IQdAppRemote</value>
+        </property>
+    </bean>
+
+
+    <!-- imessage远程服务接口 -->
+    <bean id="integralMessage" class="com.qding.api.imessage.IntegralMessage" init-method="init">
+        <property name="jobUrl">
+            <value>${api.hassion.account.base}/imessage</value>
+        </property>
+        <property name="imessageUrl">
+            <value>${api.hassion.imessage.base}</value>
+        </property>
+        <property name="type">
+            <value>20</value>
+        </property>
+        <property name="toClass">
+            <value>IntegralGatherJob</value>
+        </property>
+        <property name="maxRetrycount">
+            <value>8</value>
+        </property>
+        <property name="retryInterval">
+            <value>6000</value>
+        </property>
+    </bean>
+
+
+    <!-- imessage远程服务接口 -->
+    <bean id="searchKeyStatistics" class="com.qding.api.imessage.SearchKeyStatistics" init-method="init">
+        <property name="jobUrl">
+            <value>${api.hassion.brickadmin.base}/v0/imessage</value>
+        </property>
+        <property name="imessageUrl">
+            <value>${api.hassion.imessage.base}</value>
+        </property>
+        <property name="type">
+            <value>20</value>
+        </property>
+        <property name="toClass">
+            <value>KeywordNotify</value>
+        </property>
+        <property name="maxRetrycount">
+            <value>8</value>
+        </property>
+        <property name="retryInterval">
+            <value>6000</value>
+        </property>
+    </bean>
+
+    <bean id="rongCloudApiHttpClient" class="com.qding.api.rongcloud.RongCloudApiHttpClient">
+        <property name="APPKEY">
+            <value>${rongCloud.appkey}</value>
+        </property>
+        <property name="APPSECRET">
+            <value>${rongCloud.appsecret}</value>
+        </property>
+    </bean>
+
+    <bean id="evaluateRemoteService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.evaluate.base}/evaluate</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.evaluate.service.IEvaluateRemoteService</value>
+        </property>
+    </bean>
+
+    <bean id="courierRemoteService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.crbg}/courierRPCService</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.courier.service.CrRemoteService</value>
+        </property>
+    </bean>
+
+    <bean id="propertyRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <!-- 请求代理Servlet路径 -->
+        <property name="serviceUrl">
+            <value>${api.hassion.property.base}/property</value>
+        </property>
+        <!-- 接口定义 -->
+        <property name="serviceInterface">
+            <value>com.qding.property.rpc.service.PropertyRpcService</value>
+        </property>
+    </bean>
+
+
+<!--    <bean id="logisticsPlatformOrder" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.logisticsPlatformOrder.base}/order</value>
+        </property>
+        &lt;!&ndash; 接口定义 &ndash;&gt;
+        <property name="serviceInterface">
+            <value>com.qding.logistics.platform.client.remote.LogisticsPlatformOrderRpcService</value>
+        </property>
+    </bean>-->
+
+    <!--杨林林 无dubbo-->
+    <bean id="integralRemoteService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hessian.integral.base}/integral</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.integral.remote.IntegralRemoteService</value>
+        </property>
+    </bean>
+
+    <bean id="newcleanerRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.bj.base}/productOrder</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <!--杨林林 无dubbo -->
+    <bean id="mkRemoteService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.mkbg.base}/marketingRPCService</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.marketing.service.MkRemoteService</value>
+        </property>
+    </bean>
+
+    <bean id="newTravelRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.tourimline.base}/qdapp/order</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <bean id="babysitterRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.babysitter.base}/productOrder</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <bean id="touismServiceRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.touism.base}/qdapp/order</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <bean id="csRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.cs.base}/productOrder</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <bean id="mnRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.mn.base}/productOrder</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <bean id="psRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.ps.base}/productOrder</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+    <bean id="msRpcService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.ms.base}/productOrder</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.framework.common.service.order.IGetProductOrderService</value>
+        </property>
+    </bean>
+
+
+
+
+<!--
+    <bean id="irmemberHkRoomRelationService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl">
+            <value>${api.hassion.member.base}/memberHkRoom</value>
+        </property>
+        <property name="serviceInterface">
+            <value>com.qding.member.service.IRMemberHkRoomRelationService</value>
+        </property>
+    </bean>
+-->
+
+
+    <!-- 报事评论抽奖消息 -->
+    <bean id="activityMessage" class="com.qding.api.imessage.ActivityMessage"  init-method="init">
+        <property name="jobUrl">
+        	<!-- 消息处理接收类的rpc 路径 -->
+            <value>${api.hassion.sysconfig.base}/remote/imessage</value>
+        </property>
+       	<property name="imessageUrl">
+            <value>${api.hassion.imessage.base}</value>
+        </property>
+        <property name="type">
+            <value>20</value>
+        </property>
+        <!-- 
+        <property name="toClass">
+            <value>ActivityHandleMessage</value>
+        </property>
+         -->
+        <property name="maxRetrycount">
+            <value>3</value>
+        </property>
+        <property name="retryInterval">
+            <value>6000</value>
+        </property>
+        <property name="status" value="${ActivityMessage.status}"/>
+    </bean>
+
+    <bean id="loginExtMessage" class="com.qding.api.imessage.passport.LoginExtMessage"  init-method="init">
+        <property name="jobUrl">
+            <value>${api.hassion.passport.base}/imessage/addLoginLogExt</value>
+        </property>
+        <property name="imessageUrl">
+            <value>${api.hassion.imessage.base}</value>
+        </property>
+        <property name="type">
+            <value>20</value>
+        </property>
+        <property name="toClass">
+            <value>LoginLogExtCallBack</value>
+        </property>
+        <property name="maxRetrycount">
+            <value>0</value>
+        </property>
+        <property name="retryInterval">
+            <value>6000</value>
+        </property>
+    </bean>
+
+
+    <bean id="blueToothMessage" class="com.qding.api.imessage.bluetooth.BlueToothMessage"  init-method="init">
+        <property name="jobUrl">
+            <value>${api.hassion.hk.base}/imessage</value>
+        </property>
+        <property name="imessageUrl">
+            <value>${api.hassion.imessage.base}</value>
+        </property>
+        <property name="type">
+            <value>20</value>
+        </property>
+        <property name="toClass">
+            <value>BlueToothLogMessage</value>
+        </property>
+        <property name="maxRetrycount">
+            <value>0</value>
+        </property>
+        <property name="retryInterval">
+            <value>6000</value>
+        </property>
+    </bean>
+
+    <!-- 杨林林 -->
+    <bean id="activityGoodsRemoteService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl" value="${itweb.rpc.url}/activitygoodsService"/>
+        <property name="readTimeout" value="5000"></property>
+        <property name="serviceInterface" value="com.qding.integral.remote.ActivityGoodsRemoteService"/>
+    </bean>
+    <!-- 杨林林 -->
+    <bean id="gcRoomRemoteService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl" value="${api.hassion.groupchat.base}/groupchat"/>
+        <property name="readTimeout" value="5000"></property>
+        <property name="serviceInterface" value="com.qding.groupchat.remote.groupchat.IGcRoomRemote"/>
+    </bean>
+    <!-- 李超 -->
+    <bean id="qdAppRemoteService" class="com.qding.framework.common.hessian.MyHessianProxyFactoryBean">
+        <property name="serviceUrl" value="${api.hassion.compositebusiness.base}/qdApp"/>
+        <property name="readTimeout" value="5000"></property>
+        <property name="serviceInterface" value="com.qding.compositebusiness.remote.qdapp.IQdAppRemote"/>
+    </bean>
+
+
+</beans>

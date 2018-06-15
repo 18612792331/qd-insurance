@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.InsuranceProjectMapper">
+  <resultMap id="BaseResultMap" type="com.qding.insurance.domain.InsuranceProject">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ware_id" jdbcType="VARCHAR" property="wareId" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="city_id" jdbcType="VARCHAR" property="cityId" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ware_id, project_id,project_name,city_id,city_name
+  </sql>
+  
+  <delete id="deleteByWareId" parameterType="java.lang.String">
+    delete from insurance_project
+    where ware_id = #{wareId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="batchInsert" parameterType="java.util.List">
+        insert into insurance_project 
+        (ID, ware_id, project_id,project_name,city_id,city_name)
+        VALUES
+     <foreach collection="list" item="model"  separator=",">
+        (#{model.id,jdbcType=VARCHAR}, #{model.wareId,jdbcType=VARCHAR}, #{model.projectId,jdbcType=VARCHAR},
+         #{model.projectName,jdbcType=VARCHAR}, #{model.cityId,jdbcType=VARCHAR}, #{model.cityName,jdbcType=VARCHAR})
+     </foreach>
+  </insert>
+  
+  <select id="selectByWareId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from insurance_project
+    where ware_id = #{wareId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from insurance_project
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from insurance_project
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.qding.insurance.domain.InsuranceProject">
+    insert into insurance_project (ID, ware_id, project_id,project_name,city_id,city_name
+      )
+    values (#{id,jdbcType=VARCHAR}, #{wareId,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR}, #{cityId,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qding.insurance.domain.InsuranceProject">
+    insert into insurance_project
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="wareId != null">
+        ware_id,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="wareId != null">
+        #{wareId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.InsuranceProject">
+    update insurance_project
+    <set>
+      <if test="wareId != null">
+        ware_id = #{wareId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.InsuranceProject">
+    update insurance_project
+    set ware_id = #{wareId,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

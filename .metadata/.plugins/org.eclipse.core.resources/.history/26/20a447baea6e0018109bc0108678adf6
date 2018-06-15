@@ -1,0 +1,9 @@
+package com.qding.insurance.vo;
+
+import java.io.Serializable;
+
+import com.qding.insurance.domain.InsuranceOrder;
+
+public class InsuranceDetailByOrderNoVo extends InsuranceOrder implements Serializable{
+
+}

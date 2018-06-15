@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.GuaranteeObjectMapper">
+  <resultMap id="BaseResultMap" type="com.qding.insurance.domain.GuaranteeObject">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ware_id" jdbcType="VARCHAR" property="wareId" />
+    <result column="item_id" jdbcType="VARCHAR" property="itemId" />
+    <result column="object_id" jdbcType="VARCHAR" property="objectId" />
+    <result column="object_name" jdbcType="VARCHAR" property="objectName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ware_id, item_id, object_id, object_name
+  </sql>
+  
+  <select id="selectByWareAndItem" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from guarantee_object
+    where ware_id = #{wareId,jdbcType=VARCHAR} and item_id = #{itemId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByWareId" parameterType="java.lang.String">
+    delete from guarantee_object
+    where ware_id = #{wareId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="batchInsert" parameterType="java.util.List">
+        insert into guarantee_object 
+        (ID, ware_id, item_id, object_id, object_name)
+        VALUES
+     <foreach collection="list" item="model"  separator=",">
+        (#{model.id,jdbcType=VARCHAR}, #{model.wareId,jdbcType=VARCHAR}, #{model.itemId,jdbcType=VARCHAR}, 
+      #{model.objectId,jdbcType=VARCHAR}, #{model.objectName,jdbcType=VARCHAR})
+     </foreach>
+  </insert>
+  
+</mapper>

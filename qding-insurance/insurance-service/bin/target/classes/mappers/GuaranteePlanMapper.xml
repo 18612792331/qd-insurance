@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.GuaranteePlanMapper">
+  <resultMap id="BaseResultMap" type="com.qding.insurance.domain.GuaranteePlan">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ware_id" jdbcType="VARCHAR" property="wareId" />
+    <result column="sku_id" jdbcType="VARCHAR" property="skuId" />
+    <result column="guarantee_item_id" jdbcType="VARCHAR" property="guaranteeItemId" />
+    <result column="right_value" jdbcType="VARCHAR" property="rightValue" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ware_id, sku_id, guarantee_item_id, right_value
+  </sql>
+  
+  <select id="selectByWareAndSku" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from guarantee_plan
+    where 1=1
+    <if test="wareId != null">
+        and ware_id = #{wareId,jdbcType=VARCHAR}
+    </if>
+    <if test="skuId != null">
+        and sku_id = #{skuId,jdbcType=VARCHAR}
+    </if>
+    
+  </select>
+  
+  <delete id="deleteByWareId" parameterType="java.lang.String">
+    delete from guarantee_plan
+    where ware_id = #{wareId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="batchInsert" parameterType="java.util.List">
+        insert into guarantee_plan 
+        (ID, ware_id, sku_id, guarantee_item_id, right_value)
+        VALUES
+     <foreach collection="list" item="model"  separator=",">
+        (#{model.id,jdbcType=VARCHAR}, #{model.wareId,jdbcType=VARCHAR}, #{model.skuId,jdbcType=VARCHAR}, 
+      #{model.guaranteeItemId,jdbcType=VARCHAR}, #{model.rightValue,jdbcType=VARCHAR})
+     </foreach>
+  </insert>
+  
+  <resultMap id="voResultMap" type="com.qding.insurance.vo.GuaranteePlanVo" extends="BaseResultMap">
+  </resultMap>
+  
+  <select id="selectBySkuId" parameterType="java.lang.String" resultMap="voResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from guarantee_plan
+    where sku_id = #{skuId,jdbcType=VARCHAR}
+  </select>
+</mapper>

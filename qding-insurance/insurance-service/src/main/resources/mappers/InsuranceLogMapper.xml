@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.InsuranceLogMapper">
+  <resultMap id="BaseResultMap" type="com.qding.insurance.domain.InsuranceLog">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="log_type" jdbcType="INTEGER" property="logType" />
+    <result column="obj_id" jdbcType="VARCHAR" property="objId" />
+    <result column="operate" jdbcType="VARCHAR" property="operate" />
+    <result column="operate_by" jdbcType="VARCHAR" property="operateBy" />
+    <result column="operate_at" jdbcType="TIMESTAMP" property="operateAt" />
+    <result column="operate_before" jdbcType="VARCHAR" property="operateBefore" />
+    <result column="operate_after" jdbcType="VARCHAR" property="operateAfter" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, log_type, obj_id, operate, operate_by, operate_at, operate_before, operate_after
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from insurance_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from insurance_log
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.qding.insurance.domain.InsuranceLog">
+    insert into insurance_log (ID, log_type, obj_id, 
+      operate, operate_by, operate_at, 
+      operate_before, operate_after)
+    values (#{id,jdbcType=VARCHAR}, #{logType,jdbcType=INTEGER}, #{objId,jdbcType=VARCHAR}, 
+      #{operate,jdbcType=VARCHAR}, #{operateBy,jdbcType=VARCHAR}, #{operateAt,jdbcType=TIMESTAMP}, 
+      #{operateBefore,jdbcType=VARCHAR}, #{operateAfter,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qding.insurance.domain.InsuranceLog">
+    insert into insurance_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="logType != null">
+        log_type,
+      </if>
+      <if test="objId != null">
+        obj_id,
+      </if>
+      <if test="operate != null">
+        operate,
+      </if>
+      <if test="operateBy != null">
+        operate_by,
+      </if>
+      <if test="operateAt != null">
+        operate_at,
+      </if>
+      <if test="operateBefore != null">
+        operate_before,
+      </if>
+      <if test="operateAfter != null">
+        operate_after,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="logType != null">
+        #{logType,jdbcType=INTEGER},
+      </if>
+      <if test="objId != null">
+        #{objId,jdbcType=VARCHAR},
+      </if>
+      <if test="operate != null">
+        #{operate,jdbcType=VARCHAR},
+      </if>
+      <if test="operateBy != null">
+        #{operateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operateAt != null">
+        #{operateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateBefore != null">
+        #{operateBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="operateAfter != null">
+        #{operateAfter,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.InsuranceLog">
+    update insurance_log
+    <set>
+      <if test="logType != null">
+        log_type = #{logType,jdbcType=INTEGER},
+      </if>
+      <if test="objId != null">
+        obj_id = #{objId,jdbcType=VARCHAR},
+      </if>
+      <if test="operate != null">
+        operate = #{operate,jdbcType=VARCHAR},
+      </if>
+      <if test="operateBy != null">
+        operate_by = #{operateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="operateAt != null">
+        operate_at = #{operateAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operateBefore != null">
+        operate_before = #{operateBefore,jdbcType=VARCHAR},
+      </if>
+      <if test="operateAfter != null">
+        operate_after = #{operateAfter,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.InsuranceLog">
+    update insurance_log
+    set log_type = #{logType,jdbcType=INTEGER},
+      obj_id = #{objId,jdbcType=VARCHAR},
+      operate = #{operate,jdbcType=VARCHAR},
+      operate_by = #{operateBy,jdbcType=VARCHAR},
+      operate_at = #{operateAt,jdbcType=TIMESTAMP},
+      operate_before = #{operateBefore,jdbcType=VARCHAR},
+      operate_after = #{operateAfter,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

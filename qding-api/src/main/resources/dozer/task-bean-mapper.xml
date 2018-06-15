@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+
+    <mapping>
+        <class-a>com.qding.task.dto.Button</class-a>
+        <class-b>com.qding.api.call.app.qding.v2_4_1.struct.task.TaskBtnSkip</class-b>
+        <field>
+            <a>name</a>
+            <b>btnName</b>
+        </field>
+        <field>
+            <a>nameColor</a>
+            <b>btnNameColor</b>
+        </field>
+        <field>
+            <a>bgColor</a>
+            <b>btnBgColor</b>
+        </field>
+
+    </mapping>
+
+
+</mappings>  

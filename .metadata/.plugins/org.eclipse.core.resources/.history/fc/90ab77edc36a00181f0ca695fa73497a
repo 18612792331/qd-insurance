@@ -1,0 +1,22 @@
+package com.qding.insurance.rpc.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.qding.insurance.domain.CompensateRecord;
+import com.qding.insurance.rpc.ICompensateRecordRpc;
+import com.qding.insurance.service.ICompensateRecordService;
+@Service("compensateRecordRpc")
+public class CompensateRecordRpcImpl implements ICompensateRecordRpc{
+	@Autowired
+	private ICompensateRecordService compensateRecordService;
+
+	@Override
+	public List<CompensateRecord> getCompensateRecordByPolicyID(String policyID,Integer status) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

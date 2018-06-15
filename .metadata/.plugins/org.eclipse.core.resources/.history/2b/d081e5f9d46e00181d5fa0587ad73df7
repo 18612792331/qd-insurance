@@ -1,0 +1,63 @@
+package com.qding.insurance.rpc.impl;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.qding.basis.user.api.util.QDStringUtil;
+import com.qding.framework.common.constants.HttpStatus;
+import com.qding.framework.common.exception.ServiceException;
+import com.qding.insurance.domain.InsuranceOrder;
+import com.qding.insurance.domain.InsuranceSku;
+import com.qding.insurance.domain.InsuranceWare;
+import com.qding.insurance.rpc.IInsuranceOrderRpcService;
+import com.qding.insurance.rpc.request.InsuranceOrderInsureRequest;
+import com.qding.insurance.service.IInsuranceOrderService;
+import com.qding.insurance.service.IInsuranceSkuService;
+import com.qding.insurance.service.IInsuranceWareService;
+import com.qding.insurance.util.Constant;
+import com.qding.insurance.vo.GuaranteePlanResultVo;
+import com.qding.oder.dto.OrderGeneratorDto;
+import com.qding.oder.dto.SubOrderDto;
+import com.qding.order.domain.OrderBase;
+import com.qding.order.service.IRemoteOrderService;
+import com.qding.order.struct.response.SaveOrderResponse;
+
+@Service("insuranceOrderRpc")
+public class InsuranceOrderRpcServiceImpl implements IInsuranceOrderRpcService {
+	private static final Logger logger = Logger.getLogger(InsuranceOrderRpcServiceImpl.class);
+
+	@Autowired
+	private IInsuranceOrderService orderService;
+	
+	@Override
+	public boolean checkWheatherInsured(String roomId) {
+		logger.info("参数roomID:" + roomId);
+		return orderService.checkWheatherInsured(roomId);
+	}
+
+	@Override
+	public GuaranteePlanResultVo getGuaranteePlanBySkuInfo(String projectType,
+			String styleType, String timeType) {
+		GuaranteePlanResultVo planResultVo = orderService.getGuaranteePlanBySkuInfo(projectType, styleType, timeType);
+		return planResultVo;
+	}
+
+	@Override
+	public void insure(InsuranceOrderInsureRequest request) throws Exception {
+		orderService.insure(request);
+	}
+
+	@Override
+	public InsuranceOrder getInsOderDetailByOrderNo(String orderNo) {
+		InsuranceOrder order = orderService.getInsOderDetailByOrderNo(orderNo);
+		return order;
+	}
+
+}

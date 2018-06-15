@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="org.eclipse.ui.resourceWorkingSetPage" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1528338715486_1" label="qding-insurance" name="qding-insurance">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/qding-insurance" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/insurance-admin" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/insurance-service" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/insurance-common" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/insurance-remote" type="4"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1528333034408_0" label="Window Working Set" name="Aggregate for window 1528333034408"/>
+</workingSetManager>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.SpecValueMapper">
+  <resultMap id="BaseResultMap" type="com.qding.insurance.domain.SpecValue">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="group_code" jdbcType="VARCHAR" property="groupCode" />
+    <result column="value_code" jdbcType="VARCHAR" property="valueCode" />
+    <result column="value_name" jdbcType="VARCHAR" property="valueName" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+  </resultMap>
+  <resultMap id="VoResultMap" type="com.qding.insurance.vo.SpecValueVo" extends="BaseResultMap">
+    <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, group_code, value_code, value_name, sort
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from spec_value
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="VoResultMap">
+    select v.*, g.name as group_name 
+	from spec_value v left join spec_group g on g.code = v.group_code
+	order by g.sort, v.sort
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from spec_value
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qding.insurance.domain.SpecValue">
+    insert into spec_value (ID, group_code, value_code, 
+      value_name, sort)
+    values (#{id,jdbcType=INTEGER}, #{groupCode,jdbcType=VARCHAR}, #{valueCode,jdbcType=VARCHAR}, 
+      #{valueName,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qding.insurance.domain.SpecValue">
+    insert into spec_value
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="groupCode != null">
+        group_code,
+      </if>
+      <if test="valueCode != null">
+        value_code,
+      </if>
+      <if test="valueName != null">
+        value_name,
+      </if>
+      <if test="sort != null">
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="groupCode != null">
+        #{groupCode,jdbcType=VARCHAR},
+      </if>
+      <if test="valueCode != null">
+        #{valueCode,jdbcType=VARCHAR},
+      </if>
+      <if test="valueName != null">
+        #{valueName,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        #{sort,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.SpecValue">
+    update spec_value
+    <set>
+      <if test="groupCode != null">
+        group_code = #{groupCode,jdbcType=VARCHAR},
+      </if>
+      <if test="valueCode != null">
+        value_code = #{valueCode,jdbcType=VARCHAR},
+      </if>
+      <if test="valueName != null">
+        value_name = #{valueName,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null">
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.SpecValue">
+    update spec_value
+    set group_code = #{groupCode,jdbcType=VARCHAR},
+      value_code = #{valueCode,jdbcType=VARCHAR},
+      value_name = #{valueName,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

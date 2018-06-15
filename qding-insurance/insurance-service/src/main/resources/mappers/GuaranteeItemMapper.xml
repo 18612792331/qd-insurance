@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.GuaranteeItemMapper">
+  <resultMap id="BaseResultMap" type="com.qding.insurance.domain.GuaranteeItem">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="item_title" jdbcType="VARCHAR" property="itemTitle" />
+    <result column="ware_id" jdbcType="VARCHAR" property="wareId" />
+    <result column="item_type" jdbcType="INTEGER" property="itemType" />
+    <result column="compensate_type" jdbcType="INTEGER" property="compensateType" />
+  </resultMap>
+  <resultMap id="voResultMap" type="com.qding.insurance.vo.GuaranteeItemVo" extends="BaseResultMap">
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, item_title, ware_id, item_type, compensate_type
+  </sql>
+  
+  <delete id="deleteByWareId" parameterType="java.lang.String">
+    delete from guarantee_item
+    where ware_id = #{wareId,jdbcType=VARCHAR}
+  </delete>
+  
+  <insert id="batchInsert" parameterType="java.util.List">
+        insert into guarantee_item 
+        (ID, item_title, ware_id, item_type, compensate_type)
+        VALUES
+     <foreach collection="list" item="model"  separator=",">
+        (#{model.id,jdbcType=VARCHAR}, #{model.itemTitle,jdbcType=VARCHAR}, #{model.wareId,jdbcType=VARCHAR}, 
+      #{model.itemType,jdbcType=INTEGER}, #{model.compensateType,jdbcType=INTEGER})
+     </foreach>
+  </insert>
+  
+  <select id="selectByWareId" parameterType="java.lang.String" resultMap="voResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from guarantee_item
+    where ware_id = #{wareId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from guarantee_item
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from guarantee_item
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.qding.insurance.domain.GuaranteeItem">
+    insert into guarantee_item (ID, item_title, ware_id, 
+      item_type, compensate_type)
+    values (#{id,jdbcType=VARCHAR}, #{itemTitle,jdbcType=VARCHAR}, #{wareId,jdbcType=VARCHAR}, 
+      #{itemType,jdbcType=INTEGER}, #{compensateType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qding.insurance.domain.GuaranteeItem">
+    insert into guarantee_item
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="itemTitle != null">
+        item_title,
+      </if>
+      <if test="wareId != null">
+        ware_id,
+      </if>
+      <if test="itemType != null">
+        item_type,
+      </if>
+      <if test="compensateType != null">
+        compensate_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="itemTitle != null">
+        #{itemTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="wareId != null">
+        #{wareId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemType != null">
+        #{itemType,jdbcType=INTEGER},
+      </if>
+      <if test="compensateType != null">
+        #{compensateType,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.GuaranteeItem">
+    update guarantee_item
+    <set>
+      <if test="itemTitle != null">
+        item_title = #{itemTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="wareId != null">
+        ware_id = #{wareId,jdbcType=VARCHAR},
+      </if>
+      <if test="itemType != null">
+        item_type = #{itemType,jdbcType=INTEGER},
+      </if>
+      <if test="compensateType != null">
+        compensate_type = #{compensateType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.GuaranteeItem">
+    update guarantee_item
+    set item_title = #{itemTitle,jdbcType=VARCHAR},
+      ware_id = #{wareId,jdbcType=VARCHAR},
+      item_type = #{itemType,jdbcType=INTEGER},
+      compensate_type = #{compensateType,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="selectVoById" parameterType="java.lang.String" resultMap="voResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from guarantee_item
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+</mapper>

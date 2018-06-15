@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.PolicyGuaranteeObjectMapper">
+	<resultMap id="BaseResultMap"
+		type="com.qding.insurance.domain.PolicyGuaranteeObject">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="policy_id" jdbcType="VARCHAR" property="policyId" />
+		<result column="item_id" jdbcType="VARCHAR" property="itemId" />
+		<result column="object_id" jdbcType="VARCHAR" property="objectId" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, policy_id, item_id, object_id
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from policy_guarantee_object
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据单证ID和商品ID 查保障对象 -->
+	<select id="getResultByPolicyIdAndObjectId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from policy_guarantee_object where policy_id=
+		#{policyId,jdbcType=VARCHAR} and item_id= #{itemId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from policy_guarantee_object
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="batchInsert" parameterType="java.util.List">
+        insert into policy_guarantee_object 
+        (ID, policy_id, item_id,object_id)
+        VALUES
+	     <foreach collection="list" item="model"  separator=",">
+	        (#{model.id,jdbcType=VARCHAR}, #{model.policyId,jdbcType=VARCHAR},
+        #{model.itemId,jdbcType=VARCHAR},#{model.objectId,jdbcType=VARCHAR})
+	     </foreach>
+	  </insert>
+	
+	<insert id="insert" parameterType="com.qding.insurance.domain.PolicyGuaranteeObject">
+		insert into policy_guarantee_object (ID, policy_id, item_id,
+		object_id)
+		values (#{id,jdbcType=VARCHAR}, #{policyId,jdbcType=VARCHAR},
+		#{itemId,jdbcType=VARCHAR},
+		#{objectId,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.qding.insurance.domain.PolicyGuaranteeObject">
+		insert into policy_guarantee_object
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="policyId != null">
+				policy_id,
+			</if>
+			<if test="itemId != null">
+				item_id,
+			</if>
+			<if test="objectId != null">
+				object_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="policyId != null">
+				#{policyId,jdbcType=VARCHAR},
+			</if>
+			<if test="itemId != null">
+				#{itemId,jdbcType=VARCHAR},
+			</if>
+			<if test="objectId != null">
+				#{objectId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.PolicyGuaranteeObject">
+		update policy_guarantee_object
+		<set>
+			<if test="policyId != null">
+				policy_id = #{policyId,jdbcType=VARCHAR},
+			</if>
+			<if test="itemId != null">
+				item_id = #{itemId,jdbcType=VARCHAR},
+			</if>
+			<if test="objectId != null">
+				object_id = #{objectId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.PolicyGuaranteeObject">
+		update policy_guarantee_object
+		set policy_id = #{policyId,jdbcType=VARCHAR},
+		item_id = #{itemId,jdbcType=VARCHAR},
+		object_id = #{objectId,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,12 @@
+package com.qding.insurance.vo;
+
+import com.qding.insurance.domain.CompensateRecord;
+
+public class CompensateRecordVo extends CompensateRecord {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3816492810019192120L;
+
+}

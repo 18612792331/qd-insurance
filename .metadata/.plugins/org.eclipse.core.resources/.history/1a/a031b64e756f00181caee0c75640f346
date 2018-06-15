@@ -1,0 +1,52 @@
+package com.qding.insurance.vo;
+
+import java.io.Serializable;
+
+import com.qding.insurance.domain.InsuranceOrder;
+
+public class InsuranceDetailByOrderNoVo extends InsuranceOrder implements Serializable{
+
+	private static final long serialVersionUID = -7059483237398272591L;
+	
+	private String image; //保险商品主图地址
+	
+	private String detailImage; //保险商品详情图地址
+	
+	private String title; //商品标题
+	
+	private String ; //商品标题
+
+	
+	
+	public String getDetailImage() {
+		return detailImage;
+	}
+
+	public void setDetailImage(String detailImage) {
+		this.detailImage = detailImage;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public InsuranceDetailByOrderNoVo() {
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
+	
+	
+	
+
+}

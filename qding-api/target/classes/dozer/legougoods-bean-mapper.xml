@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+   
+      <mapping>
+		<class-a>com.qding.solr.struct.response.LegouSkuResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.response.data.GetCollectGoodsByUserResponseData</class-b>
+		<field>
+			<a>skus</a>
+			<b>list</b>
+		</field>
+
+	</mapping> 
+	
+	 <mapping>
+		<class-a>com.qding.solr.struct.response.LegouSkuResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.response.data.GetGoodsBySortResponseData</class-b>
+		<field>
+			<a>skus</a>
+			<b>list</b>
+		</field>
+	</mapping> 
+	
+	<mapping>
+		<class-a>com.qding.solr.struct.sku.SkuSpecRel</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.SpeRel</class-b>
+		<field>
+			<a>specName</a>
+			<b>spe</b>
+		</field>
+		<field>
+			<a>specValue</a>
+			<b>speInfo</b>
+		</field>
+	</mapping> 
+	
+	<mapping>
+		<class-a>com.qding.solr.struct.sku.SkuDetailInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.Goods</class-b>
+		<field>
+			<a>wareId</a>
+			<b>goodsId</b>
+		</field>
+		<field>
+			<a>description</a>
+			<b>goodsDesc</b>
+		</field>
+		<field>
+			<a>name</a>
+			<b>goodsName</b>
+		</field>
+		<field  custom-converter="com.qding.api.dozer.convert.legou.goods.GoodsImageConvert">
+			<a>wareImgUrl</a>
+			<b>goodsImg</b>
+		</field>
+		<field  custom-converter="com.qding.api.dozer.convert.legou.goods.GoodsImageConvert">
+			<a>skuImgUrl</a>
+			<b>skuImgUrl</b>
+		</field>
+
+		<field>
+			<a>marketPrice</a>
+			<b>originalPrice</b>
+		</field>
+		<field>
+			<a>countWareClickLike</a>
+			<b>praiseCount</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.solr.struct.sku.SkuDetailInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_4_0.struct.legou.goods.Goods</class-b>
+		<field>
+			<a>wareId</a>
+			<b>goodsId</b>
+		</field>
+		<field>
+			<a>description</a>
+			<b>goodsDesc</b>
+		</field>
+		<field>
+			<a>name</a>
+			<b>goodsName</b>
+		</field>
+		<field  custom-converter="com.qding.api.dozer.convert.legou.goods.GoodsImageConvert">
+			<a>wareImgUrl</a>
+			<b>goodsImg</b>
+		</field>
+		<field  custom-converter="com.qding.api.dozer.convert.legou.goods.GoodsImageConvert">
+			<a>skuImgUrl</a>
+			<b>skuImgUrl</b>
+		</field>
+
+		<field>
+			<a>marketPrice</a>
+			<b>originalPrice</b>
+		</field>
+		<field>
+			<a>countWareClickLike</a>
+			<b>praiseCount</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.solr.struct.sku.SkuDetailInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.GoodsDetail</class-b>
+		<field>
+			<a>specName</a>
+			<b>spe</b>
+		</field>
+		<field>
+			<a>specValue</a>
+			<b>speInfo</b>
+		</field>
+		<field>
+			<a>countStock</a>
+			<b>count</b>
+		</field>
+		<field>
+			<a>ext</a>
+			<b>comment</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.solr.struct.sku.SkuDetailInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.legou.goods.GoodsDetail</class-b>
+		<field>
+			<a>specName</a>
+			<b>spe</b>
+		</field>
+		<field>
+			<a>specValue</a>
+			<b>speInfo</b>
+		</field>
+		<field>
+			<a>countStock</a>
+			<b>count</b>
+		</field>
+		<field>
+			<a>ext</a>
+			<b>comment</b>
+		</field>
+		<field>
+			<a>skuImgUrl</a>
+			<b>skuImgUrl</b>
+		</field>
+		<field>
+			<a>unlimitedStock</a>
+			<b>unlimitedStock</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.solr.struct.sku.SkuDetailInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_4_0.struct.legou.goods.GoodsDetail</class-b>
+		<field>
+			<a>specName</a>
+			<b>spe</b>
+		</field>
+		<field>
+			<a>specValue</a>
+			<b>speInfo</b>
+		</field>
+		<field>
+			<a>countStock</a>
+			<b>count</b>
+		</field>
+		<field>
+			<a>ext</a>
+			<b>comment</b>
+		</field>
+		<field>
+			<a>skuImgUrl</a>
+			<b>skuImgUrl</b>
+		</field>
+		<field>
+			<a>unlimitedStock</a>
+			<b>unlimitedStock</b>
+		</field>
+		<field>
+			<a>isShare</a>
+			<b>isSupportShare</b>
+		</field>
+
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.request.AddGoodsCollectRequest</class-a>
+		<class-b>com.qding.legou.struct.request.AddCollectRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>skuId</a>
+			<b>wareSkuId</b>
+		</field>
+	</mapping> 
+	
+	  <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.request.DeleteGoodsCollectRequest</class-a>
+		<class-b>com.qding.legou.struct.request.DeleteCollectRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>skuIds</a>
+			<b>wareSkuIds</b>
+		</field>
+	</mapping> 
+	
+	 <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.request.GetCollectGoodsByUserRequest</class-a>
+		<class-b>com.qding.legou.struct.request.GetUserCollectResultPageRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>page</b>
+		</field>
+		<field>
+			<a>pageSize</a>
+			<b>size</b>
+		</field>
+	</mapping> 
+	
+	 <mapping>
+		<class-a>com.qding.brick.pojo.biz.ProjectConnect</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.Comment</class-b>
+		<field>
+			<a>address</a>
+			<b>value</b>
+		</field>
+	</mapping> 
+	
+	 <mapping>
+		<class-a>com.qding.solr.struct.response.LegouSkuResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.response.data.GetGoodsByGoodIdArrayResponseData</class-b>
+		<field>
+			<a>skus</a>
+			<b>list</b>
+		</field>
+	</mapping> 
+	
+	 <mapping>
+		<class-a>com.qding.solr.struct.response.LegouSkuResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.response.data.GetGoodsByRecommendIdResponseData</class-b>
+		<field>
+			<a>skus</a>
+			<b>list</b>
+		</field>
+	</mapping> 
+	
+	 <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.goods.request.GetGoodsByRecommendIdRequest</class-a>
+		<class-b>com.qding.legou.struct.request.FindRecommendGoodsRequest</class-b>
+		<field>
+			<a>pageSize</a>
+			<b>size</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>page</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.evaluate.domain.WareEvaluate</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.legou.goods.WareComment</class-b>
+		<field>
+			<a>content</a>
+			<b>comment</b>
+		</field>
+		<field>
+			<a>userId</a>
+			<b>userId</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.oder.dto.MemberDto</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.legou.goods.PurchaseUser</class-b>
+		<field>
+			<a>name</a>
+			<b>userName</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.brick.ImageUrlConvert">
+			<a>headImg</a>
+			<b>userHeadImageUrl</b>
+		</field>
+		<field>
+			<a>accountId</a>
+			<b>userId</b>
+		</field>
+		<field>
+			<a>projectName</a>
+			<b>communityName</b>
+		</field>
+		<field>
+			<a>projectId</a>
+			<b>projectId</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_0_0.struct.legou.goods.request.SaveWareCommentRequest</class-a>
+		<class-b>com.qding.evaluate.struct.request.AddEvaluateRequest</class-b>
+		<field>
+			<a>memberName</a>
+			<b>memberName</b>
+		</field>
+		<field>
+			<a>memberId</a>
+			<b>mId</b>
+		</field>
+		<field>
+			<a>orderCode</a>
+			<b>orderCode</b>
+		</field>
+		<field>
+			<a>comment</a>
+			<b>content</b>
+		</field>
+		<field>
+			<a>list</a>
+			<b>wareEvaluateList</b>
+		</field>
+		<field>
+			<a>isAnonymity</a>
+			<b>isAnonymous</b>
+		</field>
+
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.solr.struct.serviceItem.ServiceItem</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_0_0.struct.housekeeper.ProjectService</class-b>
+		<field>
+			<a>imgUrl</a>
+			<b>imageUrl</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.promotion.query.domain.SeckillWareInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_3_0.struct.legou.goods.Seckill</class-b>
+		<field>
+			<a>availableStock</a>
+			<b>surplusCount</b>
+		</field>
+        <field>
+            <a>countStock</a>
+            <b>sellCount</b>
+        </field>
+        <field>
+            <a>startTime</a>
+            <b>seckillStartTime</b>
+        </field>
+        <field>
+            <a>endTime</a>
+            <b>seckillEndTime</b>
+        </field>
+        <field>
+            <a>skuName</a>
+            <b>goodsName</b>
+        </field>
+        <field>
+            <a>price</a>
+            <b>originalPrice</b>
+        </field>
+        <field>
+            <a>promotionPrice</a>
+            <b>price</b>
+        </field>
+        <field  custom-converter="com.qding.api.dozer.convert.neighbor.ThemeImgConvert">
+            <a>mainImgUrl</a>
+            <b>goodsImg</b>
+        </field>
+	</mapping>
+
+
+	<mapping >
+		<class-a>com.qding.api.call.app.qding.v3_3_0.struct.legou.goods.CategoryRecommend</class-a>
+		<class-b>com.qding.sysconfig.dto.MallProjectCategoryRecommendDto</class-b>
+		<field>
+			<a>categoryImg</a>
+			<b>categoryIcon</b>
+		</field>
+	</mapping>
+
+
+	<mapping >
+		<class-a>com.qding.newsell.dto.NewsellContentChannelSubRemoteDto</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_3_0.struct.legou.goods.ContentColumn</class-b>
+		<field>
+			<a>tagName</a>
+			<b>title</b>
+		</field>
+		<field>
+			<a>showType</a>
+			<b>columnType</b>
+		</field>
+		<field>
+			<a>skipType</a>
+			<b>contentType</b>
+		</field>
+
+	</mapping>
+
+</mappings>  

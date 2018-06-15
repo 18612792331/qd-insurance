@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_2_0.struct.hotcycle.request.CommentFeedRequest</class-a>
+		<class-b>com.qding.hotcycle.struct.request.PublishCommentRequest</class-b>
+		<field>
+			<a>userId</a>
+			<b>sendUserId</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.hotcycle.struct.response.GetCommentForPagingResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_2_0.struct.hotcycle.response.data.GetCommentByFeedIdResponseData</class-b>
+		<field>
+			<a>feedComments</a>
+			<b>list</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.hotcycle.struct.response.GetUsersByTagIdResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_2_0.struct.hotcycle.response.data.GetUsersByTagIdResponseData</class-b>
+		<field>
+			<a>users</a>
+			<b>list</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hotcycle.struct.request.PraiseFeedRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_2_0.struct.hotcycle.request.PraiseFeedRequest</class-b>
+		<field>
+			<a>praiseUserId</a>
+			<b>userId</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.hotcycle.struct.FeedReplyNotify</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_2_0.struct.hotcycle.FeedReplyNotify</class-b>
+		<field>
+			<a>feedImage</a>
+			<b>feedImage.imageUrl</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_2_0.struct.hotcycle.response.data.GetTagByCommunityIdResponseData</class-a>
+		<class-b>com.qding.hotcycle.struct.response.GetTagByCommunityIdResponse</class-b>
+		<field>
+			<a>list</a>
+			<b>tags</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_2_0.struct.hotcycle.response.data.SearchTagResponseData</class-a>
+		<class-b>com.qding.hotcycle.struct.response.SearchTagResponse</class-b>
+		<field>
+			<a>list</a>
+			<b>tags</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hotcycle.struct.response.GetSyncUserByIdResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_2_0.struct.hotcycle.response.data.GetUserByIdResponseData</class-b>
+		<field>
+			<a>user</a>
+			<b>entity</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.hotcycle.struct.cache.IdleGoodsFeedBean</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.project.SimplFeedBean</class-b>
+		<field custom-converter="com.qding.api.dozer.convert.hotcycle.InitPublishTimeConvert">
+			<a>publishTime</a>
+			<b>interval</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.groupchat.struct.groupchat.bean.GetGroupInfoBean</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_4_1.struct.hotcycle.Group</class-b>
+		<field>
+			<a>roomId</a>
+			<b>gcRoomId</b>
+		</field>
+		<field>
+			<a>roomImg</a>
+			<b>headUrl</b>
+		</field>
+	</mapping>
+	
+</mappings>  

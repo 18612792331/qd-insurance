@@ -1,0 +1,5 @@
+package com.qding.insurance.vo;
+
+public class CompensateRecordVo {
+
+}

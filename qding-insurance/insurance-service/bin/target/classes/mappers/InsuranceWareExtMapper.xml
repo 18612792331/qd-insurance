@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.InsuranceWareExtMapper">
+  <resultMap id="BaseResultMap" type="com.qding.insurance.domain.InsuranceWareExt">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="subject_summary" jdbcType="VARCHAR" property="subjectSummary" />
+    <result column="notes" jdbcType="VARCHAR" property="notes" />
+    <result column="clause" jdbcType="VARCHAR" property="clause" />
+    <result column="agreement" jdbcType="VARCHAR" property="agreement" />
+    <result column="module_tile_1" jdbcType="VARCHAR" property="moduleTile1" />
+    <result column="module_tile_2" jdbcType="VARCHAR" property="moduleTile2" />
+    <result column="module_tile_3" jdbcType="VARCHAR" property="moduleTile3" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.qding.insurance.domain.InsuranceWareExtWithBLOBs">
+    <result column="guarantee_introduce" jdbcType="LONGVARCHAR" property="guaranteeIntroduce" />
+    <result column="guarantee_detail" jdbcType="LONGVARCHAR" property="guaranteeDetail" />
+    <result column="module_content_1" jdbcType="LONGVARCHAR" property="moduleContent1" />
+    <result column="module_content_2" jdbcType="LONGVARCHAR" property="moduleContent2" />
+    <result column="module_content_3" jdbcType="LONGVARCHAR" property="moduleContent3" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, subject_summary, notes, clause, agreement, module_tile_1, module_tile_2, 
+    module_tile_3
+  </sql>
+  <sql id="Blob_Column_List">
+    guarantee_introduce, guarantee_detail, module_content_1, module_content_2, module_content_3
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from insurance_ware_ext
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from insurance_ware_ext
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.qding.insurance.domain.InsuranceWareExtWithBLOBs">
+    insert into insurance_ware_ext (ID, subject_summary, 
+      notes, clause, agreement, 
+      module_tile_1, module_tile_2, module_tile_3, 
+      guarantee_introduce, guarantee_detail, 
+      module_content_1, module_content_2, 
+      module_content_3)
+    values (#{id,jdbcType=VARCHAR}, #{subjectSummary,jdbcType=VARCHAR}, 
+      #{notes,jdbcType=VARCHAR}, #{clause,jdbcType=VARCHAR}, #{agreement,jdbcType=VARCHAR}, 
+      #{moduleTile1,jdbcType=VARCHAR}, #{moduleTile2,jdbcType=VARCHAR}, #{moduleTile3,jdbcType=VARCHAR}, 
+      #{guaranteeIntroduce,jdbcType=LONGVARCHAR}, #{guaranteeDetail,jdbcType=LONGVARCHAR}, 
+      #{moduleContent1,jdbcType=LONGVARCHAR}, #{moduleContent2,jdbcType=LONGVARCHAR}, 
+      #{moduleContent3,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qding.insurance.domain.InsuranceWareExtWithBLOBs">
+    insert into insurance_ware_ext
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="subjectSummary != null">
+        subject_summary,
+      </if>
+      <if test="notes != null">
+        notes,
+      </if>
+      <if test="clause != null">
+        clause,
+      </if>
+      <if test="agreement != null">
+        agreement,
+      </if>
+      <if test="moduleTile1 != null">
+        module_tile_1,
+      </if>
+      <if test="moduleTile2 != null">
+        module_tile_2,
+      </if>
+      <if test="moduleTile3 != null">
+        module_tile_3,
+      </if>
+      <if test="guaranteeIntroduce != null">
+        guarantee_introduce,
+      </if>
+      <if test="guaranteeDetail != null">
+        guarantee_detail,
+      </if>
+      <if test="moduleContent1 != null">
+        module_content_1,
+      </if>
+      <if test="moduleContent2 != null">
+        module_content_2,
+      </if>
+      <if test="moduleContent3 != null">
+        module_content_3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectSummary != null">
+        #{subjectSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="notes != null">
+        #{notes,jdbcType=VARCHAR},
+      </if>
+      <if test="clause != null">
+        #{clause,jdbcType=VARCHAR},
+      </if>
+      <if test="agreement != null">
+        #{agreement,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleTile1 != null">
+        #{moduleTile1,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleTile2 != null">
+        #{moduleTile2,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleTile3 != null">
+        #{moduleTile3,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeIntroduce != null">
+        #{guaranteeIntroduce,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="guaranteeDetail != null">
+        #{guaranteeDetail,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="moduleContent1 != null">
+        #{moduleContent1,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="moduleContent2 != null">
+        #{moduleContent2,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="moduleContent3 != null">
+        #{moduleContent3,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.InsuranceWareExtWithBLOBs">
+    update insurance_ware_ext
+    <set>
+      <if test="subjectSummary != null">
+        subject_summary = #{subjectSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="notes != null">
+        notes = #{notes,jdbcType=VARCHAR},
+      </if>
+      <if test="clause != null">
+        clause = #{clause,jdbcType=VARCHAR},
+      </if>
+      <if test="agreement != null">
+        agreement = #{agreement,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleTile1 != null">
+        module_tile_1 = #{moduleTile1,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleTile2 != null">
+        module_tile_2 = #{moduleTile2,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleTile3 != null">
+        module_tile_3 = #{moduleTile3,jdbcType=VARCHAR},
+      </if>
+      <if test="guaranteeIntroduce != null">
+        guarantee_introduce = #{guaranteeIntroduce,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="guaranteeDetail != null">
+        guarantee_detail = #{guaranteeDetail,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="moduleContent1 != null">
+        module_content_1 = #{moduleContent1,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="moduleContent2 != null">
+        module_content_2 = #{moduleContent2,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="moduleContent3 != null">
+        module_content_3 = #{moduleContent3,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.qding.insurance.domain.InsuranceWareExtWithBLOBs">
+    update insurance_ware_ext
+    set subject_summary = #{subjectSummary,jdbcType=VARCHAR},
+      notes = #{notes,jdbcType=VARCHAR},
+      clause = #{clause,jdbcType=VARCHAR},
+      agreement = #{agreement,jdbcType=VARCHAR},
+      module_tile_1 = #{moduleTile1,jdbcType=VARCHAR},
+      module_tile_2 = #{moduleTile2,jdbcType=VARCHAR},
+      module_tile_3 = #{moduleTile3,jdbcType=VARCHAR},
+      guarantee_introduce = #{guaranteeIntroduce,jdbcType=LONGVARCHAR},
+      guarantee_detail = #{guaranteeDetail,jdbcType=LONGVARCHAR},
+      module_content_1 = #{moduleContent1,jdbcType=LONGVARCHAR},
+      module_content_2 = #{moduleContent2,jdbcType=LONGVARCHAR},
+      module_content_3 = #{moduleContent3,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.InsuranceWareExt">
+    update insurance_ware_ext
+    set subject_summary = #{subjectSummary,jdbcType=VARCHAR},
+      notes = #{notes,jdbcType=VARCHAR},
+      clause = #{clause,jdbcType=VARCHAR},
+      agreement = #{agreement,jdbcType=VARCHAR},
+      module_tile_1 = #{moduleTile1,jdbcType=VARCHAR},
+      module_tile_2 = #{moduleTile2,jdbcType=VARCHAR},
+      module_tile_3 = #{moduleTile3,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

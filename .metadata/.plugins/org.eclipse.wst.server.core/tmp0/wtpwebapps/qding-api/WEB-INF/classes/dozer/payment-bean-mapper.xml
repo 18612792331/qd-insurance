@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+      <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.payment.VirtualPayMethod</class-a>
+		<class-b>com.qding.trade.rpc.service.domain.info.Channel</class-b>
+		<field custom-converter="com.qding.api.dozer.convert.payment.GetStringByBigDecimaConvert">
+			<a>value</a>
+			<b>availableAmount</b>
+		</field>
+	  </mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_3_0.struct.payment.CombinationPayMainMethod</class-a>
+		<class-b>com.qding.trade.rpc.service.domain.info.Channel</class-b>
+		<field custom-converter="com.qding.api.dozer.convert.payment.GetStringByBigDecimaConvert">
+			<a>value</a>
+			<b>availableAmount</b>
+		</field>
+	</mapping>
+
+
+</mappings>  

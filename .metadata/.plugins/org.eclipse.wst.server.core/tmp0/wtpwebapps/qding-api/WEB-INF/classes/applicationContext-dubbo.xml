@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+
+
+    <dubbo:consumer filter="agent">
+        <dubbo:parameter key="loglevel" value="10"/>
+    </dubbo:consumer>
+
+    <!--passport dubbo服务-->
+    <dubbo:reference id="iPassportService"  interface="com.qding.passport.service.IPassportService" timeout="13000"/>
+    <dubbo:reference id="iProfileService" interface="com.qding.passport.service.IProfileService" timeout="13000"/>
+    <dubbo:reference id="iWatchService" interface="com.qding.passport.service.IWatchService"/>
+    <dubbo:reference id="iMemberLocationService" interface="com.qding.passport.service.IMemberLocationService"/>
+    <dubbo:reference id="iNewPassportService" interface="com.qding.passport.service.new_version.INewPassportService" timeout="13000"/>
+    <dubbo:reference id="iAuthInfoService" interface="com.qding.passport.service.IAuthInfoService" timeout="13000"/>
+    
+    <!-- 门禁卡  -->
+    <dubbo:reference id="iEntranceCardService" interface="com.qding.member.service.IEntranceCardRpcService"/>
+    <dubbo:reference id="iMemberRoomService" interface="com.qding.member.service.IMemberRoomRpcService"/>
+    <!-- 房屋绑定申请 -->
+    <dubbo:reference id="iroomBindApplyService" interface="com.qding.member.service.IRoomBindApplyRpcService"/>
+    <dubbo:reference id="iMemberInvoiceRpcService" interface="com.qding.member.service.IMemberInvoiceRpcService"/>
+
+    <!-- 物业公告-->
+    <dubbo:reference id="hkNoticeClient" interface="com.qding.hk.rpc.service.INoticeRpcService"/>
+    <dubbo:reference id="matterService"  interface="com.qding.hk.rpc.service.IMatterRpcService" timeout="13000"/>
+    <dubbo:reference id="pastReleaseRpcService" interface="com.qding.hk.rpc.service.IPastReleaseRpcService" timeout="13000"/>
+    <dubbo:reference id="machineRpcService" interface="com.qding.hk.rpc.service.IMachineRpcService"/>
+    <dubbo:reference id="blueToothLogRpcService" interface="com.qding.hk.rpc.service.IBlueToothLogRpcService"  timeout="13000"/>
+    <dubbo:reference id="roomReadRemoteClient" interface="com.qding.brick.remote.biz.RoomReadRemote"  timeout="13000"/>
+    <dubbo:reference id="utilRemote" interface="com.qding.brick.remote.biz.UtilRemote" />
+    <dubbo:reference id="projectService" interface="com.qding.brick.remote.biz.ProjectReadRemote" />
+    <dubbo:reference id="buildingRemoteService" interface="com.qding.brick.remote.biz.BuildingRemote" />
+    <dubbo:reference id="regionRemoteService" interface="com.qding.brick.remote.biz.RegionRemote" />
+    <dubbo:reference id="appConfigRemote" interface="com.qding.brick.remote.biz.AppConfigRemote" />
+    <dubbo:reference id="roomOwnerRemoteService" interface="com.qding.brick.remote.biz.RoomOwnerRemote" />
+    <dubbo:reference id="wareRemoteService" interface="com.qding.brick.remote.ware.WareRemoteService" />
+    <dubbo:reference id="solrKeywordService" interface="com.qding.solr.service.ISolrKeywordService" />
+    <dubbo:reference id="solrServiceItemService" interface="com.qding.solr.service.ISolrServiceItemService" />
+    <dubbo:reference id="promotionRemoteService" interface="com.qding.promotion.common.service.IPromotionRemoteService" />
+    <dubbo:reference id="solrSku" interface="com.qding.solr.service.ISolrSkuService"/>
+    <dubbo:reference id="marketActivityService" interface="com.qding.sysconfig.rpc.service.MarketActivityRpcService"/>
+    <dubbo:reference id="indexRecommendRpcService" interface="com.qding.sysconfig.rpc.service.IndexRecommendRpcService"/>
+    <dubbo:reference id="personRecommendRpcService" interface="com.qding.sysconfig.rpc.service.PersonRecommendRpcService"/>
+    <dubbo:reference id="apiSkipConfigRpcService" interface="com.qding.sysconfig.rpc.service.ApiSkipConfigRpcService"/>
+    <dubbo:reference id="domainConfigRpcService" interface="com.qding.sysconfig.rpc.service.DomainConfigRpcService"/>
+    <dubbo:reference id="categoryRemote" interface="com.qding.brick.remote.ware.CategoryRemote"/>
+    <dubbo:reference id="userPredepositAPI" interface="com.qding.useraccount.service.IUserPredepositRemoteService"/>
+    <dubbo:reference id="userPayPasswordService" interface="com.qding.useraccount.service.IRUserPayPasswordService"/>
+    <dubbo:reference id="userPayPasswordQuestionService" interface="com.qding.useraccount.service.IRPasswordQuestionService"/>
+    <dubbo:reference id="userIntegralRemoteService" interface="com.qding.useraccount.service.IUserIntegralRemoteService"/>
+    <dubbo:reference id="channelService" interface="com.qding.trade.rpc.service.info.IChannelService"/>
+    <dubbo:reference id="clientService" interface="com.qding.trade.rpc.service.client.IClientService"/>
+    <dubbo:reference id="payService" interface="com.qding.trade.rpc.service.pay.IPayService"/>
+    <dubbo:reference id="solrCategoryService" interface="com.qding.solr.service.ISolrCategoryService"/>
+    <dubbo:reference id="orderService" interface="com.qding.order.service.IRemoteOrderService" timeout="13000"/>
+    <dubbo:reference id="keywordConfRemote" interface="com.qding.brick.remote.ware.KeywordConfRemote"/>
+    <dubbo:reference id="puserRPCService" interface="com.qding.manager.service.IPuserRPCService"/>
+    <dubbo:reference id="familyRelationPayRemoteService" interface="com.qding.useraccount.service.IRFamilyRelationPayRemoteService"/>
+    <dubbo:reference id="sysConfigRpcService" interface="com.qding.sysconfig.rpc.service.SysConfigRpcService"/>
+    <dubbo:reference id="passFreeBarrierRpc" interface="com.qding.hk.rpc.service.IPassFreeBarrierRpcService"/>
+    <dubbo:reference id="subscribeRemote" interface="com.qding.brick.remote.ware.SubscribeRemote"/>
+    <dubbo:reference id="remotePeriodBuyService" interface="com.qding.order.service.IRemotePeriodBuyService"/> <!--?-->
+    <dubbo:reference id="mallModuleRpcService" interface="com.qding.sysconfig.rpc.service.MallModuleRpcService"/>
+    <dubbo:reference id="demoProjectRpcService" interface="com.qding.sysconfig.rpc.service.DemoProjectRpcService"/>
+    <dubbo:reference id="clauseConfigRpcService" interface="com.qding.sysconfig.rpc.service.ClauseConfigRpcService"/>
+    <dubbo:reference id="thridApiRpcService" interface="com.qding.sysconfig.rpc.service.ThridApiRpcService"/>
+    <dubbo:reference id="supplierRemote" interface="com.qding.brick.remote.contract.SupplierRemote"  timeout="13000"/>
+    <dubbo:reference id="appHomeConfigRpcService" interface="com.qding.sysconfig.rpc.service.AppHomeConfigRpcService" timeout="13000"/>
+    <dubbo:reference id="giftPackRpc" interface="com.qding.task.rpc.service.IGiftPackRpc"/>
+    <dubbo:reference id="promotionGiftPackageRemoteService" interface="com.qding.promotion.common.service.IPromotionGiftPackageRemoteService"/>
+    <dubbo:reference id="knowledgeRemote" interface="com.qding.knowledge.service.IKnowledgeRemote"/>
+    <dubbo:reference id="taskinfoRpc" interface="com.qding.task.rpc.service.ITaskinfoRpc"/>
+    <dubbo:reference id="commonRPCService" interface="com.qding.manager.service.IHkCommonRPCService"/>
+    <dubbo:reference id="taskEntranceGuardRpc" interface="com.qding.task.serivice.ITaskEntranceGuardRpc"/>
+    <dubbo:reference id="feeService" interface="com.qding.profee.rpc.service.IFeeRpcService" timeout="20000"/>
+    <!-- neighbor -->
+    <dubbo:reference id="gcMemberRpc" interface="com.qding.neighbor.rpc.IGCMemberRpc"/>
+    <dubbo:reference id="gcRoomRpc" interface="com.qding.neighbor.rpc.IGcRoomRpc"/>
+    <dubbo:reference id="themeRpc" interface="com.qding.neighbor.rpc.IThemeRpc"/>
+    <dubbo:reference id="topicRpc" interface="com.qding.neighbor.rpc.ITopicRpc"/>
+    <dubbo:reference id="bannerRpc" interface="com.qding.neighbor.rpc.IBannerRpc"/>
+    <dubbo:reference id="newGcRoomRpc" interface="com.qding.neighbor.rpc.IGcRoomRpc"/>
+    <dubbo:reference id="topicRpcV3" interface="com.qding.neighbor.v3.rpc.ITopicRpcV3"/>
+    
+    <!-- message -->
+    <dubbo:reference id="messageService" interface="com.qding.message.service.IMessageService"/>
+
+    <dubbo:reference id="signInRpcService" interface="com.qding.task.serivice.ISignInRpcService"/>
+    <dubbo:reference id="orderSavingService" interface="com.qding.order.service.IRemoteOrderSavingOptimizerService" timeout="13000"/>
+    <dubbo:reference id="legouRemoteClient" interface="com.qding.legou.service.ILegouRemoteService"  timeout="13000"/>
+	<dubbo:reference id="memberRpcService" interface="com.qding.member.service.IMemberRpcService"/>
+	<dubbo:reference id="promotionGrouponRpcService" interface="com.qding.promotion.common.service.IPromotionGrouponRpcService"/>
+    <dubbo:reference id="solrWareAppShowService" interface="com.qding.solr.service.ISolrWareAppShowService"/>
+    <dubbo:reference id="vmRpcService" interface="com.qding.framework.common.service.order.IGetProductOrderService"  group="vmall"/>
+    <dubbo:reference id="solrRoomService" interface="com.qding.solr.service.ISolrRoomService"/>
+    <!--平台促销-->
+    <dubbo:reference id="promotionQueryService" interface="com.qding.promotion.query.service.IPromotionQueryService"/>
+    <dubbo:reference id="logisticsPlatformOrder" interface="com.qding.logistics.platform.client.remote.LogisticsPlatformOrderRpcService"/>
+
+    <!--新会员平台 -->
+    <dubbo:reference id="roomBindApplyService" interface="com.qding.member.rpc.IRoomBindApplyRPC"/>
+    <dubbo:reference id="suggestionAPI" interface="com.qding.member.rpc.IMemberSuggestionRPC"/>
+    <dubbo:reference id="memberServiceAPI" interface="com.qding.member.rpc.IMemberRPC"/>
+    <dubbo:reference id="invitationAPI" interface="com.qding.member.rpc.IInvitationRPC"/>
+    <dubbo:reference id="memberProjectService" interface="com.qding.member.rpc.IMemberProjectRPC"/>
+    <dubbo:reference id="memberRoomAPI" interface="com.qding.member.rpc.IMemberRoomRPC"/>
+    <dubbo:reference id="roomBindQRcodeService" interface="com.qding.member.rpc.IRoomBindQRcodeRPC"/>
+    <dubbo:reference id="memberAddressSelfdService" interface="com.qding.member.rpc.IMemberAddressSelfdRPC"/>
+    <dubbo:reference id="memberAddressService" interface="com.qding.member.rpc.IMemberAddressRPC"/>
+    <dubbo:reference id="hkRoomReletionService" interface="com.qding.member.rpc.IMemberHkRoomRelationRPC"/>
+    
+    <!-- 龙湖置业入住评论  -->
+    <dubbo:reference id="evaluateBodyRpc" interface="com.qding.realestate.rpc.IEvaluateBodyRpc"/>
+    <dubbo:reference id="rpcPackageNoticeService" interface="com.qding.realestate.rpc.IRpcPackageNoticeService"/>
+    <dubbo:reference id="rpcLogisticsService" interface="com.qding.realestate.rpc.IRpcLogisticsService"/>
+
+
+    <!--新零售 售后服务-->
+    <dubbo:reference id="afterSalesRemoteService" interface="com.qding.newsell.service.IAfterSalesRemoteService"/>
+
+	<!--智能客服-->
+    <dubbo:reference id="rpcChatRecordService" interface="com.qding.chat.record.rpc.IRpcChatRecordService"/>
+
+    <!--拼团领券-->
+    <dubbo:reference id="shareCouponRemoteService" interface="com.qding.promotion.common.service.IShareCouponRemoteService"/>
+
+    <!--新零售-->
+    <dubbo:reference id="legouRemoteServiceNew" interface="com.qding.newsell.service.ILegouRemoteServiceNew"/>
+    
+    <!-- 驿站 -->
+    <dubbo:reference id="expressInfoRpcService" interface="com.qding.stage.service.IExpressInfoRpcService" timeout="13000"/>
+    <dubbo:reference id="parcelInfoRpcService" interface="com.qding.stage.service.IParcelInfoRpcService" timeout="13000"/>
+    <dubbo:reference id="rpcMemberService" interface="com.qding.member.sync.rpc.IRpcMemberService" timeout="13000"/>
+
+	<!-- 物业服务分类管理-->
+    <dubbo:reference id="propertyServiceConfigRpcService" interface="com.qding.sysconfig.rpc.service.PropertyServiceConfigRpcService"/>
+	<!-- 保险-->
+    <dubbo:reference id="insuranceOrderRpcService" interface="com.qding.insurance.rpc.IInsuranceOrderRpcService"/>
+    <dubbo:reference id="insuranceWareRpcService" interface="com.qding.insurance.rpc.IInsuranceWareRpcService"/>
+    <dubbo:reference id="insurancePolicyRpc" interface="com.qding.insurance.rpc.IInsurancePolicyRpc"/>
+    <dubbo:reference id="compensateRecordRpc" interface="com.qding.insurance.rpc.ICompensateRecordRpc"/>
+    <dubbo:reference id="insuranceOrderListRpcService" interface="com.qding.insurance.rpc.IInsuranceOrderListRpcService"/>
+    
+</beans>

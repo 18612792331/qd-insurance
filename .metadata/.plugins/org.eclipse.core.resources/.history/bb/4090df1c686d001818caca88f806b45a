@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.CompensateRecordMapper">
+	<resultMap id="BaseResultMap" type="com.qding.insurance.domain.CompensateRecord">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="policy_id" jdbcType="VARCHAR" property="policyId" />
+		<result column="picc_no" jdbcType="VARCHAR" property="piccNo" />
+		<result column="guarantee_item_id" jdbcType="VARCHAR" property="guaranteeItemId" />
+		<result column="room_id" jdbcType="VARCHAR" property="roomId" />
+		<result column="room_address" jdbcType="VARCHAR" property="roomAddress" />
+		<result column="happen_at" jdbcType="TIMESTAMP" property="happenAt" />
+		<result column="report_at" jdbcType="TIMESTAMP" property="reportAt" />
+		<result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+		<result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
+		<result column="estimate_money" jdbcType="VARCHAR" property="estimateMoney" />
+		<result column="accident_memo" jdbcType="VARCHAR" property="accidentMemo" />
+		<result column="accident_imgs" jdbcType="VARCHAR" property="accidentImgs" />
+		<result column="report_no" jdbcType="VARCHAR" property="reportNo" />
+		<result column="paid_money" jdbcType="VARCHAR" property="paidMoney" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="data_status" jdbcType="INTEGER" property="dataStatus" />
+		<result column="paid_type" jdbcType="INTEGER" property="paidType" />
+		<result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+		<result column="create_by" jdbcType="VARCHAR" property="createBy" />
+		<result column="finish_at" jdbcType="TIMESTAMP" property="finishAt" />
+		<result column="finish_by" jdbcType="VARCHAR" property="finishBy" />
+		<result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+		<result column="object_id" jdbcType="VARCHAR" property="objectId" />
+		<result column="object_name" jdbcType="VARCHAR" property="objectName" />
+	</resultMap>
+	<!-- 根据保障内容ID查询理赔记录详情 -->
+	<resultMap id="selectResultMap" type="com.qding.insurance.vo.CompensateRecordResult">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+		<result column="create_by" jdbcType="VARCHAR" property="createBy" />
+		<result column="item_title" jdbcType="VARCHAR" property="itemTitle" />
+		<result column="guarantee_item_id" jdbcType="VARCHAR" property="guaranteeItemId" />
+		<result column="estimate_money" jdbcType="VARCHAR" property="estimateMoney" />
+		<result column="picc_no" jdbcType="VARCHAR" property="piccNo" />
+		<result column="report_no" jdbcType="VARCHAR" property="reportNo" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="paid_money" jdbcType="VARCHAR" property="paidMoney" />
+	</resultMap>
+
+	<!-- 分页查询保险单证 -->
+	<resultMap id="PageResultMap"
+		type="com.qding.insurance.vo.CompensateRecordPageResult">
+
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="item_title" jdbcType="VARCHAR" property="applyType" />
+		<result column="room_address" jdbcType="VARCHAR" property="roomAddress" />
+		<result column="happen_at" jdbcType="TIMESTAMP" property="happenAt" />
+		<result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+		<result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
+		<result column="paid_money" jdbcType="VARCHAR" property="paidMoney" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="data_status" jdbcType="INTEGER" property="dataStatus" />
+		<result column="paid_type" jdbcType="INTEGER" property="paidType" />
+		<result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+
+	</resultMap>
+	
+	<resultMap id="voResultMap"
+		type="com.qding.insurance.vo.CompensateRecordVo" extends="BaseResultMap">
+		
+		<result column="compensate_type" jdbcType="INTEGER" property="compensateType" />
+		<result column="insurant_name" jdbcType="VARCHAR" property="insurantName" />
+		
+	</resultMap>
+
+	<!-- 根据保障内容ID查询理赔记录详情 -->
+	<sql id="selectResult_Column_List">
+		c.ID, c.create_at, c.create_by ,p.item_title,c.paid_money,
+		c.picc_no,report_no,c.status
+	</sql>
+
+	<sql id="Param_Where_Clause">
+		<where>
+			<if test="compensateId != null">
+				and c.id = #{compensateId,jdbcType=VARCHAR}
+			</if>
+
+			<if test="roomAddress != null">
+				and (c.room_address like concat('%',
+				#{roomAddress,jdbcType=VARCHAR},'%'))
+			</if>
+
+			<if test="compensateStatus != null">
+				and c.status = #{compensateStatus,jdbcType=INTEGER}
+			</if>
+
+			<if test="happenAtStartTime != null"> and c.happen_at &gt;= #{happenAtStartTime}
+			</if>
+			<if test="happenAtEndTime != null"> and c.happen_at &lt;= #{happenAtEndTime}
+			</if>
+			<if test="createAtStartTime != null"> and c.create_at &gt;= #{createAtStartTime}
+			</if>
+			<if test="createAtEndTime != null"> and c.create_at &lt;= #{createAtEndTime}
+			</if>
+
+			<if test="contactName != null">
+				and c.contact_name = #{contactName,jdbcType=VARCHAR}
+			</if>
+			<if test="contactPhone != null">
+				and c.contact_phone = #{contactPhone,jdbcType=VARCHAR}
+			</if>
+
+
+			<if test="dataStatus != null">
+				and c.data_status = #{dataStatus,jdbcType=VARCHAR}
+			</if>
+
+			<if test="paidType != null">
+				and c.paid_type = #{paidType,jdbcType=VARCHAR}
+			</if>
+
+
+		</where>
+	</sql>
+
+
+	<sql id="Base_Column_List">
+		ID, policy_id, picc_no, guarantee_item_id, room_id,
+		room_address,
+		happen_at, report_at,
+		contact_name, contact_phone,
+		estimate_money, accident_memo, accident_imgs,
+		report_no,
+		paid_money,
+		status, data_status, paid_type, create_at, create_by, finish_at,
+		finish_by,order_no,object_id,object_name
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from compensate_record
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据保障内容ID查询理赔记录详情 -->
+	<select id="selectResultByPolicyGuaranteeItemId" parameterType="java.lang.String"
+		resultMap="selectResultMap">
+		select
+		<include refid="selectResult_Column_List"/>
+		from compensate_record c join policy_guarantee_item p where
+		p.ID=c.guarantee_item_id and guarantee_item_id =
+		#{policyGuaranteeItemId,jdbcType=VARCHAR} order by c.create_at
+
+
+
+	</select>
+
+	<!-- 根据单证ID查询理赔记录 -->
+	<select id="selectResultByPolicyId" parameterType="java.lang.String"
+		resultMap="selectResultMap">
+
+		select
+		<include refid="selectResult_Column_List" />
+		from compensate_record c join
+		policy_guarantee_item p where
+		p.ID=c.guarantee_item_id and c.policy_id
+		= #{policyId,jdbcType=VARCHAR}
+		order by c.create_at
+
+	</select>
+
+
+	<!-- 查询是否有已锁定状态的理赔记录 -->
+	<select id="selectByPolicyIdAndGuaranteeItemId" resultType="java.lang.String">
+
+		select
+		id
+		from compensate_record where
+		policy_id= #{id,jdbcType=VARCHAR}
+		and guarantee_item_id= #{guaranteeItemId,jdbcType=VARCHAR} and
+		status=1
+
+
+	</select>
+
+
+
+
+	<!-- 分页查询 -->
+	<select id="selectByParam" parameterType="com.qding.insurance.param.CompensateRecordParam"
+		resultMap="PageResultMap">
+		SELECT
+		c.id,
+		p.item_title,
+		c.room_address,
+		c.happen_at,
+		c.contact_name,
+		c.contact_phone,
+		c.paid_money,
+		c.STATUS,
+		c.data_status,
+		c.paid_type,
+		c.create_at
+		FROM
+		compensate_record c
+		INNER JOIN policy_guarantee_item p
+		ON c.guarantee_item_id = p.ID
+		<include refid="Param_Where_Clause" />
+		ORDER BY
+		c.create_at DESC
+		<if test="page != null and size != null">
+			limit #{offset},#{size}
+		</if>
+	</select>
+	<!-- 分页数量查询 -->
+	<select id="countByParam" parameterType="com.qding.insurance.param.CompensateRecordParam"
+		resultType="java.lang.Integer">
+		SELECT
+		count( 1 )
+		FROM
+		compensate_record c
+		INNER JOIN
+		policy_guarantee_item p ON c.guarantee_item_id = p.ID
+		<include refid="Param_Where_Clause" />
+	</select>
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		compensate_record
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.qding.insurance.domain.CompensateRecord">
+		insert into compensate_record
+		(ID, policy_id, picc_no,
+		guarantee_item_id, room_id, room_address,
+		happen_at, report_at, contact_name,
+		contact_phone, estimate_money,
+		accident_memo,
+		accident_imgs, report_no, paid_money,
+		status,
+		data_status, paid_type,
+		create_at, create_by, finish_at,
+		finish_by)
+		values (#{id,jdbcType=VARCHAR}, #{policyId,jdbcType=VARCHAR},
+		#{piccNo,jdbcType=VARCHAR},
+		#{guaranteeItemId,jdbcType=VARCHAR},
+		#{roomId,jdbcType=VARCHAR}, #{roomAddress,jdbcType=VARCHAR},
+		#{happenAt,jdbcType=TIMESTAMP}, #{reportAt,jdbcType=TIMESTAMP},
+		#{contactName,jdbcType=VARCHAR},
+		#{contactPhone,jdbcType=VARCHAR},
+		#{estimateMoney,jdbcType=VARCHAR}, #{accidentMemo,jdbcType=VARCHAR},
+		#{accidentImgs,jdbcType=VARCHAR}, #{reportNo,jdbcType=VARCHAR},
+		#{paidMoney,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER},
+		#{dataStatus,jdbcType=INTEGER}, #{paidType,jdbcType=INTEGER},
+		#{createAt,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR},
+		#{finishAt,jdbcType=TIMESTAMP},
+		#{finishBy,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.qding.insurance.domain.CompensateRecord">
+		insert into compensate_record
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="policyId != null">
+				policy_id,
+			</if>
+			<if test="piccNo != null">
+				picc_no,
+			</if>
+			<if test="guaranteeItemId != null">
+				guarantee_item_id,
+			</if>
+			<if test="roomId != null">
+				room_id,
+			</if>
+			<if test="roomAddress != null">
+				room_address,
+			</if>
+			<if test="happenAt != null">
+				happen_at,
+			</if>
+			<if test="reportAt != null">
+				report_at,
+			</if>
+			<if test="contactName != null">
+				contact_name,
+			</if>
+			<if test="contactPhone != null">
+				contact_phone,
+			</if>
+			<if test="estimateMoney != null">
+				estimate_money,
+			</if>
+			<if test="accidentMemo != null">
+				accident_memo,
+			</if>
+			<if test="accidentImgs != null">
+				accident_imgs,
+			</if>
+			<if test="reportNo != null">
+				report_no,
+			</if>
+			<if test="paidMoney != null">
+				paid_money,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="dataStatus != null">
+				data_status,
+			</if>
+			<if test="paidType != null">
+				paid_type,
+			</if>
+			<if test="createAt != null">
+				create_at,
+			</if>
+			<if test="createBy != null">
+				create_by,
+			</if>
+			<if test="finishAt != null">
+				finish_at,
+			</if>
+			<if test="finishBy != null">
+				finish_by,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="policyId != null">
+				#{policyId,jdbcType=VARCHAR},
+			</if>
+			<if test="piccNo != null">
+				#{piccNo,jdbcType=VARCHAR},
+			</if>
+			<if test="guaranteeItemId != null">
+				#{guaranteeItemId,jdbcType=VARCHAR},
+			</if>
+			<if test="roomId != null">
+				#{roomId,jdbcType=VARCHAR},
+			</if>
+			<if test="roomAddress != null">
+				#{roomAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="happenAt != null">
+				#{happenAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="reportAt != null">
+				#{reportAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="contactName != null">
+				#{contactName,jdbcType=VARCHAR},
+			</if>
+			<if test="contactPhone != null">
+				#{contactPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="estimateMoney != null">
+				#{estimateMoney,jdbcType=VARCHAR},
+			</if>
+			<if test="accidentMemo != null">
+				#{accidentMemo,jdbcType=VARCHAR},
+			</if>
+			<if test="accidentImgs != null">
+				#{accidentImgs,jdbcType=VARCHAR},
+			</if>
+			<if test="reportNo != null">
+				#{reportNo,jdbcType=VARCHAR},
+			</if>
+			<if test="paidMoney != null">
+				#{paidMoney,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="dataStatus != null">
+				#{dataStatus,jdbcType=INTEGER},
+			</if>
+			<if test="paidType != null">
+				#{paidType,jdbcType=INTEGER},
+			</if>
+			<if test="createAt != null">
+				#{createAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+				#{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="finishAt != null">
+				#{finishAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="finishBy != null">
+				#{finishBy,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.CompensateRecord">
+		update compensate_record
+		<set>
+			<if test="policyId != null">
+				policy_id = #{policyId,jdbcType=VARCHAR},
+			</if>
+			<if test="piccNo != null">
+				picc_no = #{piccNo,jdbcType=VARCHAR},
+			</if>
+			<if test="guaranteeItemId != null">
+				guarantee_item_id = #{guaranteeItemId,jdbcType=VARCHAR},
+			</if>
+			<if test="roomId != null">
+				room_id = #{roomId,jdbcType=VARCHAR},
+			</if>
+			<if test="roomAddress != null">
+				room_address = #{roomAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="happenAt != null">
+				happen_at = #{happenAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="reportAt != null">
+				report_at = #{reportAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="contactName != null">
+				contact_name = #{contactName,jdbcType=VARCHAR},
+			</if>
+			<if test="contactPhone != null">
+				contact_phone = #{contactPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="estimateMoney != null">
+				estimate_money = #{estimateMoney,jdbcType=VARCHAR},
+			</if>
+			<if test="accidentMemo != null">
+				accident_memo = #{accidentMemo,jdbcType=VARCHAR},
+			</if>
+			<if test="accidentImgs != null">
+				accident_imgs = #{accidentImgs,jdbcType=VARCHAR},
+			</if>
+			<if test="reportNo != null">
+				report_no = #{reportNo,jdbcType=VARCHAR},
+			</if>
+			<if test="paidMoney != null">
+				paid_money = #{paidMoney,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="dataStatus != null">
+				data_status = #{dataStatus,jdbcType=INTEGER},
+			</if>
+			<if test="paidType != null">
+				paid_type = #{paidType,jdbcType=INTEGER},
+			</if>
+			<if test="createAt != null">
+				create_at = #{createAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createBy != null">
+				create_by = #{createBy,jdbcType=VARCHAR},
+			</if>
+			<if test="finishAt != null">
+				finish_at = #{finishAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="finishBy != null">
+				finish_by = #{finishBy,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.CompensateRecord">
+		update
+		compensate_record
+		set policy_id = #{policyId,jdbcType=VARCHAR},
+		picc_no
+		= #{piccNo,jdbcType=VARCHAR},
+		guarantee_item_id =
+		#{guaranteeItemId,jdbcType=VARCHAR},
+		room_id =
+		#{roomId,jdbcType=VARCHAR},
+		room_address =
+		#{roomAddress,jdbcType=VARCHAR},
+		happen_at =
+		#{happenAt,jdbcType=TIMESTAMP},
+		report_at =
+		#{reportAt,jdbcType=TIMESTAMP},
+		contact_name =
+		#{contactName,jdbcType=VARCHAR},
+		contact_phone =
+		#{contactPhone,jdbcType=VARCHAR},
+		estimate_money =
+		#{estimateMoney,jdbcType=VARCHAR},
+		accident_memo =
+		#{accidentMemo,jdbcType=VARCHAR},
+		accident_imgs =
+		#{accidentImgs,jdbcType=VARCHAR},
+		report_no =
+		#{reportNo,jdbcType=VARCHAR},
+		paid_money =
+		#{paidMoney,jdbcType=VARCHAR},
+		status = #{status,jdbcType=INTEGER},
+		data_status = #{dataStatus,jdbcType=INTEGER},
+		paid_type =
+		#{paidType,jdbcType=INTEGER},
+		create_at =
+		#{createAt,jdbcType=TIMESTAMP},
+		create_by =
+		#{createBy,jdbcType=VARCHAR},
+		finish_at =
+		#{finishAt,jdbcType=TIMESTAMP},
+		finish_by =
+		#{finishBy,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	
+	
+	<update id="updateDataStatus" >
+		update
+		compensate_record
+		set data_status = #{dataStatus,jdbcType=INTEGER} 
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="updateStatusByID" >
+		update
+		compensate_record
+		set status =  #{status,jdbcType=INTEGER} 
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<!-- 根据单证ID与状态查询理赔信息 -->
+	<select id="selectCompensateRecordListByPolicyIDandStatus"
+	resultMap="voResultMap">
+		SELECT
+		
+		c.ID, c.policy_id, c.picc_no, c.guarantee_item_id, c.room_id,
+		c.room_address,
+		c.happen_at, c.report_at,
+		c.contact_name, c.contact_phone,
+		c.estimate_money, c.accident_memo, c.accident_imgs,
+		c.report_no,
+		c.paid_money,
+		c.status, c.data_status, c.paid_type, c.create_at, c.create_by, c.finish_at,
+		c.finish_by, c.order_no, c.object_id, c.object_name,
+		g.compensate_type
+		p.insurant_name
+		FROM 
+		compensate_record c
+		inner JOIN policy_guarantee_item g
+		ON c.policy_id = g.policy_id
+        inner join insurance_policy p
+		on c.policy_id = p.id
+		WHERE c.policy_id = #{policyID,jdbcType=VARCHAR}
+		<if test="status != null and status != 0 ">
+			AND c.status = #{status,jdbcType=INTEGER}
+		</if>
+		order by c.create_at
+	</select>
+	
+	
+</mapper>

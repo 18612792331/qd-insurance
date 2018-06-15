@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    ">
+    <context:component-scan base-package="com.baidu,com.qding">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+    </context:component-scan>
+
+    <!-- 使用disconf必须添加以下配置 -->
+    <bean id="disconfMgrBean" class="com.baidu.disconf.client.DisconfMgrBean"
+          destroy-method="destory">
+        <property name="scanPackage" value="com.qding"/>
+    </bean>
+    <bean id="disconfMgrBean2" class="com.baidu.disconf.client.DisconfMgrBeanSecond"
+          init-method="init" destroy-method="destory">
+    </bean>
+
+    <bean id="configproperties_disconf"
+          class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
+        <property name="locations">
+            <list>
+                <value>classpath:/jdbc.properties</value>
+                <value>classpath:/log4j.properties</value>
+                <value>classpath:/config.properties</value>
+                <value>classpath:/dubbo.properties</value>
+                <value>classpath:/shiro_redis.properties</value>
+                <value>classpath:/redis.properties</value>
+                <value>classpath:/scheduleRedis.properties</value>
+                <value>classpath:/email.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="propertyConfigurer"
+          class="com.baidu.disconf.client.addons.properties.ReloadingPropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="propertiesArray">
+            <list>
+                <ref bean="configproperties_disconf"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 开启日志自动输出-->
+    <aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true"/>
+    <bean class="com.qding.insurance.log.InsuranceLogAspect" />
+    
+    <!-- 邮件发送器 -->
+    <bean id="emailSender" class="com.qding.framework.common.email.SMTPEmailSender">
+        <constructor-arg name="mailServerHost" value="${mail.server.host}" />
+        <constructor-arg name="emailAddress" value="${email.address}" />
+        <constructor-arg name="emailUser" value="${email.user}" />
+        <constructor-arg name="emailPassword" value="${email.password}" />
+    </bean>
+
+    
+    <context:annotation-config/>
+    
+    <import resource="applicationContext-jdbc.xml"></import>
+    <import resource="applicationContext-consumer.xml"></import>
+	<import resource="applicationContext-redis.xml"></import>
+</beans>

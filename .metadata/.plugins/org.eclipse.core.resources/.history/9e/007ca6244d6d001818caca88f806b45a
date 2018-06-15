@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.InsurancePolicyMapper">
+	<resultMap id="BaseResultMap" type="com.qding.insurance.domain.InsurancePolicy">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+		<result column="picc_no" jdbcType="VARCHAR" property="piccNo" />
+		<result column="member_id" jdbcType="VARCHAR" property="memberId" />
+		<result column="member_phone" jdbcType="VARCHAR" property="memberPhone" />
+		<result column="member_name" jdbcType="VARCHAR" property="memberName" />
+		<result column="member_idcard" jdbcType="VARCHAR" property="memberIdcard" />
+		<result column="insurant_relation" jdbcType="VARCHAR" property="insurantRelation" />
+		<result column="insurant_phone" jdbcType="VARCHAR" property="insurantPhone" />
+		<result column="insurant_name" jdbcType="VARCHAR" property="insurantName" />
+		<result column="insurant_idcard" jdbcType="VARCHAR" property="insurantIdcard" />
+		<result column="benefit_phone" jdbcType="VARCHAR" property="benefitPhone" />
+		<result column="benefit_name" jdbcType="VARCHAR" property="benefitName" />
+		<result column="benefit_idcard" jdbcType="VARCHAR" property="benefitIdcard" />
+		<result column="project_id" jdbcType="VARCHAR" property="projectId" />
+		<result column="project_name" jdbcType="VARCHAR" property="projectName" />
+		<result column="room_id" jdbcType="VARCHAR" property="roomId" />
+		<result column="room_address" jdbcType="VARCHAR" property="roomAddress" />
+		<result column="policy_url" jdbcType="VARCHAR" property="policyUrl" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="insure_at" jdbcType="TIMESTAMP" property="insureAt" />
+		<result column="act_at" jdbcType="TIMESTAMP" property="actAt" />
+		<result column="expire_at" jdbcType="TIMESTAMP" property="expireAt" />
+		<result column="end_reason" jdbcType="VARCHAR" property="endReason" />
+		<result column="end_at" jdbcType="TIMESTAMP" property="endAt" />
+	</resultMap>
+	<!-- 房屋投保状态 -->
+	<resultMap id="RoomInsureStatusInfoMap" type="com.qding.insurance.vo.RoomInsureStatusInfo">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+	</resultMap>
+
+	<!-- 订单详细信息 -->
+	<resultMap id="InsurancePolicyDetailInfoMap"
+		type="com.qding.insurance.vo.InsurancePolicyDetailInfo" extends="BaseResultMap">
+		<result column="ware_name" jdbcType="VARCHAR" property="wareName" />
+		<result column="sku_name" jdbcType="VARCHAR" property="skuName" />
+	</resultMap>
+	
+	
+	<!-- 分页查询保险单证 -->
+	<resultMap id="PageResultMap"
+		type="com.qding.insurance.vo.InsurancePolicyPageResult">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="picc_no" jdbcType="VARCHAR" property="piccNo" />
+		<result column="ware_name" jdbcType="VARCHAR" property="wareName" />
+		<result column="room_address" jdbcType="VARCHAR" property="roomAddress" />
+		<result column="sku_name" jdbcType="VARCHAR" property="skuName" />
+		<result column="act_at" jdbcType="TIMESTAMP" property="actAt" />
+		<result column="expire_at" jdbcType="TIMESTAMP" property="expireAt" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+
+
+	</resultMap>
+
+
+	<!-- 查询用户保单列表 -->
+	<resultMap id="UserInsurancePolicyList" type="com.qding.insurance.vo.InsurancePolicyInfo">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="member_id" jdbcType="VARCHAR" property="memberId" />
+		<result column="picc_no" jdbcType="VARCHAR" property="piccNo" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="ware_name" jdbcType="VARCHAR" property="wareName" />
+		<result column="sku_name" jdbcType="VARCHAR" property="skuName" />
+		<result column="insurant_name" jdbcType="VARCHAR" property="insurantName" />
+		<result column="room_address" jdbcType="VARCHAR" property="roomAddress" />
+		<result column="act_at" jdbcType="TIMESTAMP" property="actAt" />
+		<result column="expire_at" jdbcType="TIMESTAMP" property="expireAt" />
+	</resultMap>
+
+	<!-- 查询剩余权益信息 -->
+	<resultMap id="BalanceResultMap"
+		type="com.qding.insurance.vo.PolicyGuaranteePlanBalanceInfo">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="item_title" jdbcType="VARCHAR"
+			property="policyGuaranteePlanItemTitle" />
+		<result column="policy_id" jdbcType="VARCHAR" property="policyID" />
+		<result column="guarantee_item_id" jdbcType="VARCHAR"
+			property="policyGuaranteePlanID" />
+		<result column="balance_value" jdbcType="VARCHAR" property="balanceValue" />
+	</resultMap>
+
+
+
+
+
+	<sql id="Param_Where_Clause">
+		<where>
+			<if test="policyId != null and policyId !=''">
+				and p.id = #{policyId,jdbcType=VARCHAR}
+			</if>
+
+			<if test="wareName != null and wareName !=''">
+				and (o.ware_name like concat('%',
+				#{wareName,jdbcType=VARCHAR},'%'))
+			</if>
+
+			<if test="policyStatus != null and policyStatus !=''">
+				and p.status = #{policyStatus,jdbcType=INTEGER}
+			</if>
+
+			<if test="memberPhone != null and memberPhone !=''">
+				and p.member_phone = #{memberPhone,jdbcType=VARCHAR}
+			</if>
+
+			<if test="piccNo != null and piccNo !=''">
+				and p.picc_no = #{piccNo,jdbcType=VARCHAR}
+			</if>
+
+			<if test="actAtStartTime != null and actAtStartTime !=''"> and p.act_at &gt;= #{actAtStartTime}
+			</if>
+			<if test="actAtEndTime != null and actAtEndTime !=''"> and p.act_at &lt;= #{actAtEndTime}
+			</if>
+			<if test="expireAtStartTime != null and expireAtStartTime !=''"> and p.expire_at &gt;= #{expireAtStartTime}
+			</if>
+			<if test="expireAtEndTime != null and expireAtEndTime !=''"> and p.expire_at &lt;= #{expireAtEndTime}
+			</if>
+		</where>
+	</sql>
+
+
+
+
+
+	<sql id="Base_Column_List">
+		id, order_no, picc_no, member_id, member_phone,
+		member_name,
+		member_idcard, insurant_relation,
+		insurant_phone,
+		insurant_name, insurant_idcard, benefit_phone, benefit_name,
+		benefit_idcard,
+		project_id, project_name, room_id, room_address,
+		policy_url, status, insure_at,
+		act_at,
+		expire_at, end_reason, end_at
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from insurance_policy
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getResultByOrderID" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from insurance_policy
+		where order_no = #{orderID,jdbcType=VARCHAR}
+	</select>
+
+
+	<!-- 查询剩余权益信息 -->
+	<select id="getBalanceInfo" parameterType="java.lang.String"
+		resultMap="BalanceResultMap">
+		SELECT
+		p.id,
+		i.item_title,
+		p.policy_id,
+		p.guarantee_item_id,
+		p.balance_value
+		FROM
+		policy_guarantee_plan p
+		JOIN policy_guarantee_item i
+		ON p.guarantee_item_id = i.id
+		WHERE
+		p.ID = #{orderID,jdbcType=VARCHAR}
+	</select>
+
+
+
+
+	<!-- 根据房屋ID 查询房屋投保状态 -->
+	<select id="getRoomInsureStatusByRoomID" parameterType="java.lang.String"
+		resultMap="RoomInsureStatusInfoMap">
+		SELECT
+		id,
+		`status`
+		FROM
+		insurance_policy
+		WHERE
+		room_id =
+		#{roomID,jdbcType=VARCHAR}
+	</select>
+
+
+	<!-- 分页查询 -->
+	<select id="selectByParam" parameterType="com.qding.insurance.param.InsurancePolicyParam"
+		resultMap="PageResultMap">
+		SELECT
+		p.id,
+		p.picc_no,
+		o.ware_name,
+		p.room_address,
+		o.sku_name,
+		p.act_at,
+		p.expire_at,
+		p.STATUS,
+		o.create_at
+		FROM
+		insurance_order o
+		INNER JOIN
+		insurance_policy p ON o.order_no = p.order_no
+		<include refid="Param_Where_Clause" />
+		ORDER BY
+		o.create_at DESC
+		<if test="page != null and size != null and page != '' and size != ''">
+			limit #{offset},#{size}
+		</if>
+	</select>
+	<!-- 分页数量查询 -->
+	<select id="countByParam" parameterType="com.qding.insurance.param.InsurancePolicyParam"
+		resultType="java.lang.Integer">
+		SELECT
+		count( 1 )
+		FROM
+		insurance_order o
+		INNER JOIN insurance_policy p ON
+		o.order_no = p.order_no
+		<include refid="Param_Where_Clause" />
+	</select>
+
+
+	<!-- 查询用户保单列表 -->
+	<select id="getUserInsurancePolicyList" parameterType="java.lang.String"
+		resultMap="UserInsurancePolicyList">
+		SELECT
+		p.id,
+		p.member_id,
+		p.picc_no,
+		p.STATUS,
+		o.ware_name,
+		o.sku_name,
+		p.insurant_name,
+		p.room_address,
+		p.act_at,
+		p.expire_at
+		FROM
+		insurance_policy p
+		JOIN insurance_order o ON p.order_no = o.order_no
+		WHERE
+		p.member_id = #{memberId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 查询保单详细信息 -->
+	<select id="getInsurancePolicyDetailInfo" parameterType="java.lang.String"
+		resultMap="InsurancePolicyDetailInfoMap">
+		SELECT
+		p.*,
+		o.ware_name,
+		o.sku_name
+		FROM
+		insurance_policy p
+		JOIN
+		insurance_order o ON
+		p.order_no = o.order_no
+		WHERE
+		p.id =#{memberId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		insurance_policy
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.qding.insurance.domain.InsurancePolicy">
+		insert into insurance_policy
+		(id, order_no, picc_no,
+		member_id, member_phone, member_name,
+		member_idcard, insurant_relation, insurant_phone,
+		insurant_name,
+		insurant_idcard, benefit_phone,
+		benefit_name, benefit_idcard,
+		project_id,
+		project_name, room_id, room_address,
+		policy_url, status,
+		insure_at,
+		act_at, expire_at, end_reason,
+		end_at)
+		values
+		(#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR},
+		#{piccNo,jdbcType=VARCHAR},
+		#{memberId,jdbcType=VARCHAR},
+		#{memberPhone,jdbcType=VARCHAR}, #{memberName,jdbcType=VARCHAR},
+		#{memberIdcard,jdbcType=VARCHAR},
+		#{insurantRelation,jdbcType=VARCHAR},
+		#{insurantPhone,jdbcType=VARCHAR},
+		#{insurantName,jdbcType=VARCHAR},
+		#{insurantIdcard,jdbcType=VARCHAR}, #{benefitPhone,jdbcType=VARCHAR},
+		#{benefitName,jdbcType=VARCHAR}, #{benefitIdcard,jdbcType=VARCHAR},
+		#{projectId,jdbcType=VARCHAR},
+		#{projectName,jdbcType=VARCHAR},
+		#{roomId,jdbcType=VARCHAR}, #{roomAddress,jdbcType=VARCHAR},
+		#{policyUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER},
+		#{insureAt,jdbcType=TIMESTAMP},
+		#{actAt,jdbcType=TIMESTAMP},
+		#{expireAt,jdbcType=TIMESTAMP}, #{endReason,jdbcType=VARCHAR},
+		#{endAt,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.qding.insurance.domain.InsurancePolicy">
+		insert into insurance_policy
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != ''">
+				id,
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				order_no,
+			</if>
+			<if test="piccNo != null and piccNo != ''">
+				picc_no,
+			</if>
+			<if test="memberId != null and memberId != ''">
+				member_id,
+			</if>
+			<if test="memberPhone != null and memberPhone != ''">
+				member_phone,
+			</if>
+			<if test="memberName != null and memberName != ''">
+				member_name,
+			</if>
+			<if test="memberIdcard != null and memberIdcard != ''">
+				member_idcard,
+			</if>
+			<if test="insurantRelation != null and insurantRelation != ''">
+				insurant_relation,
+			</if>
+			<if test="insurantPhone != null and insurantPhone != ''">
+				insurant_phone,
+			</if>
+			<if test="insurantName != null and insurantName != ''">
+				insurant_name,
+			</if>
+			<if test="insurantIdcard != null and insurantIdcard != ''">
+				insurant_idcard,
+			</if>
+			<if test="benefitPhone != null and benefitPhone != ''">
+				benefit_phone,
+			</if>
+			<if test="benefitName != null and benefitName != ''">
+				benefit_name,
+			</if>
+			<if test="benefitIdcard != null and benefitIdcard != ''">
+				benefit_idcard,
+			</if>
+			<if test="projectId != null and projectId != ''">
+				project_id,
+			</if>
+			<if test="projectName != null and projectName != ''">
+				project_name,
+			</if>
+			<if test="roomId != null and roomId != ''">
+				room_id,
+			</if>
+			<if test="roomAddress != null and roomAddress != ''">
+				room_address,
+			</if>
+			<if test="policyUrl != null and policyUrl != ''">
+				policy_url,
+			</if>
+			<if test="status != null and status != ''">
+				status,
+			</if>
+			<if test="insureAt != null and insureAt != ''">
+				insure_at,
+			</if>
+			<if test="actAt != null and actAt != ''">
+				act_at,
+			</if>
+			<if test="expireAt != null and expireAt != ''">
+				expire_at,
+			</if>
+			<if test="endReason != null and endReason != ''">
+				end_reason,
+			</if>
+			<if test="endAt != null and endAt != ''">
+				end_at,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null and id != ''">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null and orderNo != ''">
+				#{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="piccNo != null and piccNo != ''">
+				#{piccNo,jdbcType=VARCHAR},
+			</if>
+			<if test="memberId != null and memberId != ''">
+				#{memberId,jdbcType=VARCHAR},
+			</if>
+			<if test="memberPhone != null and memberPhone != ''">
+				#{memberPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="memberName != null and memberName != ''">
+				#{memberName,jdbcType=VARCHAR},
+			</if>
+			<if test="memberIdcard != null and memberIdcard != ''">
+				#{memberIdcard,jdbcType=VARCHAR},
+			</if>
+			<if test="insurantRelation != null and insurantRelation != ''">
+				#{insurantRelation,jdbcType=VARCHAR},
+			</if>
+			<if test="insurantPhone != null and insurantPhone != ''">
+				#{insurantPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="insurantName != null and insurantName != ''">
+				#{insurantName,jdbcType=VARCHAR},
+			</if>
+			<if test="insurantIdcard != null and insurantIdcard != ''">
+				#{insurantIdcard,jdbcType=VARCHAR},
+			</if>
+			<if test="benefitPhone != null and benefitPhone != ''">
+				#{benefitPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="benefitName != null and benefitName != ''">
+				#{benefitName,jdbcType=VARCHAR},
+			</if>
+			<if test="benefitIdcard != null and benefitIdcard != ''">
+				#{benefitIdcard,jdbcType=VARCHAR},
+			</if>
+			<if test="projectId != null and projectId != ''">
+				#{projectId,jdbcType=VARCHAR},
+			</if>
+			<if test="projectName != null and projectName != ''">
+				#{projectName,jdbcType=VARCHAR},
+			</if>
+			<if test="roomId != null and roomId != ''">
+				#{roomId,jdbcType=VARCHAR},
+			</if>
+			<if test="roomAddress != null and roomAddress != ''">
+				#{roomAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="policyUrl != null and policyUrl != ''">
+				#{policyUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status != ''">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="insureAt != null and insureAt != ''">
+				#{insureAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="actAt != null and actAt != ''">
+				#{actAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="expireAt != null and expireAt != ''">
+				#{expireAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endReason != null and endReason != ''">
+				#{endReason,jdbcType=VARCHAR},
+			</if>
+			<if test="endAt != null and endAt != ''">
+				#{endAt,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.InsurancePolicy">
+		update insurance_policy
+		<set>
+			<if test="orderNo != null and orderNo != ''">
+				order_no = #{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="piccNo != null and piccNo != ''">
+				picc_no = #{piccNo,jdbcType=VARCHAR},
+			</if>
+			<if test="memberId != null and memberId != ''">
+				member_id = #{memberId,jdbcType=VARCHAR},
+			</if>
+			<if test="memberPhone != null and memberPhone != ''">
+				member_phone = #{memberPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="memberName != null and memberName != ''">
+				member_name = #{memberName,jdbcType=VARCHAR},
+			</if>
+			<if test="memberIdcard != null and memberIdcard != ''">
+				member_idcard = #{memberIdcard,jdbcType=VARCHAR},
+			</if>
+			<if test="insurantRelation != null and insurantRelation != ''">
+				insurant_relation = #{insurantRelation,jdbcType=VARCHAR},
+			</if>
+			<if test="insurantPhone != null and insurantPhone != ''">
+				insurant_phone = #{insurantPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="insurantName != null and insurantName != ''">
+				insurant_name = #{insurantName,jdbcType=VARCHAR},
+			</if>
+			<if test="insurantIdcard != null and insurantIdcard != ''">
+				insurant_idcard = #{insurantIdcard,jdbcType=VARCHAR},
+			</if>
+			<if test="benefitPhone != null and benefitPhone != ''">
+				benefit_phone = #{benefitPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="benefitName != null and benefitName != ''">
+				benefit_name = #{benefitName,jdbcType=VARCHAR},
+			</if>
+			<if test="benefitIdcard != null and benefitIdcard != ''">
+				benefit_idcard = #{benefitIdcard,jdbcType=VARCHAR},
+			</if>
+			<if test="projectId != null and projectId != ''">
+				project_id = #{projectId,jdbcType=VARCHAR},
+			</if>
+			<if test="projectName != null and projectName != ''">
+				project_name = #{projectName,jdbcType=VARCHAR},
+			</if>
+			<if test="roomId != null and roomId != ''">
+				room_id = #{roomId,jdbcType=VARCHAR},
+			</if>
+			<if test="roomAddress != null and roomAddress != ''">
+				room_address = #{roomAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="policyUrl != null and policyUrl != ''">
+				policy_url = #{policyUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status != ''">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="insureAt != null and insureAt != ''">
+				insure_at = #{insureAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="actAt != null and actAt != ''">
+				act_at = #{actAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="expireAt != null and expireAt != ''">
+				expire_at = #{expireAt,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endReason != null and endReason != ''">
+				end_reason = #{endReason,jdbcType=VARCHAR},
+			</if>
+			<if test="endAt != null and endAt != ''">
+				end_at = #{endAt,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.InsurancePolicy">
+		update
+		insurance_policy
+		set order_no = #{orderNo,jdbcType=VARCHAR},
+		picc_no =
+		#{piccNo,jdbcType=VARCHAR},
+		member_id = #{memberId,jdbcType=VARCHAR},
+		member_phone = #{memberPhone,jdbcType=VARCHAR},
+		member_name =
+		#{memberName,jdbcType=VARCHAR},
+		member_idcard =
+		#{memberIdcard,jdbcType=VARCHAR},
+		insurant_relation =
+		#{insurantRelation,jdbcType=VARCHAR},
+		insurant_phone =
+		#{insurantPhone,jdbcType=VARCHAR},
+		insurant_name =
+		#{insurantName,jdbcType=VARCHAR},
+		insurant_idcard =
+		#{insurantIdcard,jdbcType=VARCHAR},
+		benefit_phone =
+		#{benefitPhone,jdbcType=VARCHAR},
+		benefit_name =
+		#{benefitName,jdbcType=VARCHAR},
+		benefit_idcard =
+		#{benefitIdcard,jdbcType=VARCHAR},
+		project_id =
+		#{projectId,jdbcType=VARCHAR},
+		project_name =
+		#{projectName,jdbcType=VARCHAR},
+		room_id = #{roomId,jdbcType=VARCHAR},
+		room_address = #{roomAddress,jdbcType=VARCHAR},
+		policy_url =
+		#{policyUrl,jdbcType=VARCHAR},
+		status = #{status,jdbcType=INTEGER},
+		insure_at = #{insureAt,jdbcType=TIMESTAMP},
+		act_at =
+		#{actAt,jdbcType=TIMESTAMP},
+		expire_at =
+		#{expireAt,jdbcType=TIMESTAMP},
+		end_reason =
+		#{endReason,jdbcType=VARCHAR},
+		end_at = #{endAt,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="selectByRoomId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from insurance_policy
+		where room_id = #{roomId}
+		and (status = '1' or status = '2' or status = '4')
+	</select>
+	
+	<!-- 根据单证状态 查询单证 -->
+	<select id="selectByStatus" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		SELECT
+		act_at
+		FROM
+		insurance_policy
+		WHERE
+		status = #{policyStatusUnenforced,jdbcType=INTEGER}
+	</select>
+
+	
+	
+</mapper>

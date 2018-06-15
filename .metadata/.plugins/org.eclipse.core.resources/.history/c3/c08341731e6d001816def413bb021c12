@@ -1,0 +1,7 @@
+package com.qding.insurance.vo;
+
+import com.qding.insurance.domain.CompensateRecord;
+
+public class CompensateRecordVo extends CompensateRecord {
+
+}

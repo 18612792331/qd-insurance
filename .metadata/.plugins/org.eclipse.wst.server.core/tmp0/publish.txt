@@ -1,0 +1,5 @@
+#Tomcat publish data
+#Thu Jun 14 18:01:21 CST 2018
+org.eclipse.jst.j2ee.server\:insurance-common=WEB-INF/lib/insurance-common-1.0-SNAPSHOT.jar
+org.eclipse.jst.jee.server\:/binary\:C\:\\Users\\tgao\\.m2\\repository\\org\\springframework\\spring-web\\4.1.0.RELEASE\\spring-web-4.1.0.RELEASE.jar=WEB-INF/lib/spring-web-4.1.0.RELEASE.jar
+org.eclipse.jst.j2ee.server\:insurance-service=WEB-INF/lib/insurance-service-1.0-SNAPSHOT.jar

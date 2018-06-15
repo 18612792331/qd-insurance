@@ -1,0 +1,7 @@
+package com.qding.api.call.app.qding.v4_1_0.struct.insurance.response.data;
+
+import com.qding.api.struct.ResponseData;
+
+public class InsuranceOrderDetailResponseData extends ResponseData{
+
+}

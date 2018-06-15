@@ -1,0 +1,51 @@
+package com.qding.insurance.rpc.impl;
+
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.qding.framework.common.api.struct.ReturnInfo;
+import com.qding.framework.common.constants.HttpStatus;
+import com.qding.insurance.domain.CompensateRecord;
+import com.qding.insurance.rpc.ICompensateRecordRpc;
+import com.qding.insurance.rpc.response.CompensateRecordListResponse;
+import com.qding.insurance.service.ICompensateRecordService;
+@Service("compensateRecordRpc")
+public class CompensateRecordRpcImpl implements ICompensateRecordRpc{
+	private static final Logger logger = Logger.getLogger(CompensateRecordRpcImpl.class);
+	@Autowired
+	private ICompensateRecordService compensateRecordService;
+
+	@Override
+	public CompensateRecordListResponse getCompensateRecordByPolicyIDandStatus(String policyID,Integer status) {
+		CompensateRecordListResponse response = new CompensateRecordListResponse();
+		ReturnInfo returnInfo = new ReturnInfo();
+		
+		try {
+			List<CompensateRecord> compensateRecordList = compensateRecordService
+					.getCompensateRecordListByPolicyIDandStatus(policyID,status);
+			
+			response.setCompensateRecordList(compensateRecordList);
+			returnInfo.setCode(HttpStatus.OK.getStatusCode());
+			returnInfo.setMessage("查询成功");
+			response.setReturnInfo(returnInfo);
+			
+			if (compensateRecordList == null || compensateRecordList.size() == 0) {
+				returnInfo.setCode(HttpStatus.BAD_REQUEST.getStatusCode());
+				returnInfo.setMessage("该用户没有理赔信息");
+				response.setReturnInfo(returnInfo);
+			}
+		} catch (Exception e) {
+			logger.error("getCompensateRecordByPolicyIDandStatus异常", e);
+
+			returnInfo.setCode(HttpStatus.INTERNAL_SERVER_ERROR.getStatusCode());
+			returnInfo.setMessage("查询失败" + e.getMessage());
+			response.setReturnInfo(returnInfo);
+		}
+		
+		return response;
+	}
+
+}

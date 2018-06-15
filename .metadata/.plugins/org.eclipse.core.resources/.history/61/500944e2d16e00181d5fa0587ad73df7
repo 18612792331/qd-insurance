@@ -1,0 +1,62 @@
+package com.qding.insurance.service;
+
+import com.qding.framework.common.basemodel.ResultPage;
+import com.qding.insurance.domain.InsuranceOrder;
+import com.qding.insurance.domain.InsurancePolicy;
+import com.qding.insurance.param.InsuranceOrderParam;
+import com.qding.insurance.param.InsurancePolicyParam;
+import com.qding.insurance.rpc.request.InsuranceOrderInsureRequest;
+import com.qding.insurance.vo.GuaranteePlanResultVo;
+import com.qding.insurance.vo.InsuranceOrderDetailVo;
+import com.qding.insurance.vo.InsuranceOrderPageResult;
+import com.qding.insurance.vo.InsurancePolicyPageResult;
+
+public interface IInsuranceOrderService {
+    
+	/**
+	 * 根据参数查询保险订单
+	 * @param param
+	 * @return
+	 */
+    ResultPage<InsuranceOrderPageResult> getResultPage(InsuranceOrderParam param);
+
+    /**
+     * 根据ID查询订单详情
+     * @param id
+     * @return
+     */
+	InsuranceOrderDetailVo getOrderDetailById(String id);
+
+	/**
+	 * 校验房屋是否已投保
+	 * @param roomId
+	 * @return
+	 */
+    boolean checkWheatherInsured(String roomId);
+
+    /**
+     * 根据货品信息查询保障计划相关信息
+     * @param projectType
+     * @param styleType
+     * @param timeType
+     * @return
+     */
+	GuaranteePlanResultVo getGuaranteePlanBySkuInfo(String projectType,
+			String styleType, String timeType);
+
+	/**
+	 * 保存订单
+	 * @param order
+	 */
+	void saveOrder(InsuranceOrder order);
+
+	/**
+	 * 投保
+	 * @param request
+	 * @throws Exception 
+	 */
+	void insure(InsuranceOrderInsureRequest request) throws Exception;
+
+	InsuranceOrder getInsOderDetailByOrderNo(String orderNo);
+}
+  

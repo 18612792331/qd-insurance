@@ -1,0 +1,98 @@
+package com.qding.insurance.service;
+
+import java.util.List;
+
+import com.qding.framework.common.basemodel.ResultPage;
+import com.qding.insurance.domain.CompensateRecord;
+import com.qding.insurance.param.CompensateRecordParam;
+import com.qding.insurance.vo.CompensateRecordPageResult;
+import com.qding.insurance.vo.CompensateRecordResult;
+import com.qding.insurance.vo.CompensateRecordVo;
+import com.qding.insurance.vo.UpdateDataStatusFinishedRequest;
+
+public interface ICompensateRecordService {
+    
+    void updateCompensate(CompensateRecord compensate);
+
+    void addCompensate(CompensateRecord compensate);
+	
+	/**
+	 *根据单证ID查询理赔记录
+	 */
+	List<CompensateRecord> getResultByPolicyId(String policyId);
+
+	/**
+	 * 添加理赔记录
+	 * @throws Exception 
+	 */
+	void insertCompensateRecord(CompensateRecord compensateRecordRec) throws Exception;
+	/**
+	 * 查询理赔记录
+	 */
+	ResultPage<CompensateRecordPageResult> getResultPage(CompensateRecordParam param);
+	/**
+	 * 根据ID查询理赔记录
+	 */
+	CompensateRecord findById(String id);
+	/**
+	 * 根据ID修改同步状态
+	 * @throws Exception 
+	 */
+	void updateDataStatus(String id, int dataStatuss) throws Exception;
+	/**
+	 * 根据ID修改理赔状态为已完成
+	 * @throws Exception 
+	 */
+	void updateDataStatusFinished(UpdateDataStatusFinishedRequest request) throws Exception;
+	/**
+	 * 根据ID修改理赔状态为已撤销
+	 * @throws Exception 
+	 */
+	void updateDataStatusCanceled(String id)throws Exception;
+	/**
+	 * 根据保障内容ID查理赔记录详情
+	 * 
+	 */
+	List<CompensateRecordResult> findByPolicyGuaranteeItemId(String policyGuaranteeItemId);
+	/**
+	 * 根据单证ID获取用户保单理赔列表
+	 * @param policyID
+	 * @param status
+	 * @return
+	 */
+	List<CompensateRecordVo> getCompensateRecordListByPolicyIDandStatus(
+			String policyID, Integer status);
+	
+	/**
+	 * 查询平台订单对应的理赔记录
+	 */
+	CompensateRecord getByOrderCode(String roomId, String orderCode);
+	
+	/**
+	 * PICC授权通过
+	 */
+	void piccAuth(String id)  throws Exception;
+
+	/**
+	 * 根据房屋ID和订单ID 已锁定→ 已完成
+	 * @throws Exception 
+	 * 
+	 */
+	void updateDataStatusFinishedByPolicyIdAndRoomId(String roomId, String policyId) throws Exception;
+	/**
+	 * 根据房屋ID和订单ID 已锁定→ 已撤销
+	 * @throws Exception 
+	 * 
+	 */
+	void updateDataStatusCanceledByPolicyIdAndRoomId(String roomId, String policyId) throws Exception;
+	/**
+	 * 
+	 * @return
+	 */
+	CompensateRecordVo getComRecordVoById();
+    
+   
+
+    
+}
+  

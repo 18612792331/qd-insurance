@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	
+	 <mapping>
+		<class-a>com.qding.auction.domain.AuctionInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_4_0.struct.auction.AuctionInfo</class-b>
+		<field>
+			<a>auctionNo</a>
+			<b>periods</b>
+		</field>
+	</mapping> 
+	
+</mappings>  

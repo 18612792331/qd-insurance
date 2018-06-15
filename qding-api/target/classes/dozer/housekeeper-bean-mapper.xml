@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	<mapping>
+		<class-a>com.qding.hk.rpc.request.notice.GetNoticeInfoRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.request.GetNoticeByIdRequest</class-b>
+		<field>
+			<a>id</a>
+			<b>noticeId</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.hk.rpc.request.notice.GetNoticeInfoRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.housekeeper.request.GetNoticeByIdRequest</class-b>
+		<field>
+			<a>id</a>
+			<b>noticeId</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hk.rpc.response.notice.GetNoticeInfoResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.response.data.GetNoticeByIdResponseData</class-b>
+		<field>
+			<a>resNotice</a>
+			<b>entity</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.hk.rpc.response.notice.GetNoticeInfoResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.housekeeper.response.data.GetNoticeByIdResponseData</class-b>
+		<field>
+			<a>resNotice</a>
+			<b>entity</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hk.rpc.response.past.UserPastReleaseResultResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.response.data.GetAccessControlsResponseData</class-b>
+		<field>
+			<a>resultPage.items</a>
+			<b>list</b>
+		</field>
+		<field>
+			<a>resultPage.totalCount</a>
+			<b>totalCount</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hk.rpc.request.matter.ApplyScoreRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.request.ScoreReportRequest</class-b>
+		<field>
+			<a>applyId</a>
+			<b>reportId</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.hk.rpc.request.matter.ApplyScoreRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_4_0.struct.housekeeper.request.ReportEvaluateRequest</class-b>
+		<field>
+			<a>applyId</a>
+			<b>reportId</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hk.rpc.request.matter.FindMatterReplyRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.request.GetReportReceiptRequest</class-b>
+		<field>
+			<a>applyId</a>
+			<b>reportId</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hk.rpc.response.matter.MatterReplyResultResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.response.data.GetReportReceiptResponseData</class-b>
+		<field>
+			<a>matterReplyList</a>
+			<b>list</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hk.rpc.request.past.SearchUserPastReleaseRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.request.GetAccessControlsRequest</class-b>
+		<field>
+			<a>userId</a>
+			<b>accountId</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hk.rpc.response.past.ApplyPastReleaseResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.response.data.ApplyAccessControlResponseData</class-b>
+		<field>
+			<a>pastRelease</a>
+			<b>entity</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.profee.rpc.response.fee.FeeResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.response.data.GetPropertyBillsIndexResponseData</class-b>
+		<field>
+			<a>feeModelList</a>
+			<b>list</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.profee.rpc.response.fee.FeeResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_4_0.struct.housekeeper.response.data.GetPropertyBillsIndexResponseData</class-b>
+		<field>
+			<a>feeModelList</a>
+			<b>list</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.profee.rpc.response.fee.FeeResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.response.data.GetRoomPropertyBillsResponseData</class-b>
+		<field>
+			<a>feeModelList</a>
+			<b>list</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.hk.domain.ResMatterApply</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.request.ApplyReportRequest</class-b>
+		<field>
+			<a>userId</a>
+			<b>accountId</b>
+		</field>
+		<field>
+			<a>source</a>
+			<b>hkMatterSource</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.hk.rpc.request.matter.UserSearchMatterApplyRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.request.GetMyReportRequest</class-b>
+		<field>
+			<a>userId</a>
+			<b>accountId</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hk.domain.ResPastRelease</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.housekeeper.AccessControl</class-b>
+		<field>
+			<a>qrCode</a>
+			<b>qrcodeUrl</b>
+		</field>
+		<field>
+			<a>receptionCode</a>
+			<b>accessPassWord</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.brick.pojo.biz.RoomOwner</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_4_0.struct.housekeeper.OwnerInfo</class-b>
+		<field>
+			<a>name</a>
+			<b>name</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.housekeeper.MobileHiddenConvert">
+			<a>mobile</a>
+			<b>mobile</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.hk.domain.ResNotice</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_4_1.struct.hotcycle.Notice</class-b>
+		<field>
+			<a>title</a>
+			<b>name</b>
+		</field>
+		<field>
+			<a>content</a>
+			<b>desc</b>
+		</field>
+		<field>
+			<a>id</a>
+			<b>billboardId</b>
+		</field>
+		<field>
+			<a>noticeType</a>
+			<b>noticeType</b>
+		</field>
+		<field>
+			<a>createAt</a>
+			<b>createTime</b>
+		</field>
+		<field>
+			<a>descr</a>
+			<b>content</b>
+		</field>
+
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.hk.domain.MatterReply</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_4_0.struct.housekeeper.ReportTaskBean</class-b>
+		<field>
+			<a>orderCode</a>
+			<b>taskId</b>
+		</field>
+		<field>
+			<a>createTime</a>
+			<b>handleAt</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_4_0.struct.housekeeper.TaskEvaluateBean</class-a>
+		<class-b>com.qding.hk.rpc.request.matter.ApplyScoreRequest</class-b>
+		<field>
+			<a>taskId</a>
+			<b>orderCode</b>
+		</field>
+		<field>
+			<a>evaluateLables</a>
+			<b>label</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_4_0.struct.housekeeper.JsonToWorkerBean</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_4_0.struct.housekeeper.EmpLocationBean</class-b>
+		<field>
+			<a>workerAccountId</a>
+			<b>userId</b>
+		</field>
+		<field>
+			<a>workerId</a>
+			<b>taskId</b>
+		</field>
+		<field>
+			<a>workerImgURL</a>
+			<b>headImage</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.housekeeper.LatitudeConvert">
+			<a>workerLBS</a>
+			<b>latitude</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.housekeeper.LongitudeConvert">
+			<a>workerLBS</a>
+			<b>longitude</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.housekeeper.IsLocationConvert">
+			<a>workerLBS</a>
+			<b>isLocation</b>
+		</field>
+		<field>
+			<a>workerMemberId</a>
+			<b>memberId</b>
+		</field>
+		<field>
+			<a>workerMobile</a>
+			<b>virtualMobile</b>
+		</field>
+		<field>
+			<a>workerName</a>
+			<b>userName</b>
+		</field>
+		<field>
+			<a>workerPuserId</a>
+			<b>pUserId</b>
+		</field>
+		<field>
+			<a>workerRole</a>
+			<b>role</b>
+		</field>
+
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_4_0.struct.housekeeper.JsonToHouseKeeperBean</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_4_0.struct.housekeeper.HkLocationBean</class-b>
+		<field>
+			<a>housekeeperMemberId</a>
+			<b>memberId</b>
+		</field>
+		<field>
+			<a>housekeeperAccountId</a>
+			<b>userId</b>
+		</field>
+		<field>
+			<a>housekeeperPuserId</a>
+			<b>pUserId</b>
+		</field>
+		<field>
+			<a>housekeeperName</a>
+			<b>userName</b>
+		</field>
+		<field>
+			<a>housekeeperImgURL</a>
+			<b>headImage</b>
+		</field>
+		<field>
+			<a>housekeeperMobile</a>
+			<b>virtualMobile</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.housekeeper.LatitudeConvert">
+			<a>housekeeperLBS</a>
+			<b>latitude</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.housekeeper.LongitudeConvert">
+			<a>housekeeperLBS</a>
+			<b>longitude</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.housekeeper.IsLocationConvert">
+			<a>housekeeperLBS</a>
+			<b>isLocation</b>
+		</field>
+		<field>
+			<a>housekeeperRole</a>
+			<b>role</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.hk.rpc.model.matter.MatterProcessInfoExt</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_4_0.struct.housekeeper.ReportTaskBean</class-b>
+
+		<field custom-converter="com.qding.api.dozer.convert.housekeeper.GetHeadImgByPuserIdConvert">
+			<a>processorId</a>
+			<b>headImage</b>
+		</field>
+		<field>
+			<a>matterType</a>
+			<b>reportType</b>
+		</field>
+		<field>
+			<a>applyText</a>
+			<b>content</b>
+		</field>
+		<field>
+			<a>processorName</a>
+			<b>userName</b>
+		</field>
+		<field>
+			<a>processorPhone</a>
+			<b>mobile</b>
+		</field>
+
+		<field>
+			<a>finishOrderTime</a>
+			<b>handleAt</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_4_0.struct.housekeeper.BlueToothLog</class-a>
+		<class-b>com.qding.hk.domain.BlueToothLog</class-b>
+		<field>
+			<a>callTime</a>
+			<b>callTtime</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.brick.pojo.biz.ServiceItem</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_0_0.struct.housekeeper.ProjectService</class-b>
+		<field>
+			<a>imgUrl</a>
+			<b>imageUrl</b>
+		</field>
+	</mapping>
+
+</mappings>

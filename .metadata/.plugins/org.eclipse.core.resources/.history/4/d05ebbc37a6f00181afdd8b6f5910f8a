@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.InsuranceOrderMapper">
+  <resultMap id="BaseResultMap" type="com.qding.insurance.domain.InsuranceOrder">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="ware_id" jdbcType="VARCHAR" property="wareId" />
+    <result column="ware_name" jdbcType="VARCHAR" property="wareName" />
+    <result column="sku_id" jdbcType="VARCHAR" property="skuId" />
+    <result column="sku_name" jdbcType="VARCHAR" property="skuName" />
+    <result column="order_money" jdbcType="VARCHAR" property="orderMoney" />
+    <result column="paid_money" jdbcType="VARCHAR" property="paidMoney" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="pay_status" jdbcType="INTEGER" property="payStatus" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="paid_at" jdbcType="TIMESTAMP" property="paidAt" />
+    <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+    <result column="finish_at" jdbcType="TIMESTAMP" property="finishAt" />
+    <result column="cancel_at" jdbcType="TIMESTAMP" property="cancelAt" />
+    <result column="cancel_reason" jdbcType="VARCHAR" property="cancelReason" />
+    <result column="member_id" jdbcType="VARCHAR" property="memberId" />
+    <result column="member_phone" jdbcType="VARCHAR" property="memberPhone" />
+    <result column="member_name" jdbcType="VARCHAR" property="memberName" />
+    <result column="member_idcard" jdbcType="VARCHAR" property="memberIdcard" />
+    <result column="Insurant_relation" jdbcType="VARCHAR" property="insurantRelation" />
+    <result column="Insurant_phone" jdbcType="VARCHAR" property="insurantPhone" />
+    <result column="Insurant_name" jdbcType="VARCHAR" property="insurantName" />
+    <result column="Insurant_idcard" jdbcType="VARCHAR" property="insurantIdcard" />
+    <result column="benefit_phone" jdbcType="VARCHAR" property="benefitPhone" />
+    <result column="benefit_name" jdbcType="VARCHAR" property="benefitName" />
+    <result column="benefit_idcard" jdbcType="VARCHAR" property="benefitIdcard" />
+    <result column="city_id" jdbcType="VARCHAR" property="cityId" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="project_id" jdbcType="VARCHAR" property="projectId" />
+    <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+    <result column="room_id" jdbcType="VARCHAR" property="roomId" />
+    <result column="room_address" jdbcType="VARCHAR" property="roomAddress" />
+    <result column="policy_act_at" jdbcType="TIMESTAMP" property="policyActAt" />
+    <result column="member_email" jdbcType="VARCHAR" property="memberEmail" />
+  </resultMap>
+  
+  <resultMap id="InsuranceDetailByOrderNoVo" type="com.qding.insurance.vo.InsuranceDetailByOrderNoVo" extends="BaseResultMap">
+  	<result column="image" jdbcType="VARCHAR" property="image" />
+  	<result column="title" jdbcType="VARCHAR" property="title" />
+  	<result column="detail_image" jdbcType="VARCHAR" property="detailImage" />
+  	<result column="pid" jdbcType="VARCHAR" property="policyId" />
+  	
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, order_no, ware_id, ware_name, sku_id, sku_name, order_money, paid_money, status, 
+    pay_status, create_at, paid_at, pay_type, finish_at, cancel_at, cancel_reason, member_id, 
+    member_phone, member_name, member_idcard, Insurant_relation, Insurant_phone, Insurant_name, 
+    Insurant_idcard, benefit_phone, benefit_name, benefit_idcard, city_id, city_name, 
+    project_id, project_name, room_id, room_address, policy_act_at, member_email
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from insurance_order
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="getByOrderNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from insurance_order
+        where order_no = #{orderNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from insurance_order
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.qding.insurance.domain.InsuranceOrder">
+    insert into insurance_order (id, order_no, ware_id, 
+      ware_name, sku_id, sku_name, 
+      order_money, paid_money, status, 
+      pay_status, create_at, paid_at, 
+      pay_type, finish_at, cancel_at, 
+      cancel_reason, member_id, member_phone, 
+      member_name, member_idcard, Insurant_relation, 
+      Insurant_phone, Insurant_name, Insurant_idcard, 
+      benefit_phone, benefit_name, benefit_idcard, 
+      city_id, city_name, project_id, 
+      project_name, room_id, room_address, 
+      policy_act_at, member_email)
+    values (#{id,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, #{wareId,jdbcType=VARCHAR}, 
+      #{wareName,jdbcType=VARCHAR}, #{skuId,jdbcType=VARCHAR}, #{skuName,jdbcType=VARCHAR}, 
+      #{orderMoney,jdbcType=VARCHAR}, #{paidMoney,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{payStatus,jdbcType=INTEGER}, #{createAt,jdbcType=TIMESTAMP}, #{paidAt,jdbcType=TIMESTAMP}, 
+      #{payType,jdbcType=VARCHAR}, #{finishAt,jdbcType=TIMESTAMP}, #{cancelAt,jdbcType=TIMESTAMP}, 
+      #{cancelReason,jdbcType=VARCHAR}, #{memberId,jdbcType=VARCHAR}, #{memberPhone,jdbcType=VARCHAR}, 
+      #{memberName,jdbcType=VARCHAR}, #{memberIdcard,jdbcType=VARCHAR}, #{insurantRelation,jdbcType=VARCHAR}, 
+      #{insurantPhone,jdbcType=VARCHAR}, #{insurantName,jdbcType=VARCHAR}, #{insurantIdcard,jdbcType=VARCHAR}, 
+      #{benefitPhone,jdbcType=VARCHAR}, #{benefitName,jdbcType=VARCHAR}, #{benefitIdcard,jdbcType=VARCHAR}, 
+      #{cityId,jdbcType=VARCHAR}, #{cityName,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, 
+      #{projectName,jdbcType=VARCHAR}, #{roomId,jdbcType=VARCHAR}, #{roomAddress,jdbcType=VARCHAR}, 
+      #{policyActAt,jdbcType=TIMESTAMP}, #{memberEmail,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.qding.insurance.domain.InsuranceOrder">
+    insert into insurance_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null and id !=''">
+        id,
+      </if>
+      <if test="orderNo != null and orderNo !=''">
+        order_no,
+      </if>
+      <if test="wareId != null and wareId !=''">
+        ware_id,
+      </if>
+      <if test="wareName != null and wareName !=''">
+        ware_name,
+      </if>
+      <if test="skuId != null and skuId !=''">
+        sku_id,
+      </if>
+      <if test="skuName != null and skuName !=''">
+        sku_name,
+      </if>
+      <if test="orderMoney != null and orderMoney !=''">
+        order_money,
+      </if>
+      <if test="paidMoney != null and paidMoney !=''">
+        paid_money,
+      </if>
+      <if test="status != null and status !=''">
+        status,
+      </if>
+      <if test="payStatus != null and payStatus !=''">
+        pay_status,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="paidAt != null">
+        paid_at,
+      </if>
+      <if test="payType != null and payType !=''">
+        pay_type,
+      </if>
+      <if test="finishAt != null">
+        finish_at,
+      </if>
+      <if test="cancelAt != null">
+        cancel_at,
+      </if>
+      <if test="cancelReason != null and cancelReason !=''">
+        cancel_reason,
+      </if>
+      <if test="memberId != null and memberId !=''">
+        member_id,
+      </if>
+      <if test="memberPhone != null and memberPhone !=''">
+        member_phone,
+      </if>
+      <if test="memberName != null and memberName !=''">
+        member_name,
+      </if>
+      <if test="memberIdcard != null and memberIdcard !=''">
+        member_idcard,
+      </if>
+      <if test="insurantRelation != null and insurantRelation !=''">
+        Insurant_relation,
+      </if>
+      <if test="insurantPhone != null and insurantPhone !=''">
+        Insurant_phone,
+      </if>
+      <if test="insurantName != null and insurantName !=''">
+        Insurant_name,
+      </if>
+      <if test="insurantIdcard != null and insurantIdcard !=''">
+        Insurant_idcard,
+      </if>
+      <if test="benefitPhone != null and benefitPhone !=''">
+        benefit_phone,
+      </if>
+      <if test="benefitName != null and benefitName !=''">
+        benefit_name,
+      </if>
+      <if test="benefitIdcard != null and benefitIdcard !=''">
+        benefit_idcard,
+      </if>
+      <if test="cityId != null and cityId !=''">
+        city_id,
+      </if>
+      <if test="cityName != null and cityName !=''">
+        city_name,
+      </if>
+      <if test="projectId != null and projectId !=''">
+        project_id,
+      </if>
+      <if test="projectName != null and projectName !=''">
+        project_name,
+      </if>
+      <if test="roomId != null and roomId !=''">
+        room_id,
+      </if>
+      <if test="roomAddress != null and roomAddress !=''">
+        room_address,
+      </if>
+      <if test="policyActAt != null">
+        policy_act_at,
+      </if>
+      <if test="memberEmail != null and memberEmail !=''">
+        member_email,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null and id !=''">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null and orderNo !=''">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wareId != null and wareId !=''">
+        #{wareId,jdbcType=VARCHAR},
+      </if>
+      <if test="wareName != null and wareName !=''">
+        #{wareName,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null and skuId !=''">
+        #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null and skuName !=''">
+        #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderMoney != null and orderMoney !=''">
+        #{orderMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="paidMoney != null and paidMoney !=''">
+        #{paidMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null and status !=''">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null and payStatus !=''">
+        #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paidAt != null">
+        #{paidAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payType != null and payType !=''">
+        #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="finishAt != null">
+        #{finishAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelAt != null">
+        #{cancelAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelReason != null and cancelReason !=''">
+        #{cancelReason,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null and memberId !=''">
+        #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberPhone != null and memberPhone !=''">
+        #{memberPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null and memberName !=''">
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberIdcard != null and memberIdcard !=''">
+        #{memberIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="insurantRelation != null and insurantRelation !=''">
+        #{insurantRelation,jdbcType=VARCHAR},
+      </if>
+      <if test="insurantPhone != null and insurantPhone !=''">
+        #{insurantPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="insurantName != null and insurantName !=''">
+        #{insurantName,jdbcType=VARCHAR},
+      </if>
+      <if test="insurantIdcard != null and insurantIdcard !=''">
+        #{insurantIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="benefitPhone != null and benefitPhone !=''">
+        #{benefitPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="benefitName != null and benefitName !=''">
+        #{benefitName,jdbcType=VARCHAR},
+      </if>
+      <if test="benefitIdcard != null and benefitIdcard !=''">
+        #{benefitIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null and cityId !=''">
+        #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null and cityName !=''">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null and projectId !=''">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null and projectName !=''">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null and roomId !=''">
+        #{roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="roomAddress != null and roomAddress !=''">
+        #{roomAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="policyActAt != null">
+        #{policyActAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberEmail != null and memberEmail !=''">
+        #{memberEmail,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.InsuranceOrder">
+    update insurance_order
+    <set>
+      <if test="orderNo != null and orderNo !=''">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wareId != null and wareId !=''">
+        ware_id = #{wareId,jdbcType=VARCHAR},
+      </if>
+      <if test="wareName != null and wareName !=''">
+        ware_name = #{wareName,jdbcType=VARCHAR},
+      </if>
+      <if test="skuId != null and skuId !=''">
+        sku_id = #{skuId,jdbcType=VARCHAR},
+      </if>
+      <if test="skuName != null and skuName !=''">
+        sku_name = #{skuName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderMoney != null and orderMoney !=''">
+        order_money = #{orderMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="paidMoney != null and paidMoney !=''">
+        paid_money = #{paidMoney,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null and status !=''">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null and payStatus !=''">
+        pay_status = #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="paidAt != null">
+        paid_at = #{paidAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payType != null and payType !=''">
+        pay_type = #{payType,jdbcType=VARCHAR},
+      </if>
+      <if test="finishAt != null">
+        finish_at = #{finishAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelAt != null">
+        cancel_at = #{cancelAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelReason != null and cancelReason !=''">
+        cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null and memberId !=''">
+        member_id = #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberPhone != null and memberPhone !=''">
+        member_phone = #{memberPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null and memberName !=''">
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberIdcard != null and memberIdcard !=''">
+        member_idcard = #{memberIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="insurantRelation != null and insurantRelation !=''">
+        Insurant_relation = #{insurantRelation,jdbcType=VARCHAR},
+      </if>
+      <if test="insurantPhone != null and insurantPhone !=''">
+        Insurant_phone = #{insurantPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="insurantName != null and insurantName !=''">
+        Insurant_name = #{insurantName,jdbcType=VARCHAR},
+      </if>
+      <if test="insurantIdcard != null and insurantIdcard !=''">
+        Insurant_idcard = #{insurantIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="benefitPhone != null and benefitPhone !=''">
+        benefit_phone = #{benefitPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="benefitName != null and benefitName !=''">
+        benefit_name = #{benefitName,jdbcType=VARCHAR},
+      </if>
+      <if test="benefitIdcard != null and benefitIdcard !=''">
+        benefit_idcard = #{benefitIdcard,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null and cityId !=''">
+        city_id = #{cityId,jdbcType=VARCHAR},
+      </if>
+      <if test="cityName != null and cityName !=''">
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null and projectId !=''">
+        project_id = #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null and projectName !=''">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="roomId != null and roomId !=''">
+        room_id = #{roomId,jdbcType=VARCHAR},
+      </if>
+      <if test="roomAddress != null and roomAddress !=''">
+        room_address = #{roomAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="policyActAt != null">
+        policy_act_at = #{policyActAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memberEmail != null and memberEmail !=''">
+        member_email = #{memberEmail,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.InsuranceOrder">
+    update insurance_order
+    set order_no = #{orderNo,jdbcType=VARCHAR},
+      ware_id = #{wareId,jdbcType=VARCHAR},
+      ware_name = #{wareName,jdbcType=VARCHAR},
+      sku_id = #{skuId,jdbcType=VARCHAR},
+      sku_name = #{skuName,jdbcType=VARCHAR},
+      order_money = #{orderMoney,jdbcType=VARCHAR},
+      paid_money = #{paidMoney,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      pay_status = #{payStatus,jdbcType=INTEGER},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      paid_at = #{paidAt,jdbcType=TIMESTAMP},
+      pay_type = #{payType,jdbcType=VARCHAR},
+      finish_at = #{finishAt,jdbcType=TIMESTAMP},
+      cancel_at = #{cancelAt,jdbcType=TIMESTAMP},
+      cancel_reason = #{cancelReason,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=VARCHAR},
+      member_phone = #{memberPhone,jdbcType=VARCHAR},
+      member_name = #{memberName,jdbcType=VARCHAR},
+      member_idcard = #{memberIdcard,jdbcType=VARCHAR},
+      Insurant_relation = #{insurantRelation,jdbcType=VARCHAR},
+      Insurant_phone = #{insurantPhone,jdbcType=VARCHAR},
+      Insurant_name = #{insurantName,jdbcType=VARCHAR},
+      Insurant_idcard = #{insurantIdcard,jdbcType=VARCHAR},
+      benefit_phone = #{benefitPhone,jdbcType=VARCHAR},
+      benefit_name = #{benefitName,jdbcType=VARCHAR},
+      benefit_idcard = #{benefitIdcard,jdbcType=VARCHAR},
+      city_id = #{cityId,jdbcType=VARCHAR},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      project_id = #{projectId,jdbcType=VARCHAR},
+      project_name = #{projectName,jdbcType=VARCHAR},
+      room_id = #{roomId,jdbcType=VARCHAR},
+      room_address = #{roomAddress,jdbcType=VARCHAR},
+      policy_act_at = #{policyActAt,jdbcType=TIMESTAMP},
+      member_email = #{memberEmail,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="countByParam" parameterType="com.qding.insurance.param.InsuranceOrderParam" resultType="java.lang.Integer">
+    select count(1) 
+        from insurance_order io, insurance_ware iw
+        where io.ware_id = iw.id  
+        <if test="cityId != null and cityId !=''" >
+            and io.city_id = #{cityId}
+        </if>
+        <if test="projectName != null and projectName !=''" >
+            and io.project_name = #{projectName}
+        </if>
+        <if test="orderNo != null and orderNo !=''" >
+            and io.order_no = #{orderNo} 
+        </if>
+        <if test="orderStatus != null and orderStatus !=''" >
+            and io.status = #{orderStatus}
+        </if>
+        <if test="payStatus != null and payStatus !=''" >
+            and io.pay_status = #{payStatus}
+        </if>
+        <if test="memberName != null and memberName !=''" >
+            and io.member_name = #{memberName}
+        </if>
+        <if test="memberPhone != null and memberPhone !=''" >
+            and io.member_phone = #{memberPhone} 
+        </if>
+        <if test="providerName != null and providerName !=''" >
+            and iw.provider_name = #{providerName} 
+        </if>
+        <if test="paidAtBegin != null" >
+            <![CDATA[ and io.paid_at >= #{paidAtBegin} ]]>
+        </if>
+        <if test="paidAtEnd != null" >
+            <![CDATA[ and io.paid_at <= #{paidAtEnd} ]]>
+        </if>
+  </select>
+  
+  	<!-- 分页查询保险订单-->
+	<resultMap extends="BaseResultMap" id="PageResultMap" type="com.qding.insurance.vo.InsuranceOrderPageResult">
+    <result column="category_id_1" jdbcType="BIGINT" property="categoryId" />
+    <result column="provider_name" jdbcType="VARCHAR" property="providerName" />
+  </resultMap>
+  
+  <select id="selectByParam" parameterType="com.qding.insurance.param.InsuranceOrderParam" resultMap="PageResultMap">
+        select io.*, iw.category_id_1, iw.provider_name
+        from insurance_order io, insurance_ware iw
+        where io.ware_id = iw.id  
+        <if test="cityId != null and cityId !=''" >
+            and io.city_id = #{cityId}
+        </if>
+        <if test="projectName != null and projectName !=''" >
+            and io.project_name = #{projectName}
+        </if>
+        <if test="orderNo != null and orderNo !=''" >
+            and io.order_no = #{orderNo} 
+        </if>
+        <if test="orderStatus != null and orderStatus !=''" >
+            and io.status = #{orderStatus}
+        </if>
+        <if test="payStatus != null and payStatus !=''" >
+            and io.pay_status = #{payStatus}
+        </if>
+        <if test="memberName != null and memberName !=''" >
+            and io.member_name = #{memberName}
+        </if>
+        <if test="memberPhone != null and memberPhone !=''" >
+            and io.member_phone = #{memberPhone} 
+        </if>
+        <if test="providerName != null and providerName !=''" >
+            and iw.provider_name = #{providerName} 
+        </if>
+        <if test="paidAtBegin != null" >
+            <![CDATA[ and io.paid_at >= #{paidAtBegin} ]]>
+        </if>
+        <if test="paidAtEnd != null" >
+            <![CDATA[ and io.paid_at <= #{paidAtEnd} ]]>
+        </if>
+        order by io.create_at desc 
+        <if test="page != null and size != null and page !='' and size !=''" >
+            limit #{offset},#{size} 
+        </if>
+  </select>
+  
+  	<!-- 订单详情-->
+	<resultMap extends="BaseResultMap" id="InsuranceOrderDetailVo" type="com.qding.insurance.vo.InsuranceOrderDetailVo">
+    <result column="object_type" jdbcType="INTEGER" property="objectType" />
+  </resultMap>
+  
+  <select id="selectDetailById" parameterType="java.lang.String" resultMap="InsuranceOrderDetailVo">
+        select io.*, iw.object_type
+        from insurance_order io, insurance_ware iw
+        where io.ware_id = iw.id  
+        and io.id = #{id}
+  </select>
+  
+  <select id="selectOrderByOrderNo" parameterType="java.lang.String" resultMap="InsuranceDetailByOrderNoVo">
+  		SELECT
+  		o.id, o.order_no, o.ware_id, o.ware_name, o.sku_id, o.sku_name, o.order_money, o.paid_money, o.status, 
+	    o.pay_status, o.create_at, o.paid_at, o.pay_type, o.finish_at, o.cancel_at, o.cancel_reason, o.member_id, 
+	    o.member_phone, o.member_name, o.member_idcard, o.Insurant_relation, o.Insurant_phone, o.Insurant_name, 
+	    o.Insurant_idcard, o.benefit_phone, o.benefit_name, o.benefit_idcard, o.city_id, o.city_name, 
+	    o.project_id, o.project_name, o.room_id, o.room_address, o.policy_act_at,
+	    w.image,w.detail_image,w.title,
+	    p.id pid
+  		FROM insurance_order o
+  		
+  		INNER JOIN insurance_ware w
+		ON o.ware_id = w.ID
+		
+		INNER JOIN insurance_policy p
+		ON o.order_no = p.order_no
+		
+  		WHERE o.order_no = #{orderNo}
+  </select>
+</mapper>

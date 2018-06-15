@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/mvc
+    http://www.springframework.org/schema/mvc/spring-mvc.xsd" >
+    
+
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <!-- set the max upload size10MB -->  
+        <property name="maxUploadSize">  
+            <value>20971520</value>
+        </property>  
+        <property name="maxInMemorySize">  
+            <value>10240</value>  
+        </property> 
+    </bean>  
+    
+     <!-- 开启组件扫描 -->
+    <!-- 对包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+    <context:component-scan base-package="com.baidu,com.qding.api.controllers"/>
+     <!-- 开启注解 -->
+    <mvc:annotation-driven />
+
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+	<bean class="com.qding.api.log.APILogAspect"/>
+
+     <!-- 静态资源访问     -->
+    <mvc:resources mapping="/api-tools/**" location="/api-tools/"/>
+
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+
+	<!-- 使用disconf必须添加以下配置 -->
+	<bean id="disconfMgrBean" class="com.baidu.disconf.client.DisconfMgrBean"
+		  destroy-method="destory">
+		<property name="scanPackage" value="com.qding"/>
+	</bean>
+	<bean id="disconfMgrBean2" class="com.baidu.disconf.client.DisconfMgrBeanSecond"
+		  init-method="init" destroy-method="destory">
+	</bean>
+
+	<!-- 使用托管方式的disconf配置(无代码侵入, 配置更改会自动reload)-->
+	<bean id="configproperties_disconf"
+		  class="com.baidu.disconf.client.addons.properties.ReloadablePropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:/qiniu_public.properties</value>
+				<value>classpath:/qiniu-hotcycle.properties</value>
+				<value>classpath:/config.properties</value>
+				<value>classpath:/redis.properties</value>
+				<value>classpath:/cache.properties</value>
+				<value>classpath:/dubbo.properties</value>
+				<value>classpath:/log4j.xml</value>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="propertyConfigurer"
+		  class="com.baidu.disconf.client.addons.properties.ReloadingPropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="propertiesArray">
+			<list>
+				<ref bean="configproperties_disconf"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="mapper" class="org.dozer.spring.DozerBeanMapperFactoryBean">
+       <property name="mappingFiles">
+			<list>        
+				<value>classpath*:dozer/*.xml</value>
+           </list>
+       </property>
+    </bean>
+    
+	<bean id="imgServiceForApp" class="com.qding.framework.common.storage.qiniu.ImgServiceForAPPInPrivate">
+		<constructor-arg>
+			<value>qiniu-hotcycle.properties</value>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="imgService" class="com.qding.framework.common.storage.qiniu.ImgServiceInPublic">
+		<constructor-arg>
+			<value>qiniu_public.properties</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="productOrderUrlClient" class="com.qding.api.util.APIPropertiesClient" scope="singleton"
+		init-method="springInit">
+		<property name="productPath">
+			<value>config.properties</value>
+		</property>
+	</bean>
+	
+	<bean id="imageUtil" class="com.qding.api.util.ImageUtil" />
+	<bean id="sendSms" class="com.qding.api.sms.SendSms" />
+	<bean class="com.qding.api.util.ApplicationContextUtil"/>
+	<bean class="com.qding.api.process.print.JsonProtocolPrint"/>
+	<bean class="com.qding.api.process.print.XmlProtocolPrint"/>
+	<bean id="skipMode" class="com.qding.api.util.SkipModeFitting"/>
+	<bean id="promotionService" class="com.qding.api.call.service.PromotionService"/>
+	<bean id="memberService" class="com.qding.api.call.service.MemberService"/>
+	<bean id="memberGiftService" class="com.qding.api.call.service.MemberGiftService"/>
+	<bean id="apiOrderService" class="com.qding.api.call.service.OrderService"/>
+	<bean id="brickService" class="com.qding.api.call.service.BrickService"/>
+	<bean id="neighborService" class="com.qding.api.call.service.NeighborService"/>
+	<bean id="searchService" class="com.qding.api.call.service.SearchService"/>
+	<bean id="skipService" class="com.qding.api.call.service.SkipModelService"/>
+	<bean id="wxoAuth2" class="com.qding.api.weixin.WXOAuth2">
+
+		<property name="accessTokenUrl">
+			<value>${api.http.weixin.oauth2.access_token}</value>
+		</property>
+
+		<property name="appId">
+			<value>${app_qding_appid}</value>
+		</property>
+
+		<property name="secret">
+			<value>${app_qding_secret}</value>
+		</property>
+
+		<property name="getWxUserUrl">
+			<value>${api.http.weixin.oauth2.userinfo}</value>
+		</property>
+	</bean>
+	<bean id="memberStatusCache" class="com.qding.api.cache.memcache.MemberStatusCache"/>
+
+	<bean id="callUpload" class="com.qding.api.call.common.CallCommonUpload" />
+	<bean id="callDataAnalysis" class="com.qding.api.call.common.CallCommonDataAnalysis" />
+	<bean id="callActivitySms" class="com.qding.api.call.common.CallActivitySms" />
+
+	<!-- 1.2.0 -->
+	<bean id="callHotcycleV1_2_0" class="com.qding.api.call.app.qding.v1_2_0.CallHotcycle"></bean>
+	
+	<!-- 1.2.1 -->
+	<bean id="callHotcycleV1_2_1" class="com.qding.api.call.app.qding.v1_2_1.CallHotcycle"></bean>
+	<bean id="callHouseKeeperV1_2_1" class="com.qding.api.call.app.qding.v1_2_1.CallHouseKeeper"></bean>
+	
+	<!-- 1.2.2 -->
+	<bean id="callHotcycleV1_2_2" class="com.qding.api.call.app.qding.v1_2_2.CallHotcycle"></bean>
+	
+	<!-- 1.3.0 -->
+	<bean id="callHouseKeeperV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallHouseKeeper"></bean>
+	<bean id="callBrickV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallBrick"></bean>
+	<bean id="callLegouGoodsV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallLegouGoods"></bean>
+	<bean id="callLegouOrderV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallLegouOrder"></bean>
+	<bean id="callUserV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallUser"></bean>
+	<bean id="callHotcycleV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallHotcycle"></bean>
+	<bean id="callCouponV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallCoupon"></bean>
+	<bean id="callPaymentV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallPayment"></bean>
+	<bean id="callWalletV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallWallet"></bean>
+	<bean id="callNotifyV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallNotify"></bean>
+	<bean id="callHistoryOrderV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallHistoryOrder">
+		<property name="historyGetMarketOrdersUrl">
+			<value>${api.http.history.market.orders}</value>
+		</property>
+		<property name="historyGetMarketOrderUrl">
+			<value>${api.http.history.market.order}</value>
+		</property>
+	</bean>
+	<bean id="callActivityV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallActivity"></bean>
+	<bean id="callPlateFormOrderV1_3_0" class="com.qding.api.call.app.qding.v1_3_0.CallPlateFormOrder"></bean>
+
+	<!-- 1.3.1 -->
+	<bean id="callWalletV1_3_1" class="com.qding.api.call.app.qding.v1_3_1.CallWallet"></bean>
+	<bean id="callProjectV1_3_1" class="com.qding.api.call.app.qding.v1_3_1.CallProject"></bean>
+	<bean id="callPaymentV1_3_1" class="com.qding.api.call.app.qding.v1_3_1.CallPayment"></bean>
+	<bean id="callBrickV1_3_1" class="com.qding.api.call.app.qding.v1_3_1.CallBrick"></bean>
+	
+	<!-- 1.3.2 -->
+	<bean id="callHotcycleV1_3_2" class="com.qding.api.call.app.qding.v1_3_2.CallHotcycle"></bean>
+	<bean id="callPopularizeV1_3_2" class="com.qding.api.call.app.qding.v1_3_2.CallPopularize"></bean>
+	<bean id="callPosterV1_3_2" class="com.qding.api.call.app.qding.v1_3_2.CallPoster"></bean>
+	<bean id="callUserV1_3_2" class="com.qding.api.call.app.qding.v1_3_2.CallUser"></bean>
+	<bean id="callImV1_3_2" class="com.qding.api.call.app.qding.v1_3_2.CallIM"></bean>
+	<bean id="callProjectV1_3_2" class="com.qding.api.call.app.qding.v1_3_2.CallProject"></bean>
+	<bean id="callPointV1_3_2" class="com.qding.api.call.app.qding.v1_3_2.CallPoints"></bean>
+
+	<!--1.4.0-->
+	<bean id="callAuctionV1_4_0" class="com.qding.api.call.app.qding.v1_4_0.CallAuction"></bean>
+	<bean id="callCouponV1_4_0" class="com.qding.api.call.app.qding.v1_4_0.CallCoupon"></bean>
+	<bean id="callWalletV1_4_0" class="com.qding.api.call.app.qding.v1_4_0.CallWallet"></bean>
+	<bean id="callLegouOrderV1_4_0" class="com.qding.api.call.app.qding.v1_4_0.CallLegouOrder"></bean>
+	<bean id="callHouseKeeperV1_4_0" class="com.qding.api.call.app.qding.v1_4_0.CallHouseKeeper"></bean>
+	<bean id="callPopularizeV1_4_0" class="com.qding.api.call.app.qding.v1_4_0.CallPopularize"></bean>
+
+	<!--1.4.1-->
+	<bean id="callHotcycleV1_4_1" class="com.qding.api.call.app.qding.v1_4_1.CallHotcycle"></bean>
+	<bean id="callNotifyV1_4_1" class="com.qding.api.call.app.qding.v1_4_1.CallNotify"></bean>
+	<bean id="callHouseKeeperV1_4_1" class="com.qding.api.call.app.qding.v1_4_1.CallHouseKeeper"></bean>
+	<bean id="callProjectV1_4_1" class="com.qding.api.call.app.qding.v1_4_1.CallProject"></bean>
+	<bean id="callLegouGoodsV1_4_1" class="com.qding.api.call.app.qding.v1_4_1.CallLegouGoods"></bean>
+
+	<!--2.0.0-->
+	<bean id="callProjectV2_0_0" class="com.qding.api.call.app.qding.v2_0_0.CallProject"></bean>
+    <bean id="callHouseKeeperV2_0_0" class="com.qding.api.call.app.qding.v2_0_0.CallHouseKeeper"></bean>
+	<bean id="callLegouGoodsV2_0_0"  class="com.qding.api.call.app.qding.v2_0_0.CallLegouGoods"></bean>
+	<bean id="callLegouOrderV2_0_0"  class="com.qding.api.call.app.qding.v2_0_0.CallLegouOrder"></bean>
+    <bean id="callFamilyPaymentV2_0_0" class="com.qding.api.call.app.qding.v2_0_0.CallFamilyPayment"></bean>
+	<bean id="callPaymentV2_0_0" class="com.qding.api.call.app.qding.v2_0_0.CallPayment"></bean>
+	<bean id="callBrickV2_0_0" class="com.qding.api.call.app.qding.v2_0_0.CallBrick"></bean>
+	<bean id="callPlatformOrderV2_0_0" class="com.qding.api.call.app.qding.v2_0_0.CallPlateFormOrder"></bean>
+
+	<!--2.1.0-->
+	<bean id="callHouseKeeperV2_1_0" class="com.qding.api.call.app.qding.v2_1_0.CallHouseKeeper"></bean>
+    <bean id="callHotcycleV2_1_0" class="com.qding.api.call.app.qding.v2_1_0.CallHotcycle"></bean>
+    <bean id="callSysConfigV2_1_0" class="com.qding.api.call.app.qding.v2_1_0.CallSysConfig"></bean>
+	<bean id="callMemberTaskV2_1_0" class="com.qding.api.call.app.qding.v2_1_0.CallMemberTask"></bean>
+
+	<!--2.3.0-->
+	<bean id="callWatchV2_3_0" class="com.qding.api.call.app.qding.v2_3_0.CallWatch"></bean>
+	<bean id="callLegouOrderV2_3_0" class="com.qding.api.call.app.qding.v2_3_0.CallLegouOrder"></bean>
+	<bean id="callLegouGoodsV2_3_0" class="com.qding.api.call.app.qding.v2_3_0.CallLegouGoods"></bean>
+	<bean id="callHotcycleV2_3_0" class="com.qding.api.call.app.qding.v2_3_0.CallHotcycle"></bean>
+	<bean id="callPaymentV2_3_0" class="com.qding.api.call.app.qding.v2_3_0.CallPayment"></bean>
+	<bean id="callBrickV2_3_0" class="com.qding.api.call.app.qding.v2_3_0.CallBrick"></bean>
+
+	<!--2.4.0-->
+	<bean id="callHouseKeeperV2_4_0" class="com.qding.api.call.app.qding.v2_4_0.CallHouseKeeper"></bean>
+	<bean id="callLegouOrderV2_4_0" class="com.qding.api.call.app.qding.v2_4_0.CallLegouOrder"></bean>
+	<bean id="callLegouGoodsV2_4_0" class="com.qding.api.call.app.qding.v2_4_0.CallLegouGoods"></bean>
+	<bean id="callHotcycleV2_4_0" class="com.qding.api.call.app.qding.v2_4_0.CallHotcycle"></bean>
+	<bean id="callSysConfigV2_4_0" class="com.qding.api.call.app.qding.v2_4_0.CallSysConfig"></bean>
+
+	<!--2.4.1-->
+	<bean id="callMemberTaskV2_4_1" class="com.qding.api.call.app.qding.v2_4_1.CallMemberTask"></bean>
+
+	<!--2.5.0-->
+	<bean id="callHouseKeeperV2_5_0" class="com.qding.api.call.app.qding.v2_5_0.CallHouseKeeper"></bean>
+	<bean id="callBrickV2_5_0" class="com.qding.api.call.app.qding.v2_5_0.CallBrick"></bean>
+	<bean id="callUserV2_5_0" class="com.qding.api.call.app.qding.v2_5_0.CallUser"></bean>
+	<bean id="callLegouOrderV2_5_0" class="com.qding.api.call.app.qding.v2_5_0.CallLegouOrder"></bean>
+	<bean id="callLegouGoodsV2_5_0" class="com.qding.api.call.app.qding.v2_5_0.CallLegouGoods"></bean>
+
+	<!--2.6.0-->
+	<bean id="callNeighborV2_6_0" class="com.qding.api.call.app.qding.v2_6_0.CallNeighbor"></bean>
+
+	<!--2.7.0-->
+	<bean id="callLegouGoodsV2_7_0" class="com.qding.api.call.app.qding.v2_7_0.CallLegouGoods"></bean>
+
+	<!--2.8.0-->
+	<bean id="callNeighborV2_8_0" class="com.qding.api.call.app.qding.v2_8_0.CallNeighbor"></bean>
+	<bean id="callProjectV2_8_0" class="com.qding.api.call.app.qding.v2_8_0.CallProject"></bean>
+	<bean id="callUserV2_8_0" class="com.qding.api.call.app.qding.v2_8_0.CallUser"></bean>
+	
+	<bean id="callBrickV2_8_0" class="com.qding.api.call.app.qding.v2_8_0.CallBrick"></bean>
+	<bean id="callLegouOrderV2_8_0" class="com.qding.api.call.app.qding.v2_8_0.CallLegouOrder"></bean>
+
+	<!--3.0.0-->
+	<bean id="callProjectV3_0_0" class="com.qding.api.call.app.qding.v3_0_0.CallProject"></bean>
+	<bean id="callNeighborV3_0_0" class="com.qding.api.call.app.qding.v3_0_0.CallNeighbor"></bean>
+	<bean id="callBrickV3_0_0" class="com.qding.api.call.app.qding.v3_0_0.CallBrick"></bean>
+	<bean id="callLegouGoodsV3_0_0" class="com.qding.api.call.app.qding.v3_0_0.CallLegouGoods"></bean>
+	<bean id="callUserV3_0_0" class="com.qding.api.call.app.qding.v3_0_0.CallUser"></bean>
+	<bean id="callHouseKeeperV3_0_0" class="com.qding.api.call.app.qding.v3_0_0.CallHouseKeeper"></bean>
+	<bean id="callMemberTaskV3_0_0" class="com.qding.api.call.app.qding.v3_0_0.CallMemberTask"></bean>
+    <bean id="callPopularizeV3_0_0" class="com.qding.api.call.app.qding.v3_0_0.CallPopularize"></bean>
+	<bean id="callLegouOrderV3_0_0" class="com.qding.api.call.app.qding.v3_0_0.CallLegouOrder"></bean>
+	<bean id="callGrouponV3_0_1" class="com.qding.api.call.app.qding.v3_0_1.CallGroupon"></bean>
+
+	<!-- 3.1.0 -->
+	<bean id="callEntranceCardV3_1_0" class="com.qding.api.call.app.qding.v3_1_0.CallEntranceCard"></bean>
+	<bean id="callNeighborV3_1_0" class="com.qding.api.call.app.qding.v3_1_0.CallNeighbor"></bean>
+	<bean id="callUserV3_1_0" class="com.qding.api.call.app.qding.v3_1_0.CallUser"></bean>
+	<bean id="callLegouOrderV3_1_0" class="com.qding.api.call.app.qding.v3_1_0.CallLegouOrder"></bean>
+
+	<bean id="callLegouOrderV3_1_1" class="com.qding.api.call.app.qding.v3_1_1.CallLegouOrder"></bean>
+	
+	<!-- 3.2.0 -->
+	<bean id="callUserV3_2_0" class="com.qding.api.call.app.qding.v3_2_0.CallUser"></bean>
+	<bean id="callCouponV3_2_0" class="com.qding.api.call.app.qding.v3_2_0.CallCoupon"></bean>
+	<bean id="callProjectV3_2_0" class="com.qding.api.call.app.qding.v3_2_0.CallProject"></bean>
+	<bean id="callMemberTaskV3_2_0" class="com.qding.api.call.app.qding.v3_2_0.CallMemberTask"></bean>
+	<bean id="callLegouOrderV3_2_0" class="com.qding.api.call.app.qding.v3_2_0.CallLegouOrder"></bean>
+
+	<!-- 3.3.0 -->
+	<bean id="callSearchItemsV3_3_0" class="com.qding.api.call.app.qding.v3_3_0.CallSearchItems"></bean>
+	<bean id="callUserV3_3_0" class="com.qding.api.call.app.qding.v3_3_0.CallUser"></bean>
+	<bean id="callLegouOrderV3_3_0" class="com.qding.api.call.app.qding.v3_3_0.CallLegouOrder"></bean>
+	<bean id="callLegouGoodsV3_3_0" class="com.qding.api.call.app.qding.v3_3_0.CallLegouGoods"></bean>
+	<bean id="callNeighborV3_3_0" class="com.qding.api.call.app.qding.v3_3_0.CallNeighbor"></bean>
+	<bean id="callRealestateV3_3_0" class="com.qding.api.call.app.qding.v3_3_0.CallRealestate"></bean>
+	<bean id="callNewSellV3_3_0" class="com.qding.api.call.app.qding.v3_3_0.CallNewSell"></bean>
+	
+	<!-- 4.0.0 -->
+	<bean id="callChatRecordV4_0_0" class="com.qding.api.call.app.qding.v4_0_0.CallChatRecord"></bean>
+	<bean id="callProjectV4_0_0" class="com.qding.api.call.app.qding.v4_0_0.CallProject"></bean>
+
+	<bean id="callShareCouponV4_0_0" class="com.qding.api.call.app.qding.v4_0_0.CallShareCoupon"></bean>
+	<bean id="callStageV4_0_0" class="com.qding.api.call.app.qding.v4_0_0.CallStage"></bean>
+	
+	<!-- 4.1.0 -->
+	<bean id="callSysConfigV4_1_0" class="com.qding.api.call.app.qding.v4_1_0.CallSysConfig"></bean>
+	<bean id="callInsuranceV4_1_0" class="com.qding.api.call.app.qding.v4_1_0.CallInsurance"></bean>
+	
+</beans>

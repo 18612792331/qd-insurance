@@ -1,0 +1,949 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.request.AddCartRequest</class-a>
+		<class-b>com.qding.legou.struct.request.AddCartRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>skuId</a>
+			<b>wareSkuId</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.request.DeleteCartRequest</class-a>
+		<class-b>com.qding.legou.struct.request.DeleteCartGoodsRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>skuIds</a>
+			<b>wareSkuIds</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.request.GetCartRequest</class-a>
+		<class-b>com.qding.legou.struct.request.GetUserCartRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_4_0.struct.legou.order.request.GetCartRequest</class-a>
+		<class-b>com.qding.legou.struct.request.GetUserCartRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.request.IncrCartNumRequest</class-a>
+		<class-b>com.qding.legou.struct.request.UpdateCartGoodsRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>incrementCount</a>
+			<b>count</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.response.data.GetOrderResponseData</class-a>
+		<class-b>com.qding.legou.struct.response.GetOrderDetailByCodeResponse</class-b>
+		<field>
+			<a>entity</a>
+			<b>legouOrderDetailDto</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_0_0.struct.legou.order.response.data.GetOrderResponseData</class-a>
+		<class-b>com.qding.legou.struct.response.GetOrderDetailByCodeResponse</class-b>
+		<field>
+			<a>entity</a>
+			<b>legouOrderDetailDto</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_3_0.struct.legou.order.response.data.GetOrderResponseData</class-a>
+		<class-b>com.qding.legou.struct.response.GetOrderDetailByCodeResponse</class-b>
+		<field>
+			<a>entity</a>
+			<b>legouOrderDetailDto</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_4_0.struct.legou.order.response.data.GetOrderResponseData</class-a>
+		<class-b>com.qding.legou.struct.response.GetOrderDetailByCodeResponse</class-b>
+		<field>
+			<a>entity</a>
+			<b>legouOrderDetailDto</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.Order</class-a>
+		<class-b>com.qding.legou.dto.LegouOrderDetailDto</class-b>
+	
+		<field>
+			<a>orderDelivery</a>
+			<b>orderReceiver</b>
+		</field>
+		<field>
+			<a>orderGoods</a>
+			<b>subOrderList</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderShouldPayConvert">
+			<a>orderBase.shouldPay</a>
+			<b>orderBase</b>
+		</field>
+		
+		<field>
+			<a>orderBase</a>
+			<b>orderBase</b>
+		</field>
+		
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderOrderPromotionConvert">
+			<a>orderPromotiones</a>
+			<b>promotionList</b>
+		</field>
+		
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderGoodsPromotionConvert">
+			<a>goodsPromotiones</a>
+			<b>promotionList</b>
+		</field>
+		
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderCouponCodePromotionConvert">
+			<a>couponCodePromotion</a>
+			<b>promotionList</b>
+		</field>
+		
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_0_0.struct.legou.order.Order</class-a>
+		<class-b>com.qding.legou.dto.LegouOrderDetailDto</class-b>
+
+		<field>
+			<a>orderDelivery</a>
+			<b>orderReceiver</b>
+		</field>
+		<field>
+			<a>orderGoods</a>
+			<b>subOrderList</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderShouldPayConvert">
+			<a>orderBase.shouldPay</a>
+			<b>orderBase</b>
+		</field>
+
+		<field>
+			<a>orderBase</a>
+			<b>orderBase</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderOrderPromotionConvert">
+			<a>orderPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderGoodsPromotionConvert">
+			<a>goodsPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderCouponCodePromotionConvert">
+			<a>couponCodePromotion</a>
+			<b>promotionList</b>
+		</field>
+
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_3_0.struct.legou.order.Order</class-a>
+		<class-b>com.qding.legou.dto.LegouOrderDetailDto</class-b>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderShouldPayConvert">
+			<a>orderBase.shouldPay</a>
+			<b>orderBase</b>
+		</field>
+
+		<field>
+			<a>orderBase</a>
+			<b>orderBase</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderOrderPromotionConvert">
+			<a>orderPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderGoodsPromotionConvert">
+			<a>goodsPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderCouponCodePromotionConvert">
+			<a>couponCodePromotion</a>
+			<b>promotionList</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_4_0.struct.legou.order.Order</class-a>
+		<class-b>com.qding.legou.dto.LegouOrderDetailDto</class-b>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderShouldPayConvert">
+			<a>orderBase.shouldPay</a>
+			<b>orderBase</b>
+		</field>
+
+		<field>
+			<a>orderBase</a>
+			<b>orderBase</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderOrderPromotionConvert">
+			<a>orderPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderGoodsPromotionConvert">
+			<a>goodsPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderCouponCodePromotionConvert">
+			<a>couponCodePromotion</a>
+			<b>promotionList</b>
+		</field>
+
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_5_0.struct.legou.order.Order</class-a>
+		<class-b>com.qding.legou.dto.LegouOrderDetailDto</class-b>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderShouldPayConvert">
+			<a>orderBase.shouldPay</a>
+			<b>orderBase</b>
+		</field>
+
+		<field>
+			<a>orderBase</a>
+			<b>orderBase</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderOrderPromotionConvert">
+			<a>orderPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderGoodsPromotionConvert">
+			<a>goodsPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderCouponCodePromotionConvert">
+			<a>couponCodePromotion</a>
+			<b>promotionList</b>
+		</field>
+
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.legou.dto.LegouGoodsThirdCodeDetailDto</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_4_0.struct.legou.order.RedeemCode</class-b>
+		<field>
+			<a>thirdCode</a>
+			<b>redeemCode</b>
+		</field>
+		<field>
+			<a>thirdPassword</a>
+			<b>passWord</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.OrderBase</class-a>
+		<class-b>com.qding.order.domain.OrderBase</class-b>
+		<field>
+			<a>orderCode</a>
+			<b>code</b>
+		</field>
+		<field>
+			<a>paymentStatus</a>
+			<b>payStatus</b>
+		</field>
+		<field>
+			<a>paymentType</a>
+			<b>payType</b>
+		</field>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>memberName</a>
+			<b>userName</b>
+		</field>
+		<field>
+			<a>memberMobile</a>
+			<b>userPhone</b>
+		</field>
+		<field>
+			<a>createTime</a>
+			<b>gorderAt</b>
+		</field>
+		<field>
+			<a>paymentTime</a>
+			<b>payAt</b>
+		</field>
+		<field>
+			<a>totalRealPay</a>
+			<b>totalRealpay</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_0_0.struct.legou.order.OrderBase</class-a>
+		<class-b>com.qding.order.domain.OrderBase</class-b>
+		<field>
+			<a>orderCode</a>
+			<b>code</b>
+		</field>
+		<field>
+			<a>paymentStatus</a>
+			<b>payStatus</b>
+		</field>
+		<field>
+			<a>paymentType</a>
+			<b>payType</b>
+		</field>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>memberName</a>
+			<b>userName</b>
+		</field>
+		<field>
+			<a>memberMobile</a>
+			<b>userPhone</b>
+		</field>
+		<field>
+			<a>createTime</a>
+			<b>gorderAt</b>
+		</field>
+		<field>
+			<a>paymentTime</a>
+			<b>payAt</b>
+		</field>
+		<field>
+			<a>totalRealPay</a>
+			<b>totalRealpay</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.OrderDelivery</class-a>
+		<class-b>com.qding.order.domain.OrderReceiver</class-b>
+		<field>
+			<a>deliveryId</a>
+			<b>receiverId</b>
+		</field>
+		<field>
+			<a>receiveUserName</a>
+			<b>receiverName</b>
+		</field>
+		<field>
+			<a>receiveUserPhone</a>
+			<b>receiverPhone</b>
+		</field>
+		<field>
+			<a>deliveryAddress</a>
+			<b>receiverAddress</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_0_0.struct.legou.order.OrderDelivery</class-a>
+		<class-b>com.qding.order.domain.OrderReceiver</class-b>
+		<field>
+			<a>deliveryId</a>
+			<b>receiverId</b>
+		</field>
+		<field>
+			<a>receiveUserName</a>
+			<b>receiverName</b>
+		</field>
+		<field>
+			<a>receiveUserPhone</a>
+			<b>receiverPhone</b>
+		</field>
+		<field>
+			<a>deliveryAddress</a>
+			<b>receiverAddress</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.OrderGoods</class-a>
+		<class-b>com.qding.order.domain.OrderSub</class-b>
+		<field>
+			<a>orderCode</a>
+			<b>parentCode</b>
+		</field>
+		<field>
+			<a>subOrderCode</a>
+			<b>code</b>
+		</field>
+   		<field>
+			<a>goodsId</a>
+			<b>wareId</b>
+		</field>
+		<field>
+			<a>skuId</a>
+			<b>wareSkuId</b>
+		</field>
+		<field>
+			<a>goodsName</a>
+			<b>wareName</b>
+		</field>
+		<field>
+			<a>price</a>
+			<b>warePrice</b>
+		</field>
+		<field>
+			<a>buyNum</a>
+			<b>wareCount</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderSkuImgConvert">
+			<a>skuImgUrl</a>
+			<b>wareSkuId</b>
+		</field>
+		
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderGoodsDeliveryTypeConvert">
+			<a>deliveryType</a>
+			<b>wareSkuId</b>
+		</field>
+		
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_0_0.struct.legou.order.OrderGoods</class-a>
+		<class-b>com.qding.order.domain.OrderSub</class-b>
+		<field>
+			<a>orderCode</a>
+			<b>parentCode</b>
+		</field>
+		<field>
+			<a>subOrderCode</a>
+			<b>code</b>
+		</field>
+		<field>
+			<a>goodsId</a>
+			<b>wareId</b>
+		</field>
+		<field>
+			<a>skuId</a>
+			<b>wareSkuId</b>
+		</field>
+		<field>
+			<a>goodsName</a>
+			<b>wareName</b>
+		</field>
+		<field>
+			<a>price</a>
+			<b>warePrice</b>
+		</field>
+		<field>
+			<a>buyNum</a>
+			<b>wareCount</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderSkuImgConvert">
+			<a>skuImgUrl</a>
+			<b>wareSkuId</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderGoodsDeliveryTypeConvert">
+			<a>deliveryType</a>
+			<b>wareSkuId</b>
+		</field>
+
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.request.GetOrdersRequest</class-a>
+		<class-b>com.qding.legou.struct.request.GetOrderResultPageRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>page</b>
+		</field>
+		<field>
+			<a>pageSize</a>
+			<b>size</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.response.data.GetOrdersResponseData</class-a>
+		<class-b>com.qding.legou.struct.response.GetOrderResultPageResponse</class-b>
+		<field>
+			<a>list</a>
+			<b>resultPage.items</b>
+		</field>
+		<field>
+			<a>totalCount</a>
+			<b>resultPage.totalCount</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.request.GetSubOrdersRequest</class-a>
+		<class-b>com.qding.legou.struct.request.GetOrderSubResultPageRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>page</b>
+		</field>
+		<field>
+			<a>pageSize</a>
+			<b>size</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.response.data.GetSubOrderResponseData</class-a>
+		<class-b>com.qding.legou.struct.response.GetOrderSubResultPageResponse</class-b>
+		<field>
+			<a>list</a>
+			<b>resultPage.items</b>
+		</field>
+		<field>
+			<a>totalCount</a>
+			<b>resultPage.totalCount</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.Sku</class-a>
+		<class-b>com.qding.oder.dto.SubOrderDto</class-b>
+		<field>
+			<a>skuId</a>
+			<b>wareSkuId</b>
+		</field>
+		<field>
+			<a>buyNum</a>
+			<b>wareCount</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.response.data.MakeOrderResponseData</class-a>
+		<class-b>com.qding.legou.struct.response.CreateGorderResponse</class-b>
+		<field>
+			<a>entity.memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>entity.orderCode</a>
+			<b>orderCode</b>
+		</field>
+		<field>
+			<a>entity.totalPrice</a>
+			<b>totalPrice</b>
+		</field>
+		<field>
+			<a>entity.shouldPay</a>
+			<b>totalRealpay</b>
+		</field>
+		<field>
+			<a>entity.paymentStatus</a>
+			<b>payStatus</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.response.data.ConfirmOrderResponseData</class-a>
+		<class-b>com.qding.promotion.common.struct.response.CountBeforOrderResponse</class-b>
+		<field>
+			<a>entity</a>
+			<b>orderDetailDto</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_4_0.struct.legou.order.response.data.ConfirmOrderResponseData</class-a>
+		<class-b>com.qding.promotion.common.struct.response.CountBeforOrderResponse</class-b>
+		<field>
+			<a>entity</a>
+			<b>orderDetailDto</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_4_0.struct.legou.order.response.data.ConfirmOrderResponseData</class-a>
+		<class-b>com.qding.promotion.common.struct.response.CountForOrderBestResponse</class-b>
+		<field>
+			<a>entity</a>
+			<b>orderDetailDto</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+	<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.ConfirmOrder</class-a>
+	<class-b>com.qding.oder.dto.OrderDetailDto</class-b>
+
+	<field>
+		<a>totalPrice</a>
+		<b>orderBase.totalPrice</b>
+	</field>
+	<field>
+		<a>shouldPay</a>
+		<b>orderBase.totalRealpay</b>
+	</field>
+
+	<field>
+		<a>totalDiscountPrice</a>
+		<b>orderBase.totalDiscount</b>
+	</field>
+
+	<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderOrderPromotionConvert">
+		<a>orderPromotiones</a>
+		<b>promotionList</b>
+	</field>
+
+	<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderGoodsPromotionConvert">
+		<a>goodsPromotiones</a>
+		<b>promotionList</b>
+	</field>
+
+	<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderCouponCodePromotionConvert">
+		<a>couponCodePromotion</a>
+		<b>promotionList</b>
+	</field>
+
+</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_4_0.struct.legou.order.ConfirmOrder</class-a>
+		<class-b>com.qding.oder.dto.OrderDetailDto</class-b>
+
+		<field>
+			<a>totalPrice</a>
+			<b>orderBase.totalPrice</b>
+		</field>
+		<field>
+			<a>shouldPay</a>
+			<b>orderBase.totalRealpay</b>
+		</field>
+
+		<field>
+			<a>totalDiscountPrice</a>
+			<b>orderBase.totalDiscount</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderOrderPromotionConvert">
+			<a>orderPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderGoodsPromotionConvert">
+			<a>goodsPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderCouponCodePromotionConvert">
+			<a>couponCodePromotion</a>
+			<b>promotionList</b>
+		</field>
+
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.legou.order.response.data.ConfirmOrderResponseData</class-a>
+		<class-b>com.qding.promotion.common.struct.response.GetOrderAvailableCouponListResponse</class-b>
+		<field>
+			<a>entity.commonCoupons</a>
+			<b>commonList</b>
+		</field>
+		<field>
+			<a>entity.specialCoupons</a>
+			<b>specialList</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_4_0.struct.legou.order.response.data.ConfirmOrderResponseData</class-a>
+		<class-b>com.qding.promotion.common.struct.response.CouponListResponse</class-b>
+		<field>
+			<a>entity.commonCoupons</a>
+			<b>couponList</b>
+		</field>
+		<field>
+			<a>entity.isCanUseCoupon</a>
+			<b>isCanUseCoupon</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.logistics.platform.client.remote.struct.bean.DeliverExpressInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.legou.order.response.data.LogisticsInfoResponseData</class-b>
+		<field>
+			<a>logisticsCompany</a>
+			<b>logisticsName</b>
+		</field>
+		<field>
+			<a>logisticsCode</a>
+			<b>logisticsCode</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.logistics.platform.client.remote.struct.bean.LogisticsLogDto</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.legou.order.LogisticsBean</class-b>
+		<field>
+			<a>time</a>
+			<b>recordTime</b>
+		</field>
+		<field>
+			<a>context</a>
+			<b>orderStatusContent</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.solr.struct.sku.LegouSkuDetailInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_3_0.struct.legou.order.BuyGoodInfoBean</class-b>
+		<field>
+			<a>marketPrice</a>
+			<b>originalPrice</b>
+		</field>
+		<field>
+			<a>wareId</a>
+			<b>goodsId</b>
+		</field>
+		<field>
+			<a>description</a>
+			<b>goodsDesc</b>
+		</field>
+		<field>
+			<a>name</a>
+			<b>goodsName</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_3_0.struct.legou.order.BuyGoodInfoBean</class-a>
+		<class-b>com.qding.legou.domain.OrderGoods</class-b>
+		<field>
+			<a>orderCode</a>
+			<b>parentCode</b>
+		</field>
+		<field>
+			<a>subOrderCode</a>
+			<b>code</b>
+		</field>
+		<field>
+			<a>goodsId</a>
+			<b>wareId</b>
+		</field>
+		<field>
+			<a>skuId</a>
+			<b>wareSkuId</b>
+		</field>
+		<field>
+			<a>goodsName</a>
+			<b>wareName</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderSkuImgConvert">
+			<a>skuImgUrl</a>
+			<b>wareSkuId</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderGoodsDeliveryTypeConvert">
+			<a>deliveryType</a>
+			<b>wareSkuId</b>
+		</field>
+		<field>
+			<a>price</a>
+			<b>warePrice</b>
+		</field>
+		<field>
+			<a>buyNum</a>
+			<b>wareCount</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v3_3_0.struct.newsell.AfterSalesSubOrderDto</class-a>
+		<class-b>com.qding.legou.domain.OrderGoods</class-b>
+		<field>
+			<a>skuName</a>
+			<b>wareName</b>
+		</field>
+		<field>
+			<a>buyNum</a>
+			<b>wareCount</b>
+		</field>
+		<field>
+			<a>subOrderCode</a>
+			<b>code</b>
+		</field>
+		<field>
+			<a>skuId</a>
+			<b>wareSkuId</b>
+		</field>
+		<field>
+			<a>orderCode</a>
+			<b>parentCode</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.order.domain.OrderReceiver</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.Addresses</class-b>
+		<field>
+			<a>receiverId</a>
+			<b>id</b>
+		</field>
+		<field>
+			<a>receiverName</a>
+			<b>name</b>
+		</field>
+		<field>
+			<a>receiverPhone</a>
+			<b>phone</b>
+		</field>
+		<field>
+			<a>receiverPhone</a>
+			<b>mobile</b>
+		</field>
+		<field>
+			<a>receiverAddress</a>
+			<b>address</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_4_0.struct.legou.order.request.GetRedeemCodeOrdersRequest</class-a>
+		<class-b>com.qding.legou.struct.request.GetMemberThirdCodesPageRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>page</b>
+		</field>
+		<field>
+			<a>pageSize</a>
+			<b>size</b>
+		</field>
+		<field>
+			<a>businessType</a>
+			<b>productNo</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.framework.common.service.order.ProductOrderBean</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.legou.goods.ProductOrderBean</class-b>
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderBtnSkipModelConvert">
+			<a>btnSkipList</a>
+			<b>btnSkipList</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_5_0.struct.legou.order.response.data.GetOrderResponseData</class-a>
+		<class-b>com.qding.legou.struct.response.GetOrderDetailByCodeResponse</class-b>
+		<field>
+			<a>entity</a>
+			<b>legouOrderDetailDto</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.framework.common.service.order.BtnSkipModel</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.legou.order.BtnSkip</class-b>
+		<field>
+			<a>btnName</a>
+			<b>btnName</b>
+		</field>
+		<field>
+			<a>skipUrl</a>
+			<b>skipModel</b>
+		</field>
+		<field>
+			<a>btnType</a>
+			<b>btnType</b>
+		</field>
+
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v3_1_1.struct.legou.order.InvoiceBean</class-a>
+		<class-b>com.qding.member.vo.MemberInvoiceVo</class-b>
+		<field>
+			<a>invoiceTitle</a>
+			<b>invoiceTitle</b>
+		</field>
+		<field>
+			<a>invoiceTaxId</a>
+			<b>code</b>
+		</field>
+		<field>
+			<a>invoiceReceiverEmail</a>
+			<b>email</b>
+		</field>
+		<field>
+			<a>invoiceType</a>
+			<b>invoiceType</b>
+		</field>
+		<field>
+			<a>objType</a>
+			<b>invoiceTitleType</b>
+		</field>
+		<field>
+			<a>isDefault</a>
+			<b>isDefault</b>
+		</field>
+	</mapping>
+
+</mappings>

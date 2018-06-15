@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+    	http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+       default-autowire="byName">
+
+	<dubbo:consumer filter="agent">
+	    <dubbo:parameter key="loglevel" value="10"/>
+	</dubbo:consumer>
+	 
+	<dubbo:reference id="iMessageService"  interface="com.qding.message.service.IMessageService"/>
+	
+	<!-- 供方结算合同 -->
+	<dubbo:reference id="contractRemote"  interface="com.qding.brick.remote.contract.ProductContractRemote"/>
+	<!-- 商品品类 -->
+	<dubbo:reference id="categoryRemote"  interface="com.qding.brick.remote.ware.CategoryRemote"/>
+	<!-- 平台商品 -->
+    <dubbo:reference id="brickWareRemote"  interface="com.qding.brick.remote.ware.WareRemoteService"/>
+    <dubbo:reference id="wareRemote"  interface="com.qding.brick.remote.ware.GeneralWareRemote"/>
+    <!-- 平台订单 -->
+    <dubbo:reference id="orderRemote"  interface="com.qding.order.service.IRemoteOrderService"/>
+    <!-- 平台订单-新 -->
+    <dubbo:reference id="orderSavingRemote"  interface="com.qding.order.service.IRemoteOrderSavingOptimizerService" timeout="50000"/>
+    
+    <!-- 本地rpc测试， 后面要删除  begin-->
+    <!-- <dubbo:reference id="policyRpc4Test"  interface="com.qding.insurance.rpc.IInsurancePolicyRpc" url="dubbo://192.168.25.1:21890/com.qding.insurance.rpc.IInsurancePolicyRpc"/>  -->
+    
+    <!-- 本地rpc测试， 后面要删除 end -->
+    
+
+    <bean id="messagePubService" class="com.qding.insurance.service.MessagePubService"  init-method="init">
+        <property name="imessageUrl">
+            <value>${imessage.hassion.url}</value>
+        </property>
+    </bean>
+     
+</beans>

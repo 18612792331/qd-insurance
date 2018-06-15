@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	
+	 <mapping>
+		<class-a>com.qding.api.call.app.qding.v4_0_0.struct.stage.request.CommitSendRequest</class-a>
+		<class-b>com.qding.stage.domain.ExpressInfo</class-b>
+		<field>
+			<a>logisticsId</a>
+			<b>qdCompanyId</b>
+		</field>
+		<field>
+			<a>logisticsName</a>
+			<b>qdCompanyName</b>
+		</field>
+		<field>
+			<a>goodsName</a>
+			<b>articleDesc</b>
+		</field>
+	</mapping> 
+	
+	 <mapping>
+		<class-a>com.qding.api.call.app.qding.v4_0_0.struct.stage.request.ModifyExpressRequest</class-a>
+		<class-b>com.qding.stage.domain.ExpressInfo</class-b>
+		<field>
+			<a>expressId</a>
+			<b>id</b>
+		</field>
+		<field>
+			<a>logisticsId</a>
+			<b>qdCompanyId</b>
+		</field>
+		<field>
+			<a>logisticsName</a>
+			<b>qdCompanyName</b>
+		</field>
+		<field>
+			<a>goodsName</a>
+			<b>articleDesc</b>
+		</field>
+	</mapping> 
+	
+	 <mapping>
+		<class-a>com.qding.stage.domain.ParcelInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v4_0_0.struct.stage.ParcelInfoDTO</class-b>
+		<field>
+			<a>logisticsCompanyName</a>
+			<b>logisticsName</b>
+		</field>
+		<field>
+			<a>putinTime</a>
+			<b>putTime</b>
+		</field>
+	</mapping>
+	
+	 <mapping>
+		<class-a>com.qding.stage.dto.ExpressInfoDto</class-a>
+		<class-b>com.qding.api.call.app.qding.v4_0_0.struct.stage.ExpressInfoDTO</class-b>
+		<field>
+			<a>qdCompanyName</a>
+			<b>logisticsName</b>
+		</field>
+	</mapping> 
+	
+	 <mapping>
+		<class-a>com.qding.api.call.app.qding.v4_0_0.struct.stage.response.GetSendDetailsResponseData</class-a>
+		<class-b>com.qding.stage.dto.ExpressInfoDto</class-b>
+		<field>
+			<a>expressId</a>
+			<b>id</b>
+		</field>
+		<field>
+			<a>logisticsId</a>
+			<b>qdCompanyId</b>
+		</field>
+		<field>
+			<a>logisticsName</a>
+			<b>qdCompanyName</b>
+		</field>
+		<field>
+			<a>goodsName</a>
+			<b>articleDesc</b>
+		</field>
+	</mapping> 
+	
+</mappings>  

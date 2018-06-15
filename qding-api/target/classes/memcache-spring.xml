@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    ">
+
+	<bean id="xmemcachedClientBuilder" name="xmemcachedClientBuilder" class="net.rubyeye.xmemcached.XMemcachedClientBuilder">
+		<constructor-arg>
+			<list>
+				<bean class="java.net.InetSocketAddress">
+					<constructor-arg>
+						<value>${server_1}</value>
+					</constructor-arg>
+					<constructor-arg>
+						<value>${port_1}</value>
+					</constructor-arg>
+				</bean>
+			</list>
+		</constructor-arg>
+		<constructor-arg>
+			<list>
+				<value>${priority_1}</value>
+			</list>
+		</constructor-arg>
+		<property name="connectionPoolSize" value="6" />
+		<property name="enableHealSession" value="false"/>
+		<property name="commandFactory">
+			<bean class="net.rubyeye.xmemcached.command.BinaryCommandFactory" />
+		</property>
+		<property name="sessionLocator">
+			<bean class="net.rubyeye.xmemcached.impl.KetamaMemcachedSessionLocator" />
+		</property>
+		<property name="transcoder">
+			<bean class="net.rubyeye.xmemcached.transcoders.SerializingTranscoder" />
+		</property>
+	</bean>
+
+	<bean id="xmemcachedClient" name="xmemcachedClient" factory-bean="xmemcachedClientBuilder"
+		factory-method="build" destroy-method="shutdown">
+		<property name="opTimeout" value="3000" />
+	</bean>
+
+    <bean name="xmemcacheDataSource" class="com.qding.framework.common.cache.MemCacheDataSource">
+          <property name="memcache" ref="xmemcachedClient" />
+    </bean>
+
+
+
+ </beans>   

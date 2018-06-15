@@ -1,0 +1,72 @@
+import org.junit.Before;
+import org.junit.Test;
+
+import com.alibaba.dubbo.config.ApplicationConfig;
+import com.alibaba.dubbo.config.RegistryConfig;
+import com.alibaba.fastjson.JSONObject;
+import com.qding.framework.common.api.struct.response.BaseResponse;
+import com.qding.framework.common.dubbo.QDDubboProxyFactory;
+import com.qding.insurance.rpc.IInsurancePolicyRpc;
+import com.qding.insurance.rpc.impl.InsurancePolicyRpcImpl;
+import com.qding.insurance.rpc.response.InsurancePolicyDetailInfoResponse;
+import com.qding.insurance.rpc.response.UserPolicyListResponse;
+import com.qding.insurance.rpc.response.ValidatePolicyByOrderIDResponse;
+
+
+public class IInsurancePolicyRpcTest {
+
+	IInsurancePolicyRpc policyRpc;
+
+	@Before
+	public void init() {
+		// 当前应用配置
+		ApplicationConfig application = new ApplicationConfig();
+		application.setName("policyRpc-test");
+		application.setOwner("");
+
+		// 连接注册中心配置
+		RegistryConfig registry = new RegistryConfig();
+		registry.setTimeout(10000);
+		registry.setProtocol("zookeeper");
+		registry.setAddress(" 10.37.251.221:2181,10.37.251.221:2182,10.37.251.222:2181");// dev
+		// registry.setAddress("10.37.253.31:2181,10.37.253.31:2182,10.37.253.31:2183");//qa
+
+		// QDDubboProxyFactory不能重用
+		policyRpc = (IInsurancePolicyRpc) new QDDubboProxyFactory(application, registry)
+				.create(IInsurancePolicyRpc.class, null);
+	}
+
+	// 根据订单信息核验保单并返回可理赔金额
+	@Test
+	public void validatePolicyByOrderIDTest() throws Exception {
+
+		ValidatePolicyByOrderIDResponse validatePolicyByOrderID = policyRpc.validatePolicyByOrderID("001");
+		System.out.println(JSONObject.toJSON(validatePolicyByOrderID));
+		
+	}
+
+	// 获取保单详情
+
+	@Test
+	public void getPolicyDetailInfoTest() throws Exception {
+
+		InsurancePolicyDetailInfoResponse policyDetailInfo = policyRpc.getPolicyDetailInfo(null);
+		System.out.println(JSONObject.toJSON(policyDetailInfo));
+	}
+
+	// 根据房屋ID获取房屋投保状态
+	@Test
+	public void getRoomInsureStatusByRoomIDTest() throws Exception {
+
+		BaseResponse roomInsureStatusByRoomID = policyRpc.getRoomInsureStatusByRoomID(null);
+		System.out.println(JSONObject.toJSON(roomInsureStatusByRoomID));
+	}
+
+	// 根据MID获取用户保单列表
+	@Test
+	public void getUserInsurancePolicyListTest() throws Exception {
+
+		UserPolicyListResponse userInsurancePolicyList = policyRpc.getUserInsurancePolicyList("MID003");
+		System.out.println(JSONObject.toJSON(userInsurancePolicyList));
+	}
+}

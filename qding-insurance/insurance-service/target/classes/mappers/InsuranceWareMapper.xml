@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.InsuranceWareMapper">
+  <resultMap id="BaseResultMap" type="com.qding.insurance.domain.InsuranceWare">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="brick_ware_id" jdbcType="BIGINT" property="brickWareId" />
+    <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="detail_image" jdbcType="VARCHAR" property="detailImage" />
+    <result column="category_id_1" jdbcType="BIGINT" property="categoryId1" />
+    <result column="category_id_2" jdbcType="BIGINT" property="categoryId2" />
+    <result column="category_id_3" jdbcType="BIGINT" property="categoryId3" />
+    <result column="min_effect_days" jdbcType="INTEGER" property="minEffectDays" />
+    <result column="max_effect_days" jdbcType="INTEGER" property="maxEffectDays" />
+    <result column="object_type" jdbcType="INTEGER" property="objectType" />
+    <result column="policy_type" jdbcType="INTEGER" property="policyType" />
+    <result column="online_time" jdbcType="TIMESTAMP" property="onlineTime" />
+    <result column="offline_time" jdbcType="TIMESTAMP" property="offlineTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="contract_id" jdbcType="VARCHAR" property="contractId" />
+    <result column="contract_name" jdbcType="VARCHAR" property="contractName" />
+    <result column="provider_id" jdbcType="VARCHAR" property="providerId" />
+    <result column="provider_name" jdbcType="VARCHAR" property="providerName" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="create_at" jdbcType="TIMESTAMP" property="createAt" />
+    <result column="to_audit_by" jdbcType="VARCHAR" property="toAuditBy" />
+    <result column="to_audit_at" jdbcType="TIMESTAMP" property="toAuditAt" />
+    <result column="audit_by" jdbcType="VARCHAR" property="auditBy" />
+    <result column="audit_at" jdbcType="TIMESTAMP" property="auditAt" />
+    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.qding.insurance.domain.InsuranceWareExtWithBLOBs">
+    <result column="subject_summary" jdbcType="VARCHAR" property="subjectSummary" />
+    <result column="notes" jdbcType="VARCHAR" property="notes" />
+    <result column="clause" jdbcType="VARCHAR" property="clause" />
+    <result column="agreement" jdbcType="VARCHAR" property="agreement" />
+    <result column="module_tile_1" jdbcType="VARCHAR" property="moduleTile1" />
+    <result column="module_tile_2" jdbcType="VARCHAR" property="moduleTile2" />
+    <result column="module_tile_3" jdbcType="VARCHAR" property="moduleTile3" />
+    <result column="guarantee_introduce" jdbcType="LONGVARCHAR" property="guaranteeIntroduce" />
+    <result column="guarantee_detail" jdbcType="LONGVARCHAR" property="guaranteeDetail" />
+    <result column="module_content_1" jdbcType="LONGVARCHAR" property="moduleContent1" />
+    <result column="module_content_2" jdbcType="LONGVARCHAR" property="moduleContent2" />
+    <result column="module_content_3" jdbcType="LONGVARCHAR" property="moduleContent3" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    ID, brick_ware_id, title, sub_title, image, detail_image, category_id_1, category_id_2, category_id_3, 
+    min_effect_days, max_effect_days, object_type, policy_type, online_time, offline_time, 
+    status, contract_id, contract_name, provider_id, provider_name, create_by, create_at, 
+    to_audit_by, to_audit_at, audit_by, audit_at, update_by, update_time
+  </sql>
+  <sql id="Blob_Column_List">
+    subject_summary, notes, clause, agreement, module_tile_1, module_tile_2, 
+    module_tile_3,  guarantee_introduce, guarantee_detail, module_content_1, module_content_2, module_content_3
+  </sql>
+  <select id="selectBlobById" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    w.ID, brick_ware_id,  title, sub_title, image, detail_image, category_id_1, category_id_2, category_id_3, 
+    min_effect_days, max_effect_days, object_type, policy_type, online_time, offline_time, 
+    status, contract_id, contract_name, provider_id, provider_name, create_by, create_at, 
+    to_audit_by, to_audit_at, audit_by, audit_at, update_by, update_time
+    ,
+    <include refid="Blob_Column_List" />
+    from insurance_ware w left join insurance_ware_ext e on w.id = e.id
+    where w.ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAllWareList"  resultMap="ResultMapWithBLOBs">
+    select 
+    w.ID, brick_ware_id,  title, sub_title, image, detail_image, category_id_1, category_id_2, category_id_3, 
+    min_effect_days, max_effect_days, object_type, policy_type, online_time, offline_time, 
+    status, contract_id, contract_name, provider_id, provider_name, create_by, create_at, 
+    to_audit_by, to_audit_at, audit_by, audit_at, update_by, update_time
+    ,
+    <include refid="Blob_Column_List" />
+    from insurance_ware w left join insurance_ware_ext e on w.id = e.id
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from insurance_ware
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from insurance_ware
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.qding.insurance.domain.InsuranceWare">
+    insert into insurance_ware (ID, title, sub_title, 
+      image, detail_image, category_id_1, 
+      category_id_2, category_id_3, min_effect_days, 
+      max_effect_days, object_type, policy_type, 
+      online_time, offline_time, status, 
+      contract_id, contract_name, provider_id, 
+      provider_name, create_by, create_at, 
+      to_audit_by, to_audit_at, audit_by, 
+      audit_at, update_by, update_time
+      )
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{subTitle,jdbcType=VARCHAR}, 
+      #{image,jdbcType=VARCHAR}, #{detailImage,jdbcType=VARCHAR}, #{categoryId1,jdbcType=BIGINT}, 
+      #{categoryId2,jdbcType=BIGINT}, #{categoryId3,jdbcType=BIGINT}, #{minEffectDays,jdbcType=INTEGER}, 
+      #{maxEffectDays,jdbcType=INTEGER}, #{objectType,jdbcType=INTEGER}, #{policyType,jdbcType=INTEGER}, 
+      #{onlineTime,jdbcType=TIMESTAMP}, #{offlineTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+      #{contractId,jdbcType=VARCHAR}, #{contractName,jdbcType=VARCHAR}, #{providerId,jdbcType=VARCHAR}, 
+      #{providerName,jdbcType=VARCHAR}, #{createBy,jdbcType=VARCHAR}, #{createAt,jdbcType=TIMESTAMP}, 
+      #{toAuditBy,jdbcType=VARCHAR}, #{toAuditAt,jdbcType=TIMESTAMP}, #{auditBy,jdbcType=VARCHAR}, 
+      #{auditAt,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qding.insurance.domain.InsuranceWare">
+    insert into insurance_ware
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="subTitle != null">
+        sub_title,
+      </if>
+      <if test="image != null">
+        image,
+      </if>
+      <if test="detailImage != null">
+        detail_image,
+      </if>
+      <if test="categoryId1 != null">
+        category_id_1,
+      </if>
+      <if test="categoryId2 != null">
+        category_id_2,
+      </if>
+      <if test="categoryId3 != null">
+        category_id_3,
+      </if>
+      <if test="minEffectDays != null">
+        min_effect_days,
+      </if>
+      <if test="maxEffectDays != null">
+        max_effect_days,
+      </if>
+      <if test="objectType != null">
+        object_type,
+      </if>
+      <if test="policyType != null">
+        policy_type,
+      </if>
+      <if test="onlineTime != null">
+        online_time,
+      </if>
+      <if test="offlineTime != null">
+        offline_time,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="contractId != null">
+        contract_id,
+      </if>
+      <if test="contractName != null">
+        contract_name,
+      </if>
+      <if test="providerId != null">
+        provider_id,
+      </if>
+      <if test="providerName != null">
+        provider_name,
+      </if>
+      <if test="createBy != null">
+        create_by,
+      </if>
+      <if test="createAt != null">
+        create_at,
+      </if>
+      <if test="toAuditBy != null">
+        to_audit_by,
+      </if>
+      <if test="toAuditAt != null">
+        to_audit_at,
+      </if>
+      <if test="auditBy != null">
+        audit_by,
+      </if>
+      <if test="auditAt != null">
+        audit_at,
+      </if>
+      <if test="updateBy != null">
+        update_by,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subTitle != null">
+        #{subTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="detailImage != null">
+        #{detailImage,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId1 != null">
+        #{categoryId1,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId2 != null">
+        #{categoryId2,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId3 != null">
+        #{categoryId3,jdbcType=BIGINT},
+      </if>
+      <if test="minEffectDays != null">
+        #{minEffectDays,jdbcType=INTEGER},
+      </if>
+      <if test="maxEffectDays != null">
+        #{maxEffectDays,jdbcType=INTEGER},
+      </if>
+      <if test="objectType != null">
+        #{objectType,jdbcType=INTEGER},
+      </if>
+      <if test="policyType != null">
+        #{policyType,jdbcType=INTEGER},
+      </if>
+      <if test="onlineTime != null">
+        #{onlineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="offlineTime != null">
+        #{offlineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null">
+        #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="contractName != null">
+        #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="providerId != null">
+        #{providerId,jdbcType=VARCHAR},
+      </if>
+      <if test="providerName != null">
+        #{providerName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null">
+        #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="toAuditBy != null">
+        #{toAuditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="toAuditAt != null">
+        #{toAuditAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditBy != null">
+        #{auditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="auditAt != null">
+        #{auditAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.InsuranceWare">
+    update insurance_ware
+    <set>
+       <if test="brickWareId != null">
+        brick_ware_id = #{brickWareId,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="subTitle != null">
+        sub_title = #{subTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="image != null">
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="detailImage != null">
+        detail_image = #{detailImage,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryId1 != null">
+        category_id_1 = #{categoryId1,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId2 != null">
+        category_id_2 = #{categoryId2,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId3 != null">
+        category_id_3 = #{categoryId3,jdbcType=BIGINT},
+      </if>
+      <if test="minEffectDays != null">
+        min_effect_days = #{minEffectDays,jdbcType=INTEGER},
+      </if>
+      <if test="maxEffectDays != null">
+        max_effect_days = #{maxEffectDays,jdbcType=INTEGER},
+      </if>
+      <if test="objectType != null">
+        object_type = #{objectType,jdbcType=INTEGER},
+      </if>
+      <if test="policyType != null">
+        policy_type = #{policyType,jdbcType=INTEGER},
+      </if>
+      <if test="onlineTime != null">
+        online_time = #{onlineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="offlineTime != null">
+        offline_time = #{offlineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null">
+        contract_id = #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="contractName != null">
+        contract_name = #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="providerId != null">
+        provider_id = #{providerId,jdbcType=VARCHAR},
+      </if>
+      <if test="providerName != null">
+        provider_name = #{providerName,jdbcType=VARCHAR},
+      </if>
+      <if test="createBy != null">
+        create_by = #{createBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createAt != null">
+        create_at = #{createAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="toAuditBy != null">
+        to_audit_by = #{toAuditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="toAuditAt != null">
+        to_audit_at = #{toAuditAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="auditBy != null">
+        audit_by = #{auditBy,jdbcType=VARCHAR},
+      </if>
+      <if test="auditAt != null">
+        audit_at = #{auditAt,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null">
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.InsuranceWare">
+    update insurance_ware
+    set title = #{title,jdbcType=VARCHAR},
+      sub_title = #{subTitle,jdbcType=VARCHAR},
+      image = #{image,jdbcType=VARCHAR},
+      detail_image = #{detailImage,jdbcType=VARCHAR},
+      category_id_1 = #{categoryId1,jdbcType=BIGINT},
+      category_id_2 = #{categoryId2,jdbcType=BIGINT},
+      category_id_3 = #{categoryId3,jdbcType=BIGINT},
+      min_effect_days = #{minEffectDays,jdbcType=INTEGER},
+      max_effect_days = #{maxEffectDays,jdbcType=INTEGER},
+      object_type = #{objectType,jdbcType=INTEGER},
+      policy_type = #{policyType,jdbcType=INTEGER},
+      online_time = #{onlineTime,jdbcType=TIMESTAMP},
+      offline_time = #{offlineTime,jdbcType=TIMESTAMP},
+      status = #{status,jdbcType=INTEGER},
+      contract_id = #{contractId,jdbcType=VARCHAR},
+      contract_name = #{contractName,jdbcType=VARCHAR},
+      provider_id = #{providerId,jdbcType=VARCHAR},
+      provider_name = #{providerName,jdbcType=VARCHAR},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      create_at = #{createAt,jdbcType=TIMESTAMP},
+      to_audit_by = #{toAuditBy,jdbcType=VARCHAR},
+      to_audit_at = #{toAuditAt,jdbcType=TIMESTAMP},
+      audit_by = #{auditBy,jdbcType=VARCHAR},
+      audit_at = #{auditAt,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="countByParam" parameterType="com.qding.insurance.param.InsuranceWareParam" resultType="java.lang.Integer">
+        select count(1) 
+        from insurance_ware iw
+        where 1 = 1  
+        <if test="cityId != null" >
+            and exists (select 1 from insurance_project ip where iw.id = ip.ware_id and ip.city_id = #{cityId})
+        </if>
+        <if test="projectId != null" >
+            and exists (select 1 from insurance_project ip where iw.id = ip.ware_id and ip.project_id = #{projectId})
+        </if>
+        <if test="wareId != null" >
+            and iw.ID = #{wareId} 
+        </if>
+        <if test="wareTitle != null" >
+            and iw.title like CONCAT('%',#{wareTitle},'%') 
+        </if>
+        <if test="skuId != null" >
+            and exists (select 1 from insurance_sku sku where iw.id = sku.ware_id and sku.ID = #{skuId})
+        </if>
+        <if test="wareStatus != null" >
+            and iw.status = #{wareStatus} 
+        </if>
+        <if test="objectType != null" >
+            and iw.object_type = #{objectType} 
+        </if>
+        <if test="providerId != null" >
+            and iw.provider_id = #{providerId} 
+        </if>
+        <if test="categoryId != null" >
+            and iw.category_id_1 = #{categoryId} 
+        </if>
+        <if test="updateAtBegin != null" >
+            <![CDATA[ and iw.update_time >= #{updateAtBegin} ]]>
+        </if>
+        <if test="updateAtEnd != null" >
+            <![CDATA[ and iw.update_time <= #{updateAtEnd} ]]>
+        </if>
+  </select>
+  <select id="selectByParam" parameterType="com.qding.insurance.param.InsuranceWareParam" resultMap="BaseResultMap">
+        select  iw.* 
+        from insurance_ware iw 
+        where 1 = 1  
+        <if test="cityId != null" >
+            and exists (select 1 from insurance_project ip where iw.id = ip.ware_id and ip.city_id = #{cityId})
+        </if>
+        <if test="projectId != null" >
+            and exists (select 1 from insurance_project ip where iw.id = ip.ware_id and ip.project_id = #{projectId})
+        </if>
+        <if test="wareId != null" >
+            and iw.ID = #{wareId} 
+        </if>
+        <if test="wareTitle != null" >
+            and iw.title like CONCAT('%',#{wareTitle},'%')
+        </if>
+        <if test="skuId != null" >
+            and exists (select 1 from insurance_sku sku where iw.id = sku.ware_id and sku.ID = #{skuId})
+        </if>
+        <if test="wareStatus != null" >
+            and iw.status = #{wareStatus} 
+        </if>
+        <if test="objectType != null" >
+            and iw.object_type = #{objectType} 
+        </if>
+        <if test="providerId != null" >
+            and iw.provider_id = #{providerId} 
+        </if>
+        <if test="categoryId != null" >
+            and iw.category_id_1 = #{categoryId} 
+        </if>
+        <if test="updateAtBegin != null" >
+            <![CDATA[ and iw.update_time >= #{updateAtBegin} ]]>
+        </if>
+        <if test="updateAtEnd != null" >
+            <![CDATA[ and iw.update_time <= #{updateAtEnd} ]]>
+        </if>
+        order by iw.update_time desc 
+        <if test="page != null and size != null" >
+            limit #{offset},#{size} 
+        </if>
+  </select>
+</mapper>

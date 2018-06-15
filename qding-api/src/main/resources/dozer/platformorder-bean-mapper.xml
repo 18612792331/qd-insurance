@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v2_0_0.struct.platform.order.PlatformOrder</class-a>
+		<class-b>com.qding.oder.dto.OrderDetailDto</class-b>
+
+		<field>
+			<a>orderDelivery</a>
+			<b>orderReceiver</b>
+		</field>
+		<field>
+			<a>orderGoods</a>
+			<b>subOrderList</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.OrderShouldPayConvert">
+			<a>orderBase.shouldPay</a>
+			<b>orderBase</b>
+		</field>
+
+		<field>
+			<a>orderBase</a>
+			<b>orderBase</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderOrderPromotionConvert">
+			<a>orderPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderGoodsPromotionConvert">
+			<a>goodsPromotiones</a>
+			<b>promotionList</b>
+		</field>
+
+		<field custom-converter="com.qding.api.dozer.convert.legou.order.ConfirmOrderCouponCodePromotionConvert">
+			<a>couponCodePromotion</a>
+			<b>promotionList</b>
+		</field>
+
+	</mapping>
+
+</mappings>  

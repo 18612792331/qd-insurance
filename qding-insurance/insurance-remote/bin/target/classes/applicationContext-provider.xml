@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        ">
+	
+    <!--dubbo配置-->
+    <dubbo:protocol name="${dubbo.protocol.name}" threadpool="cached" threads="${dubbo.protocol.threads}" port="${dubbo.protocol.port}"/>
+    <dubbo:provider filter="tracelog">
+        <dubbo:parameter key="loglevel" value="10"/>
+    </dubbo:provider>
+    
+    <dubbo:service interface="com.qding.insurance.rpc.IInsurancePolicyRpc" ref="policyRpc" timeout="5000"  retries="0"/>
+    <dubbo:service interface="com.qding.insurance.rpc.ICompensateRecordRpc" ref="compensateRecordRpc" timeout="5000"  retries="0"/>
+    <dubbo:service interface="com.qding.insurance.rpc.IInsuranceOrderRpcService" ref="insuranceOrderRpc" timeout="5000"  retries="0"/>
+    <!-- 远程调度服务接口 -->
+    <bean name="/schedule" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="scheduleService"/>
+        <property name="serviceInterface" value="com.qding.schedule.common.hessian.IScheduleRPCService"/>
+    </bean>
+
+</beans>  

@@ -1,0 +1,53 @@
+[
+  {
+    "version": "2.0.0",
+    "methods": [
+      {
+        "serviceAlias": "project",
+        "methodName": "index",
+        "body":
+          {
+            "appDevice": {
+              "qdDevice": "iPhone 6",
+              "qdPlatform": "iOS",
+              "qdVersion": "2.0.0"
+            },
+            "projectId": "643",
+            "salePlatform": 1
+          }
+      },
+     {
+          "serviceAlias": "project",
+          "methodName": "getRecommendGoods",
+          "body":
+            {
+              "appDevice": {
+                "qdDevice": "iPhone 6",
+                "qdPlatform": "iOS",
+                "qdVersion": "2.0.0"
+              },
+                "projectId" : "643",
+                "pageNo":1,
+                "pageSize":10,
+            }
+        },
+        {
+           "serviceAlias": "project",
+           "methodName": "getBoardBySectionIdAndProjectId",
+           "body":
+             {
+               "appDevice": {
+                 "qdDevice": "iPhone 6",
+                 "qdPlatform": "iOS",
+                 "qdVersion": "2.0.0"
+               },
+                "pageNo":1,
+                "pageSize":10,
+                "projectId":"643",
+                "sectionId":1
+             }
+         }
+
+    ]
+  }
+]

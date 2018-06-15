@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	
+	 <mapping>
+		<class-a>com.qding.sysconfig.dto.IndexRecommendDTO</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_0_0.struct.project.BoardTmplBean</class-b>
+		<field>
+			<a>uiTempType</a>
+			<b>uiTempType</b>
+		</field>
+		 <field>
+			 <a>title</a>
+			 <b>title</b>
+		 </field>
+		 <field>
+			 <a>subTitle</a>
+			 <b>desc</b>
+		 </field>
+	</mapping>
+
+</mappings>

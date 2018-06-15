@@ -1,0 +1,12 @@
+package com.qding.insurance.rpc.response;
+
+import com.qding.framework.common.api.struct.response.BaseResponse;
+
+public class InsuranceOrderDetailResponse extends BaseResponse{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7044784169954946437L;
+
+}

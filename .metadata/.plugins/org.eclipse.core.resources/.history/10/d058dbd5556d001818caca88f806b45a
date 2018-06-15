@@ -1,0 +1,132 @@
+package com.qding.insurance.service.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.druid.util.StringUtils;
+import com.qding.framework.common.basemodel.ResultPage;
+import com.qding.insurance.dao.InsurancePolicyMapper;
+import com.qding.insurance.domain.InsurancePolicy;
+import com.qding.insurance.domain.InsuranceWare;
+import com.qding.insurance.param.InsurancePolicyParam;
+import com.qding.insurance.service.IInsurancePolicyService;
+import com.qding.insurance.util.Constant;
+import com.qding.insurance.vo.InsurancePolicyDetailInfo;
+import com.qding.insurance.vo.InsurancePolicyInfo;
+import com.qding.insurance.vo.InsurancePolicyPageResult;
+import com.qding.insurance.vo.PolicyGuaranteePlanBalanceInfo;
+import com.qding.insurance.vo.RoomInsureStatusInfo;
+
+@Service("insurancePolicyService")
+public class InsurancePolicyServiceImpl implements IInsurancePolicyService {
+
+	@Autowired
+	private InsurancePolicyMapper insurancePolicyMapper;
+
+	@Override
+	public ResultPage<InsurancePolicyPageResult> getResultPage(InsurancePolicyParam param) {
+		ResultPage<InsurancePolicyPageResult> resultPage = null;
+		// 查询总数
+		Integer totalCount = insurancePolicyMapper.countByParam(param);
+		// 查询列表
+		List<InsurancePolicyPageResult> list = insurancePolicyMapper.selectByParam(param);
+
+		resultPage = new ResultPage<InsurancePolicyPageResult>(totalCount, param.getSize(), param.getPage(), list);
+
+		return resultPage;
+	}
+
+	@Override
+	public InsurancePolicy getResultById(String id) {
+		return insurancePolicyMapper.selectByPrimaryKey(id);
+
+	}
+
+	@Override
+	public String getPolicyUrlById(String id) {
+
+		InsurancePolicy policy = insurancePolicyMapper.selectByPrimaryKey(id);
+		String policyUrl = null;
+		// 电子保单地址为空
+		if (null != policy) {
+
+			if (StringUtils.isEmpty(policy.getPolicyUrl())) {
+				// TODO ****去PICC查询电子保单地址****
+				policyUrl = "http://piccpiccpiccpiccpicc.com";
+				policy.setPolicyUrl(policyUrl);
+				insurancePolicyMapper.updateByPrimaryKey(policy);
+			}
+
+			policyUrl = policy.getPolicyUrl();
+		}
+
+		return policyUrl;
+	}
+
+	@Override
+	public PolicyGuaranteePlanBalanceInfo getBalanceInfo(String id) {
+
+		PolicyGuaranteePlanBalanceInfo balanceInfo = insurancePolicyMapper.getBalanceInfo(id);
+
+		return balanceInfo;
+	}
+
+	@Override
+	public InsurancePolicy getResultByOrderID(String orderID) {
+		return insurancePolicyMapper.getResultByOrderID(orderID);
+	}
+
+	@Override
+	public List<RoomInsureStatusInfo> getRoomInsureStatusByRoomID(String roomID) {
+		return insurancePolicyMapper.getRoomInsureStatusByRoomID(roomID);
+	}
+
+	@Override
+	public List<InsurancePolicyInfo> getUserInsurancePolicyList(String userMid) {
+		return insurancePolicyMapper.getUserInsurancePolicyList(userMid);
+	}
+
+	@Override
+	public InsurancePolicyDetailInfo getInsurancePolicyDetailInfo(String id) {
+		return insurancePolicyMapper.getInsurancePolicyDetailInfo(id);
+	}
+
+	@Override
+	public InsurancePolicy getResultByRoomID(String roomID) {
+		return insurancePolicyMapper.getResultByRoomID(roomID);
+	}
+	@Override
+	public void policyAct() {
+		
+		List<InsurancePolicy> list = insurancePolicyMapper.selectByStatus(Constant.POLICY_STATUS_UNENFORCED);
+		
+		 for(InsurancePolicy policy : list){
+	            if(policy.getActAt().before(new Date())){
+	                policy.setStatus(Constant.POLICY_STATUS_ENFORCED);
+	                insurancePolicyMapper.updateByPrimaryKeySelective(policy);
+	                
+	            }
+	        }
+		
+		
+	}
+
+	@Override
+	public void policyExpire() {
+		List<InsurancePolicy> list = insurancePolicyMapper.selectByStatus(Constant.POLICY_STATUS_ENFORCED);
+		
+		 for(InsurancePolicy policy : list){
+	            if(policy.getExpireAt().before(new Date())){
+	                policy.setStatus(Constant.POLICY_STATUS_WASDUE);
+	                insurancePolicyMapper.updateByPrimaryKeySelective(policy);
+	                
+	            }
+	        }
+		
+		
+	}
+
+}

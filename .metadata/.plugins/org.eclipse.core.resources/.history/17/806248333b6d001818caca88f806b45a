@@ -1,0 +1,60 @@
+package com.qding.insurance.util;
+
+import com.qding.framework.common.uuid.UUIDGenerator;
+
+public final class Constant {
+
+	public static final UUIDGenerator ID_GENERATOR = new UUIDGenerator("qding_insurance");
+
+	public static final Integer YES = 1;
+	public static final Integer NO = 0;
+	public static final String YES_STRING = "1";
+	public static final String NO_STRING = "0";
+
+	public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+	/**
+	 * 保险产品状态
+	 */
+	public static final Integer WARE_STATUS_UNAUDIT = 1; // 未审核
+	public static final Integer WARE_STATUS_TOAUDIT = 2; // 审核中
+	public static final Integer WARE_STATUS_AUDIT_FAIL = 3; // 审核未通过
+	public static final Integer WARE_STATUS_AUDIT_OK = 4; // 审核通过
+	public static final Integer WARE_STATUS_ONLINE = 5; // 已上架
+	public static final Integer WARE_STATUS_OFFLINE = 6; // 已下架
+
+	/**
+	 * 保险订单状态
+	 */
+	public static final Integer ORDER_STATUS_UNAPAID = 1; // 未支付
+	public static final Integer ORDER_STATUS_PAID = 2; // 已支付
+	public static final Integer ORDER_STATUS_FINISHED = 3; // 已完成
+	public static final Integer ORDER_STATUS_CANCELED = 4; // 已取消
+
+	/**
+	 * 社区类型
+	 */
+	public static final String PROJECT_TYPE_LONGFOR = "project_longfor"; // 龙湖社区
+	public static final String PROJECT_TYPE_NOT_LONGFOR = "project_notlongfor"; // 龙湖社区
+
+	/**
+	 * 款式类型
+	 */
+	public static final String STYLE_TYPE_ONE = "style_1";
+	public static final String STYLE_TYPE_TWO = "style_2";
+	public static final String STYLE_TYPE_THREE = "style_3";
+
+	/**
+	 * 保障期限类型
+	 */
+	public static final String TIME_TYPE_ONE_YEAR = "time_1Y";
+	public static final String TIME_TYPE_TWO_YEAR = "time_2Y";
+	public static final String TIME_TYPE_THREE_YEAR = "time_3Y";
+	/**
+	 * 理赔记录状态 1：已锁定，2：已完成，3：已撤销 4.待授权
+	 */
+	public static final Integer COMPENSATERECORD_STATUS_LOCKED = 1; // 已锁定
+	public static final Integer COMPENSATERECORD_STATUS_FINISHED = 2; // 已完成
+	public static final Integer COMPENSATERECORD_STATUS_CANCELED = 3; // 已撤销
+	public static final Integer COMPENSATERECORD_STATUS_UNAUTHOR = 4; // 已锁定
+}

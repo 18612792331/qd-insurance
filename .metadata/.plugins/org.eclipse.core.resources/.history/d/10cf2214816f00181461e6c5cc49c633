@@ -1,0 +1,27 @@
+package com.qding.api.call.app.qding.v4_1_0.struct.insurance.response.data;
+
+import java.io.Serializable;
+/**
+ * 存放投保人与被保险人基础信息
+ * @author tgao
+ *
+ */
+public class MemberAndInsurantInfo  implements Serializable{
+
+	private static final long serialVersionUID = -6509612743726846713L;
+	
+	private String memberName; //投保人  姓名
+	
+	private String memberPhone; //投保人  手机号
+
+    private String memberIdcard; //投保人  身份证号码
+    
+    private String insurantName; //被保险人 姓名
+    
+    private String insurantPhone; //被保险人 手机号
+
+    private String insurantIdcard; //被保险人 身份证号码
+    
+    private String insurantRelation;  //投保人与被保险人关系
+
+}

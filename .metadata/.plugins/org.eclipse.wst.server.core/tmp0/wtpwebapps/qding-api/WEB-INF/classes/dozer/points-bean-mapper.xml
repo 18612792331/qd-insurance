@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+  	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_2.struct.points.request.PointsDetailRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.IntegralDetailRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>pageno</b>
+		</field>
+		<field>
+			<a>pageSize</a>
+			<b>pagesize</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_2.struct.points.request.PointsExpendDetailRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.IntegralDetailRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>pageno</b>
+		</field>
+		<field>
+			<a>pageSize</a>
+			<b>pagesize</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_2.struct.points.request.PointsRevenueDetailRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.IntegralDetailRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>pageno</b>
+		</field>
+		<field>
+			<a>pageSize</a>
+			<b>pagesize</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.useraccount.struct.response.IntegralDetailResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_2.struct.points.response.data.PointsDetailResponseData</class-b>
+		<field>
+			<a>total</a>
+			<b>totalCount</b>
+		</field>
+		<field>
+			<a>details</a>
+			<b>list</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.useraccount.struct.response.IntegralDetailResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_2.struct.points.response.data.PointsExpendDetailResponseData</class-b>
+		<field>
+			<a>total</a>
+			<b>totalCount</b>
+		</field>
+		<field>
+			<a>details</a>
+			<b>list</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.useraccount.struct.response.IntegralDetailResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_2.struct.points.response.data.PointsRevenueDetailResponseData</class-b>
+		<field>
+			<a>total</a>
+			<b>totalCount</b>
+		</field>
+		<field>
+			<a>details</a>
+			<b>list</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.useraccount.struct.IntegralDetailInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_2.struct.points.PointsDetail</class-b>
+		<field>
+			<a>businessId</a>
+			<b>detailId</b>
+		</field>
+		<field>
+			<a>memberId</a>
+			<b>memberId</b>
+		</field>
+		<field>
+			<a>optIntegralNum</a>
+			<b>optPoints</b>
+		</field>
+		<field>
+			<a>availableIntegralNum</a>
+			<b>surplusPoints</b>
+		</field>
+		<field>
+			<a>businessName</a>
+			<b>productName</b>
+		</field>
+		<field>
+			<a>optTime</a>
+			<b>optTime</b>
+		</field>
+		<field>
+			<a>businessType</a>
+			<b>productNo</b>
+		</field>
+		<field>
+			<a>optType</a>
+			<b>optType</b>
+		</field>
+
+	</mapping>
+
+</mappings>  

@@ -1,0 +1,665 @@
+package com.qding.insurance.service.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alibaba.druid.util.StringUtils;
+import com.qding.framework.common.basemodel.ResultPage;
+import com.qding.insurance.dao.CompensateRecordMapper;
+import com.qding.insurance.dao.PolicyGuaranteeItemMapper;
+import com.qding.insurance.dao.PolicyGuaranteePlanMapper;
+import com.qding.insurance.domain.CompensateRecord;
+import com.qding.insurance.domain.PolicyGuaranteeItem;
+import com.qding.insurance.domain.PolicyGuaranteePlan;
+import com.qding.insurance.param.CompensateRecordParam;
+import com.qding.insurance.service.ICompensateRecordService;
+import com.qding.insurance.service.MessagePubService;
+import com.qding.insurance.util.Constant;
+import com.qding.insurance.vo.CompensateRecordPageResult;
+import com.qding.insurance.vo.CompensateRecordResult;
+import com.qding.insurance.vo.CompensateRecordVo;
+import com.qding.insurance.vo.UpdateDataStatusFinishedRequest;
+
+@Service("compensateRecordService")
+public class CompensateRecordServiceImpl implements ICompensateRecordService {
+
+	@Autowired
+	private CompensateRecordMapper compensateRecordMapper;
+	@Autowired
+	private PolicyGuaranteePlanMapper policyGuaranteePlanMapper;
+	@Autowired
+	private PolicyGuaranteeItemMapper policyGuaranteeItemMapper;
+	@Autowired
+	private MessagePubService messagePubService;
+
+	@Override
+	public List<CompensateRecord> getResultByPolicyId(String policyId) {
+
+		return compensateRecordMapper.selectResultByPolicyId(policyId);
+	}
+
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	public void insertCompensateRecord(CompensateRecord compensateRecordrec) throws Exception {
+		if (null != compensateRecordrec) {
+
+			// 检查必要参数: 订单ID 保障内容ID 记录状态
+			Boolean mustParam = !StringUtils.isEmpty(compensateRecordrec.getGuaranteeItemId())
+					&& !StringUtils.isEmpty(compensateRecordrec.getPolicyId())
+					&& null != compensateRecordrec.getStatus();
+
+			if (mustParam) {
+
+				// 理赔状态，1：已锁定，2：已完成，3：已撤销 4.待授权
+				Integer status = compensateRecordrec.getStatus();
+
+				// 单证保障权益
+				PolicyGuaranteePlan policyGuaranteePlan;
+
+				// 单证保障内容
+				PolicyGuaranteeItem policyGuaranteeItem;
+
+				policyGuaranteePlan = policyGuaranteePlanMapper.selectByguaranteeItemId(
+						compensateRecordrec.getGuaranteeItemId(), compensateRecordrec.getPolicyId());
+				policyGuaranteeItem = policyGuaranteeItemMapper
+						.selectByPrimaryKey(compensateRecordrec.getGuaranteeItemId());
+
+				if (policyGuaranteePlan == null) {
+					throw new Exception("单证保障权益获取失败");
+				}
+				if (policyGuaranteeItem == null) {
+					throw new Exception("单证保证内容获取失败");
+				}
+				// 理赔方式
+				Integer compensateType = policyGuaranteeItem.getCompensateType();
+
+				// 根据单证ID和保障内容ID 查询理赔记录,如果有已锁定状态的理赔记录,才能添加已完成  已撤销的记录
+
+				List<String> hasLocked = compensateRecordMapper.selectByPolicyIdAndGuaranteeItemId(
+						compensateRecordrec.getPolicyId(), compensateRecordrec.getGuaranteeItemId());
+
+				// 已锁定
+				if (status == Constant.COMPENSATERECORD_STATUS_LOCKED) {
+
+					// 权益值为-1 → 无限理赔
+					if (Integer
+							.valueOf(policyGuaranteePlan.getRightValue()) == Constant.COMPENSATERECORD_INFINITETIME) {
+
+						// 添加理赔记录
+						if (compensateRecordrec.getId() == null) {
+							compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+						}
+
+						compensateRecordrec.setCreateAt(new Date());
+						compensateRecordMapper.insertSelective(compensateRecordrec);
+
+					} else {
+
+						// 理赔方式 - 按金额
+						if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_MONEY) {
+
+							// 剩余权益数 判断
+							double balance = Double.valueOf(policyGuaranteePlan.getBalanceValue())
+									- Double.valueOf(compensateRecordrec.getPaidMoney());
+							if (balance >= 0) {
+
+								// 锁定值
+								policyGuaranteePlan.setLockValue(compensateRecordrec.getPaidMoney());
+								// 剩余值
+								policyGuaranteePlan.setBalanceValue(balance + "");
+								policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+								if (compensateRecordrec.getId() == null) {
+									compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+								}
+
+								compensateRecordrec.setCreateAt(new Date());
+								compensateRecordMapper.insertSelective(compensateRecordrec);
+
+							} else {
+								throw new Exception("权益值不足");
+							}
+
+							// 理赔方式 - 按次数
+						} else if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_TIME) {
+							// 权益值为-1 → 无限理赔
+							if (Integer.valueOf(
+									policyGuaranteePlan.getRightValue()) == Constant.COMPENSATERECORD_INFINITETIME) {
+
+								if (compensateRecordrec.getId() == null) {
+									compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+								}
+
+								compensateRecordrec.setCreateAt(new Date());
+								compensateRecordMapper.insertSelective(compensateRecordrec);
+
+							} else {
+								// 剩余权益数 判断
+								Integer balance = Integer.valueOf(policyGuaranteePlan.getBalanceValue())
+										- Integer.valueOf(compensateRecordrec.getPaidMoney());
+								if (balance >= 0) {
+
+									// 单证保障权利
+									policyGuaranteePlan.setLockValue(compensateRecordrec.getPaidMoney());
+									policyGuaranteePlan.setBalanceValue(balance + "");
+									policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+									if (compensateRecordrec.getId() == null) {
+										compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+									}
+									compensateRecordrec.setCreateAt(new Date());
+									compensateRecordMapper.insertSelective(compensateRecordrec);
+
+								} else {
+									throw new Exception("权益值不足");
+								}
+
+							}
+						}
+
+					}
+					// 已完成
+				} else if (status == Constant.COMPENSATERECORD_STATUS_FINISHED) {
+
+					if (hasLocked != null && hasLocked.size() > 0) {
+
+						// 权益值为-1 → 无限理赔
+						if (Integer.valueOf(
+								policyGuaranteePlan.getRightValue()) == Constant.COMPENSATERECORD_INFINITETIME) {
+
+							// 添加理赔记录
+							if (compensateRecordrec.getId() == null) {
+								compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+							}
+
+							compensateRecordrec.setCreateAt(new Date());
+							compensateRecordMapper.insertSelective(compensateRecordrec);
+
+						} else {
+							// 理赔方式 - 按金额
+							if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_MONEY) {
+
+								Double lockValue = Double.valueOf(policyGuaranteePlan.getLockValue());
+								// 锁定值清零
+								policyGuaranteePlan.setLockValue(0 + "");
+								// 已理赔数
+								Double paidValue = Double.valueOf(policyGuaranteePlan.getPaidValue());
+								policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+								policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+								// 添加理赔记录
+								compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+								compensateRecordrec.setCreateAt(new Date());
+								compensateRecordMapper.insertSelective(compensateRecordrec);
+
+								// 理赔方式 - 按次数
+							} else if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_TIME) {
+
+								Integer lockValue = Integer.valueOf(policyGuaranteePlan.getLockValue());
+								// 锁定值清零
+								policyGuaranteePlan.setLockValue(0 + "");
+								// 已理赔数
+								Integer paidValue = Integer.valueOf(policyGuaranteePlan.getPaidValue());
+								policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+
+								policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+								// 添加理赔记录
+								compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+								compensateRecordMapper.insertSelective(compensateRecordrec);
+
+							}
+
+						}
+
+					} else {
+						throw new Exception("参数有误-没有已锁定状态的理赔记录,不能添加已完成记录");
+					}
+
+					// 已撤销
+				} else if (status == Constant.COMPENSATERECORD_STATUS_CANCELED) {
+
+					if (hasLocked != null && hasLocked.size() > 0) {
+
+						// 权益值为-1 → 无限理赔
+						if (Integer.valueOf(
+								policyGuaranteePlan.getRightValue()) == Constant.COMPENSATERECORD_INFINITETIME) {
+
+							// 添加理赔记录
+							if (compensateRecordrec.getId() == null) {
+								compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+							}
+
+							compensateRecordrec.setCreateAt(new Date());
+							compensateRecordMapper.insertSelective(compensateRecordrec);
+
+						} else {
+
+							// 理赔方式 - 按金额
+							if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_MONEY) {
+
+								Double lockValue = Double.valueOf(policyGuaranteePlan.getLockValue());
+								// 锁定值清零
+								policyGuaranteePlan.setLockValue(0 + "");
+								// 剩余权益数
+								Double balanceValue = Double.valueOf(policyGuaranteePlan.getBalanceValue());
+								policyGuaranteePlan.setPaidValue((balanceValue + lockValue) + "");
+
+								policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+								// 添加理赔记录
+								compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+								compensateRecordrec.setCreateAt(new Date());
+								compensateRecordMapper.insertSelective(compensateRecordrec);
+
+								// 理赔方式 - 按次数
+							} else if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_TIME) {
+
+								Integer lockValue = Integer.valueOf(policyGuaranteePlan.getLockValue());
+								// 锁定值清零
+								policyGuaranteePlan.setLockValue(0 + "");
+								// 剩余权益数
+								Integer balanceValue = Integer.valueOf(policyGuaranteePlan.getBalanceValue());
+								policyGuaranteePlan.setPaidValue((balanceValue + lockValue) + "");
+
+								policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+								// 添加理赔记录
+								compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+								compensateRecordMapper.insertSelective(compensateRecordrec);
+
+							}
+
+						}
+
+					} else {
+						throw new Exception("参数有误-没有已锁定状态的理赔记录,不能添加已撤销记录");
+					}
+
+					// 待授权
+				} else if (status == Constant.COMPENSATERECORD_STATUS_UNAUTHOR) {
+					if (Double.valueOf(policyGuaranteePlan.getBalanceValue()) < 10000) {
+						throw new Exception("待授权状态的理赔记录只能是金额>1000的");
+					}
+					// 理赔方式 - 按金额
+					if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_MONEY) {
+
+						// 剩余权益数 判断
+						double balance = Double.valueOf(policyGuaranteePlan.getBalanceValue())
+								- Double.valueOf(compensateRecordrec.getPaidMoney());
+						if (balance >= 0) {
+
+							// 锁定值
+							policyGuaranteePlan.setLockValue(compensateRecordrec.getPaidMoney());
+							// 剩余值
+							policyGuaranteePlan.setBalanceValue(balance + "");
+							policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+							if (compensateRecordrec.getId() == null) {
+								compensateRecordrec.setId(Constant.ID_GENERATOR.generate());
+							}
+
+							compensateRecordrec.setCreateAt(new Date());
+							compensateRecordMapper.insertSelective(compensateRecordrec);
+
+						} else {
+							throw new Exception("权益值不足");
+						}
+
+						// 理赔方式 - 按次数
+					} else if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_TIME) {
+
+						throw new Exception("待授权状态的理赔记录只能是金额>10000的");
+
+					}
+
+				} else {
+					throw new Exception("参数有误-状态有误");
+				}
+
+			} else {
+
+				throw new Exception("参数异常-缺少必要参数");
+			}
+		}
+
+	}
+
+	@Override
+	public ResultPage<CompensateRecordPageResult> getResultPage(CompensateRecordParam param) {
+
+		ResultPage<CompensateRecordPageResult> resultPage = null;
+		// 查询总数
+		Integer totalCount = compensateRecordMapper.countByParam(param);
+		// 查询列表
+		List<CompensateRecordPageResult> list = compensateRecordMapper.selectByParam(param);
+
+		resultPage = new ResultPage<CompensateRecordPageResult>(totalCount, param.getSize(), param.getPage(), list);
+
+		return resultPage;
+	}
+
+	@Override
+	public CompensateRecord findById(String id) {
+		return compensateRecordMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public void updateDataStatus(String id, int dataStatus) throws Exception {
+	    // TODO 判断逻辑错误  应为：数据同步状态[未同步] && 理赔状态[已完成] && 理赔性质[自授权 or PICC授权],注意原型上的说明！
+		if (dataStatus != Constant.COMPENSATERECORD_DATASTATUS_UNSYNC && dataStatus != Constant.COMPENSATERECORD_DATASTATUS_SYNCED) {
+			throw new Exception("数据状态错误");
+		}
+		
+		// TODO 数据状态只能由未同步变更为已同步，需增加约束
+		compensateRecordMapper.updateDataStatus(id, dataStatus);
+
+	}
+
+	/**
+	 * TODO
+	 * 重写，逻辑参照 InsurancePolicyRpcImpl.finishCompensate
+	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Override
+	public void updateDataStatusFinished(UpdateDataStatusFinishedRequest request) throws Exception {
+		CompensateRecord compensateRecord = compensateRecordMapper.selectByPrimaryKey(request.getId());
+		Integer status = compensateRecord.getStatus();
+
+		// 已锁定状态
+		if (status == Constant.COMPENSATERECORD_STATUS_LOCKED) {
+			// 单证保障权益
+			PolicyGuaranteePlan policyGuaranteePlan = policyGuaranteePlanMapper
+					.selectByguaranteeItemId(compensateRecord.getGuaranteeItemId(), compensateRecord.getPolicyId());
+			// 单证保障内容
+			PolicyGuaranteeItem policyGuaranteeItem = policyGuaranteeItemMapper
+					.selectByPrimaryKey(compensateRecord.getGuaranteeItemId());
+
+			// 理赔方式
+			Integer compensateType = policyGuaranteeItem.getCompensateType();
+			CompensateRecord record = compensateRecordMapper.selectByPrimaryKey(request.getId());
+			// 理赔方式 - 按金额
+			if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_MONEY) {
+
+				Double lockValue = Double.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 已理赔数
+				Double paidValue = Double.valueOf(policyGuaranteePlan.getPaidValue());
+				policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(request.getId(), Constant.COMPENSATERECORD_STATUS_FINISHED);
+				
+				if(request.getReportNo()!=null && request.getReportNo()!=""){
+					record.setReportNo(request.getReportNo());
+				}
+				record.setContactName(request.getContactName());
+				record.setContactPhone(request.getContactPhone());
+				record.setHappenAt(request.getHappenAt());
+				record.setPaidMoney(record.getPaidMoney());
+				record.setStatus(Constant.COMPENSATERECORD_STATUS_FINISHED);
+				record.setDataStatus(Constant.COMPENSATERECORD_DATASTATUS_SYNCED);
+				
+				if(request.getAccidentMemo()!=null && request.getAccidentMemo()!=""){
+					record.setAccidentMemo(request.getAccidentMemo());
+				}
+				compensateRecordMapper.updateByPrimaryKey(record );
+				// 理赔方式 - 按次数
+			} else if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_TIME) {
+
+				Integer lockValue = Integer.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 已理赔数
+				Integer paidValue = Integer.valueOf(policyGuaranteePlan.getPaidValue());
+				policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+				
+				record.setContactName(request.getContactName());
+				record.setContactPhone(request.getContactPhone());
+				record.setHappenAt(request.getHappenAt());
+				record.setPaidMoney(record.getPaidMoney());
+				record.setStatus(Constant.COMPENSATERECORD_STATUS_FINISHED);
+				record.setDataStatus(Constant.COMPENSATERECORD_DATASTATUS_SYNCED);
+				if(request.getAccidentMemo()!=null && request.getAccidentMemo()!=""){
+					record.setAccidentMemo(request.getAccidentMemo());
+				}
+				compensateRecordMapper.updateByPrimaryKey(record );
+
+			}
+
+		} else {
+			throw new Exception("数据状态错误");
+
+		}
+
+	}
+
+	/**
+	 * TODO
+	 * 逻辑混乱，重写，参照InsurancePolicyRpcImpl.cancelCompensate
+	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Override
+	public void updateDataStatusCanceled(String id) throws Exception {
+		CompensateRecord compensateRecord = compensateRecordMapper.selectByPrimaryKey(id);
+		Integer status = compensateRecord.getStatus();
+
+		// 已锁定状态
+		if (status == Constant.COMPENSATERECORD_STATUS_LOCKED) {
+			// 单证保障权益
+			PolicyGuaranteePlan policyGuaranteePlan = policyGuaranteePlanMapper
+					.selectByguaranteeItemId(compensateRecord.getGuaranteeItemId(), compensateRecord.getPolicyId());
+			// 单证保障内容
+			PolicyGuaranteeItem policyGuaranteeItem = policyGuaranteeItemMapper
+					.selectByPrimaryKey(compensateRecord.getGuaranteeItemId());
+
+			// 理赔方式
+			Integer compensateType = policyGuaranteeItem.getCompensateType();
+
+			// 理赔方式 - 按金额
+			if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_MONEY) {
+
+				Double lockValue = Double.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 剩余权益数
+				Double balanceValue = Double.valueOf(policyGuaranteePlan.getBalanceValue());
+				policyGuaranteePlan.setPaidValue((balanceValue + lockValue) + "");
+
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(id, Constant.COMPENSATERECORD_STATUS_CANCELED);
+
+				// 理赔方式 - 按次数
+			} else if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_TIME) {
+
+				Integer lockValue = Integer.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 剩余权益数
+				Integer balanceValue = Integer.valueOf(policyGuaranteePlan.getBalanceValue());
+				policyGuaranteePlan.setPaidValue((balanceValue + lockValue) + "");
+
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(id, Constant.COMPENSATERECORD_STATUS_CANCELED);
+
+			}
+
+		} else {
+			throw new Exception("数据状态错误");
+
+		}
+
+	}
+
+	@Override
+	public List<CompensateRecordResult> findByPolicyGuaranteeItemId(String policyGuaranteeItemId) {
+
+		return compensateRecordMapper.selectResultByPolicyGuaranteeItemId(policyGuaranteeItemId);
+	}
+
+	@Override
+	public List<CompensateRecordVo> getCompensateRecordListByPolicyIDandStatus(
+			String policyID, Integer status) {
+		return compensateRecordMapper.selectCompensateRecordListByPolicyIDandStatus(policyID,status);
+	}
+
+    @Override
+    public void piccAuth(String id) throws Exception {
+        
+        // 理赔记录状态  代授权 --> 已锁定
+        CompensateRecord record = compensateRecordMapper.selectByPrimaryKey(id);
+        if(record==null || record.getStatus()!=Constant.COMPENSATERECORD_STATUS_UNAUTHOR){
+            throw new Exception("数据状态错误");
+        }
+        record.setStatus(Constant.COMPENSATERECORD_STATUS_LOCKED);
+        compensateRecordMapper.updateByPrimaryKey(record);
+        
+        // 业态理赔授权通过需发布广播消息
+        if(!StringUtils.isEmpty(record.getOrderNo())){
+            messagePubService.piccAuthMessage(record);
+        }
+    }
+
+	@Override
+	public void updateDataStatusFinishedByPolicyIdAndRoomId(String roomId, String policyId) throws Exception {
+		CompensateRecord compensateRecord = compensateRecordMapper.selectByPolicyIdAndRoomId(roomId,policyId);
+		Integer status = compensateRecord.getStatus();
+
+		// 已锁定状态
+		if (status == Constant.COMPENSATERECORD_STATUS_LOCKED) {
+			// 单证保障权益
+			PolicyGuaranteePlan policyGuaranteePlan = policyGuaranteePlanMapper
+					.selectByguaranteeItemId(compensateRecord.getGuaranteeItemId(), compensateRecord.getPolicyId());
+			// 单证保障内容
+			PolicyGuaranteeItem policyGuaranteeItem = policyGuaranteeItemMapper
+					.selectByPrimaryKey(compensateRecord.getGuaranteeItemId());
+
+			// 理赔方式
+			Integer compensateType = policyGuaranteeItem.getCompensateType();
+
+			// 理赔方式 - 按金额
+			if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_MONEY) {
+
+				Double lockValue = Double.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 已理赔数
+				Double paidValue = Double.valueOf(policyGuaranteePlan.getPaidValue());
+				policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(compensateRecord.getId(), Constant.COMPENSATERECORD_STATUS_FINISHED);
+
+				// 理赔方式 - 按次数
+			} else if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_TIME) {
+
+				Integer lockValue = Integer.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 已理赔数
+				Integer paidValue = Integer.valueOf(policyGuaranteePlan.getPaidValue());
+				policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(compensateRecord.getId(), Constant.COMPENSATERECORD_STATUS_FINISHED);
+
+			}
+
+		} else {
+			throw new Exception("数据状态错误");
+
+		}
+		
+	}
+
+	@Override
+	public void updateDataStatusCanceledByPolicyIdAndRoomId(String roomId, String policyId) throws Exception {
+		CompensateRecord compensateRecord = compensateRecordMapper.selectByPolicyIdAndRoomId(roomId,policyId);
+		Integer status = compensateRecord.getStatus();
+
+		// 已锁定状态
+		if (status == Constant.COMPENSATERECORD_STATUS_LOCKED) {
+			// 单证保障权益
+			PolicyGuaranteePlan policyGuaranteePlan = policyGuaranteePlanMapper
+					.selectByguaranteeItemId(compensateRecord.getGuaranteeItemId(), compensateRecord.getPolicyId());
+			// 单证保障内容
+			PolicyGuaranteeItem policyGuaranteeItem = policyGuaranteeItemMapper
+					.selectByPrimaryKey(compensateRecord.getGuaranteeItemId());
+
+			// 理赔方式
+			Integer compensateType = policyGuaranteeItem.getCompensateType();
+
+			// 理赔方式 - 按金额
+			if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_MONEY) {
+
+				Double lockValue = Double.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 已理赔数
+				Double paidValue = Double.valueOf(policyGuaranteePlan.getPaidValue());
+				policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(compensateRecord.getId(), Constant.COMPENSATERECORD_STATUS_CANCELED);
+
+				// 理赔方式 - 按次数
+			} else if (compensateType == Constant.COMPENSATERECORD_COMPENSATETYPE_TIME) {
+
+				Integer lockValue = Integer.valueOf(policyGuaranteePlan.getLockValue());
+				// 锁定值清零
+				policyGuaranteePlan.setLockValue(0 + "");
+				// 已理赔数
+				Integer paidValue = Integer.valueOf(policyGuaranteePlan.getPaidValue());
+				policyGuaranteePlan.setPaidValue((paidValue + lockValue) + "");
+
+				policyGuaranteePlanMapper.updateByPrimaryKeySelective(policyGuaranteePlan);
+
+				// 修改理赔记录
+				compensateRecordMapper.updateStatusByID(compensateRecord.getId(), Constant.COMPENSATERECORD_STATUS_CANCELED);
+
+
+			}
+
+		} else {
+			throw new Exception("数据状态错误");
+
+		}
+		
+	}
+
+    @Override
+    public void addCompensate(CompensateRecord compensate) {
+        compensateRecordMapper.insert(compensate);
+    }
+
+    @Override
+    public void updateCompensate(CompensateRecord compensate) {
+        compensateRecordMapper.updateByPrimaryKeySelective(compensate);
+    }
+
+    @Override
+    public CompensateRecord getByOrderCode(String roomId, String orderCode) {
+        return compensateRecordMapper.selectByOrderCode(roomId, orderCode);
+    }
+
+	@Override
+	public CompensateRecordVo getComRecordVoById() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}

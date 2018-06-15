@@ -1,0 +1,36 @@
+package com.qding.insurance.dao;
+
+import java.util.List;
+
+import com.qding.insurance.domain.InsuranceOrder;
+import com.qding.insurance.param.InsuranceOrderParam;
+import com.qding.insurance.vo.InsuranceDetailByOrderNoVo;
+import com.qding.insurance.vo.InsuranceOrderDetailVo;
+import com.qding.insurance.vo.InsuranceOrderPageResult;
+
+public interface InsuranceOrderMapper {
+    int deleteByPrimaryKey(String id);
+
+    int insert(InsuranceOrder record);
+
+    int insertSelective(InsuranceOrder record);
+
+    InsuranceOrder selectByPrimaryKey(String id);
+
+    int updateByPrimaryKeySelective(InsuranceOrder record);
+
+    int updateByPrimaryKey(InsuranceOrder record);
+    
+    Integer countByParam(InsuranceOrderParam param);
+
+	List<InsuranceOrderPageResult> selectByParam(InsuranceOrderParam param);
+
+	InsuranceOrderDetailVo selectDetailById(String id);
+<<<<<<< .mine
+
+	InsuranceDetailByOrderNoVo selectOrderByOrderNo(String orderNo);
+=======
+	
+	InsuranceOrder getByOrderNo(String orderNo);
+>>>>>>> .r169724
+}

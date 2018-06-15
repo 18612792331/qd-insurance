@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}:%5p %c{1}:%L - %m%n" />
+        </layout>
+    </appender>
+    
+   <appender name="dailyRollingFileAppender" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="/data/api_log/qding_api.log"  />
+        <param name="DatePattern" value="'.'yyyy-MM-dd'.log'"/>
+         <layout class="org.apache.log4j.PatternLayout" >
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}:%5p %c{1}:%L - %m%n" />
+        </layout>  
+    </appender>
+
+    <appender name="scribeAppender" class="scribe.appender.ScribeAppender">
+        <param name="scribeHost" value="10.37.253.75" />
+        <param name="scribePort" value="5009" />
+        <param name="scribeCategory" value="api_log" />
+        <param name="printExceptionStack" value="true" />
+        <param name="addStackTraceToMessage" value="false" />
+        <param name="timeToWaitBeforeRetry" value="6000" />
+        <param name="logEntryFilter" value="[sS]+API_LOG[sS]+memberId[sS]+" />
+
+        <layout class="org.apache.log4j.PatternLayout" >
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss}:%5p %c{1}:%L - %m%n" />
+        </layout>
+    </appender>
+
+    <logger name="com.qding.api.controllers" additivity="false">
+        <level value="info"/>
+        <appender-ref ref="consoleAppender"/>
+        <!-- <appender-ref ref="scribeAppender"/> -->
+    </logger>
+   
+    <logger name="org.apache.ibatis" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+
+    <logger name="org.mybatis.spring" additivity="true">
+        <level value="ERROR"/>
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+    <logger name="java.sql" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+
+    <logger name="java.sql.Connection" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+
+    <logger name="java.sql.Statement" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+
+    <logger name="java.sql.PreparedStatement" additivity="true">
+        <level value="INFO"/>
+        <appender-ref ref="consoleAppender"/>
+    </logger>
+
+    <!-- Spring -->
+    <logger name="org.springframework" additivity="true">
+        <level value="ERROR"/>
+        <appender-ref ref="consoleAppender"/>
+        <!-- <appender-ref ref="scribeAppender"/> -->
+    </logger>
+    <root>
+        <priority value="INFO" />
+        <!-- <appender-ref ref="scribeAppender"/> -->
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="dailyRollingFileAppender"/>
+    </root>
+
+    <!-- tracer -->
+    <appender name="trace_file" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${catalina.home}/logs/tracer.log"/>
+        <param name="DatePattern" value="'_'yyyy-MM-dd'.log'" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d [%t] %-5p [%c] - %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="tracer" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="trace_file" />
+    </logger>
+<appender name="Framework"
+          class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="file" value="${catalina.home}/logs/framework/framework.log" />
+    <param name="DatePattern" value="'_'yyyy-MM-dd'.log'"  />
+    <param name="Append" value="true" />
+    <param name="encoding" value="utf-8" />
+    <param name="threshold" value="ERROR" />
+    <param name="MaxFileSize" value="5MB" />
+    <param name="MaxBackupIndex" value="3" />
+    <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern"
+               value="[%d{yyyy-MM-dd HH:mm:ss.SSS\} %-5p] [%t] (%c{1}:%L) -[%X{traceId}] %m%n" />
+    </layout>
+</appender>
+<appender name="Application"
+          class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="file" value="${catalina.home}/logs/application/application.log" />
+    <param name="DatePattern" value="'_'yyyy-MM-dd'.log'" />
+    <param name="Append" value="true" />
+    <param name="encoding" value="utf-8" />
+    <param name="threshold" value="ERROR" />
+    <param name="MaxFileSize" value="5MB" />
+    <param name="MaxBackupIndex" value="3" />
+    <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern"
+               value="[%d{yyyy-MM-dd HH:mm:ss.SSS\} %-5p] [%t] (%c{1}:%L) -[%X{traceId}] %m%n" />
+    </layout>
+</appender>
+<appender name="Api"
+          class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="file" value="${catalina.home}/logs/api/api.log" />
+    <param name="DatePattern" value="'_'yyyy-MM-dd'.log'" />
+    <param name="Append" value="true" />
+    <param name="encoding" value="utf-8" />
+    <param name="threshold" value="INFO" />
+    <param name="MaxFileSize" value="5MB" />
+    <param name="MaxBackupIndex" value="3" />
+ 
+    <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern"
+               value="[%d{yyyy-MM-dd HH:mm:ss.SSS\} %-5p] [%t] (%c{1}:%L) -[%X{traceId}] %m%n" />
+    </layout>
+</appender>
+<appender name="TraceAppender"
+          class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="file" value="${catalina.home}/logs/trace/trace.log" />
+    <param name="DatePattern" value="'_'yyyy-MM-dd'.log'"  />
+    <param name="Append" value="true" />
+    <param name="encoding" value="utf-8" />
+    <param name="threshold" value="INFO" />
+    <param name="MaxFileSize" value="5MB" />
+    <param name="MaxBackupIndex" value="3" />
+    <layout class="org.apache.log4j.PatternLayout">
+        <param name="ConversionPattern" value="%d [%t] %-5p [%c] - %m%n" />
+    </layout>
+</appender>
+ 
+<appender name="Trace" class="org.apache.log4j.AsyncAppender">
+    <param name="BufferSize" value="1000" />
+    <param name="LocationInfo" value="true" />
+    <param name="Blocking" value="false" />
+    <appender-ref ref="TraceAppender" />
+</appender>
+ 
+<logger name="FrameworkLogger" additivity="false">
+    <level value="info" />
+    <appender-ref ref="Framework" />
+</logger>
+ 
+<logger name="ApplicationLogger" additivity="false">
+    <level value="info" />
+    <appender-ref ref="Application" />
+</logger>
+<logger name="ApiLogger" additivity="false">
+    <level value="info" />
+    <appender-ref ref="Api" />
+</logger>
+<logger name="TraceLogger" additivity="false">
+    <level value="info" />
+    <appender-ref ref="Trace" />
+</logger>
+</log4j:configuration> 

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qding.insurance.dao.PolicyGuaranteePlanMapper">
+	<resultMap id="BaseResultMap"
+		type="com.qding.insurance.domain.PolicyGuaranteePlan">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="policy_id" jdbcType="VARCHAR" property="policyId" />
+		<result column="guarantee_item_id" jdbcType="VARCHAR" property="guaranteeItemId" />
+		<result column="right_value" jdbcType="VARCHAR" property="rightValue" />
+		<result column="lock_value" jdbcType="VARCHAR" property="lockValue" />
+		<result column="balance_value" jdbcType="VARCHAR" property="balanceValue" />
+		<result column="paid_value" jdbcType="VARCHAR" property="paidValue" />
+	</resultMap>
+
+
+
+	<resultMap id="PolicyDutyInfoMap" type="com.qding.insurance.vo.PolicyDutyInfo">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="guarantee_item_id" jdbcType="VARCHAR" property="guaranteeItemId" />
+		<result column="item_title" jdbcType="VARCHAR" property="guaranteeItemTitle" />
+		<result column="compensate_type" jdbcType="INTEGER" property="compensateType" />
+		<result column="right_value" jdbcType="VARCHAR" property="rightValue" />
+		<result column="balance_value" jdbcType="VARCHAR" property="balanceValue" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID, policy_id, guarantee_item_id, right_value, lock_value,
+		balance_value,
+		paid_value
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from policy_guarantee_plan
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectForUpdate" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from policy_guarantee_plan
+		where guarantee_item_id =
+		#{guaranteeItemId,jdbcType=VARCHAR}
+		and policy_id = #{policyId,jdbcType=VARCHAR}
+		for update
+	</select>
+	<select id="selectByguaranteeItemId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from policy_guarantee_plan
+		where guarantee_item_id = #{guaranteeItemId,jdbcType=VARCHAR}
+		and policy_id = #{policyId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据单证ID查询责任 -->
+	<select id="getpolicyDutyInfoList" resultMap="PolicyDutyInfoMap">
+		SELECT
+		p.id,
+		p.right_value,
+		p.guarantee_item_id,
+		p.balance_value,
+		i.item_title,
+		i.compensate_type
+		FROM
+		policy_guarantee_plan p
+		JOIN policy_guarantee_item
+		i ON p.guarantee_item_id = i.ID
+		WHERE
+		p.policy_id =
+		i.policy_id and p.policy_id=#{policyID,jdbcType=VARCHAR}
+	</select>
+
+
+	<!-- 根据内容ID查剩余权益和理赔方式 -->
+	<select id="getResultByGuaranteeItemId" resultMap="PolicyDutyInfoMap">
+		SELECT
+		p.id,
+		p.right_value,
+		p.guarantee_item_id,
+		p.balance_value,
+		i.item_title,
+		i.compensate_type
+		FROM
+		policy_guarantee_plan p
+		JOIN policy_guarantee_item
+		i ON p.guarantee_item_id = i.ID
+		WHERE
+		i.id=#{itemId,jdbcType=VARCHAR}
+	</select>
+
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		policy_guarantee_plan
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="batchInsert" parameterType="java.util.List">
+		insert into policy_guarantee_plan
+		(ID, policy_id, guarantee_item_id,right_value,lock_value,
+		balance_value,paid_value)
+		VALUES
+		<foreach collection="list" item="model" separator=",">
+			(#{model.id,jdbcType=VARCHAR},#{model.policyId,jdbcType=VARCHAR},#{model.guaranteeItemId,jdbcType=VARCHAR},#{model.rightValue,jdbcType=VARCHAR},
+			#{model.lockValue,jdbcType=VARCHAR},
+			#{model.balanceValue,jdbcType=VARCHAR},
+			#{model.paidValue,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+
+	<insert id="insert" parameterType="com.qding.insurance.domain.PolicyGuaranteePlan">
+		insert into
+		policy_guarantee_plan (ID, policy_id, guarantee_item_id,
+		right_value,
+		lock_value, balance_value,
+		paid_value)
+		values (#{id,jdbcType=VARCHAR},
+		#{policyId,jdbcType=VARCHAR},
+		#{guaranteeItemId,jdbcType=VARCHAR},
+		#{rightValue,jdbcType=VARCHAR}, #{lockValue,jdbcType=VARCHAR},
+		#{balanceValue,jdbcType=VARCHAR},
+		#{paidValue,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.qding.insurance.domain.PolicyGuaranteePlan">
+		insert into policy_guarantee_plan
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="policyId != null">
+				policy_id,
+			</if>
+			<if test="guaranteeItemId != null">
+				guarantee_item_id,
+			</if>
+			<if test="rightValue != null">
+				right_value,
+			</if>
+			<if test="lockValue != null">
+				lock_value,
+			</if>
+			<if test="balanceValue != null">
+				balance_value,
+			</if>
+			<if test="paidValue != null">
+				paid_value,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="policyId != null">
+				#{policyId,jdbcType=VARCHAR},
+			</if>
+			<if test="guaranteeItemId != null">
+				#{guaranteeItemId,jdbcType=VARCHAR},
+			</if>
+			<if test="rightValue != null">
+				#{rightValue,jdbcType=VARCHAR},
+			</if>
+			<if test="lockValue != null">
+				#{lockValue,jdbcType=VARCHAR},
+			</if>
+			<if test="balanceValue != null">
+				#{balanceValue,jdbcType=VARCHAR},
+			</if>
+			<if test="paidValue != null">
+				#{paidValue,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.qding.insurance.domain.PolicyGuaranteePlan">
+		update policy_guarantee_plan
+		<set>
+			<if test="policyId != null">
+				policy_id = #{policyId,jdbcType=VARCHAR},
+			</if>
+			<if test="guaranteeItemId != null">
+				guarantee_item_id = #{guaranteeItemId,jdbcType=VARCHAR},
+			</if>
+			<if test="rightValue != null">
+				right_value = #{rightValue,jdbcType=VARCHAR},
+			</if>
+			<if test="lockValue != null">
+				lock_value = #{lockValue,jdbcType=VARCHAR},
+			</if>
+			<if test="balanceValue != null">
+				balance_value = #{balanceValue,jdbcType=VARCHAR},
+			</if>
+			<if test="paidValue != null">
+				paid_value = #{paidValue,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.qding.insurance.domain.PolicyGuaranteePlan">
+		update
+		policy_guarantee_plan
+		set policy_id = #{policyId,jdbcType=VARCHAR},
+		guarantee_item_id = #{guaranteeItemId,jdbcType=VARCHAR},
+		right_value =
+		#{rightValue,jdbcType=VARCHAR},
+		lock_value =
+		#{lockValue,jdbcType=VARCHAR},
+		balance_value =
+		#{balanceValue,jdbcType=VARCHAR},
+		paid_value =
+		#{paidValue,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

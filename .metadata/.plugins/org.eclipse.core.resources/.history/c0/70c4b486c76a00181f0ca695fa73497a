@@ -1,0 +1,5 @@
+package com.qding.insurance.rpc.response;
+
+public class CompensateRecordListResponse {
+
+}

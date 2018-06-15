@@ -1,0 +1,59 @@
+package com.qding.insurance.dao;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.qding.insurance.domain.CompensateRecord;
+import com.qding.insurance.param.CompensateRecordParam;
+import com.qding.insurance.vo.CompensateRecordPageResult;
+import com.qding.insurance.vo.CompensateRecordResult;
+
+public interface CompensateRecordMapper {
+    int deleteByPrimaryKey(String id);
+
+    int insert(CompensateRecord record);
+
+    int insertSelective(CompensateRecord record);
+
+    CompensateRecord selectByPrimaryKey(String id);
+
+    int updateByPrimaryKeySelective(CompensateRecord record);
+
+    int updateByPrimaryKey(CompensateRecord record);
+    /**
+	 *  根据保障内容ID查询理赔记录详情
+	 */
+	List<CompensateRecordResult> selectResultByPolicyGuaranteeItemId(String policyGuaranteeItemId);
+
+	/**
+	 * 根据单证ID查询理赔记录
+	 */
+	List<CompensateRecord> selectResultByPolicyId(String policyId);
+	/**
+	 * 理赔记录数总数
+	 */
+	Integer countByParam(CompensateRecordParam param);
+	/**
+	 * 理赔记录数-分页
+	 */
+	List<CompensateRecordPageResult> selectByParam(CompensateRecordParam param);
+	/**
+	 * 查询是否有已锁定状态的理赔记录
+	 */
+	List<String> selectByPolicyIdAndGuaranteeItemId(@Param("id")String id, @Param("guaranteeItemId")String guaranteeItemId);
+	/**
+	 * 按ID修改同步状态
+	 */
+	void updateDataStatus(@Param("id")String id,@Param("dataStatus") int dataStatuss);
+	/**
+	 * 按ID修改理赔状态为 2 已完成 3 已撤销
+	 */
+	void updateStatusByID(@Param("id")String id, @Param("status")int i);
+	/**
+	 * 
+	 * 根据单证ID查询用户保单理赔列表
+	 */
+	List<CompensateRecord> getCompensateRecordListByPolicyIDandStatus(
+			String policyID, Integer status);
+}

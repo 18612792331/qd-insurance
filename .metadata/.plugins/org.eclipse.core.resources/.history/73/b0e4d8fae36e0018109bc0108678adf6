@@ -1,0 +1,25 @@
+package com.qding.api.call.app.qding.v4_1_0.struct.insurance.response.data;
+
+import com.qding.api.annotation.ExplainAnnotation;
+import com.qding.api.struct.ResponseData;
+
+public class InsuranceOrderDetailResponseData extends ResponseData{
+
+	private static final long serialVersionUID = -1374314141757999180L;
+	
+	@ExplainAnnotation (explain = "订单状态")
+	private String status;
+	
+	@ExplainAnnotation (explain = "商品名称")
+	private String wareName;
+	
+	@ExplainAnnotation (explain = "订单金额")
+	private String orderMoney;
+	
+	@ExplainAnnotation (explain = "投保人姓名")
+	private String memberName;
+	
+	@ExplainAnnotation (explain = "被保险人姓名")
+	private String insurantName;
+
+}

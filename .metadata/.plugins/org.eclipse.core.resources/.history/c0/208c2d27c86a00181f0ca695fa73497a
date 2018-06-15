@@ -1,0 +1,7 @@
+package com.qding.insurance.rpc.response;
+
+import com.qding.framework.common.api.struct.response.BaseResponse;
+
+public class CompensateRecordListResponse extends BaseResponse{
+
+}

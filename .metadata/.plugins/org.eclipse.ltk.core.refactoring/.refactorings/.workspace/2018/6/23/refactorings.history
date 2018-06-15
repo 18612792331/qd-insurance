@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Delete resource &apos;qding-insurance&apos;" deleteContents="false" description="Delete resource &apos;qding-insurance&apos;" element1="/qding-insurance" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1528338691773"/>&#x0A;<refactoring comment="Delete resource &apos;qding-api&apos;" deleteContents="false" description="Delete resource &apos;qding-api&apos;" element1="/qding-api" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1528340316696"/>
+</session>

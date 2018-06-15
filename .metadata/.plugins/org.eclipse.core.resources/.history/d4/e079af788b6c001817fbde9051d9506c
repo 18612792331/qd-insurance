@@ -1,0 +1,52 @@
+package com.qding.insurance.service;
+
+import java.util.List;
+
+import com.qding.framework.common.basemodel.ResultPage;
+import com.qding.insurance.domain.InsurancePolicy;
+import com.qding.insurance.param.InsurancePolicyParam;
+import com.qding.insurance.vo.InsurancePolicyDetailInfo;
+import com.qding.insurance.vo.InsurancePolicyInfo;
+import com.qding.insurance.vo.InsurancePolicyPageResult;
+import com.qding.insurance.vo.PolicyGuaranteePlanBalanceInfo;
+import com.qding.insurance.vo.RoomInsureStatusInfo;
+
+public interface IInsurancePolicyService {
+
+	ResultPage<InsurancePolicyPageResult> getResultPage(InsurancePolicyParam param);
+
+	InsurancePolicy getResultById(String id);
+
+	/**
+	 * 根据单证ID查询电子保单
+	 */
+	String getPolicyUrlById(String id);
+
+	/**
+	 * 根据单证ID查询剩余权益信息
+	 * 
+	 * @throws Exception
+	 */
+	PolicyGuaranteePlanBalanceInfo getBalanceInfo(String id);
+
+	/**
+	 * 根据单证ID获取结果
+	 */
+	InsurancePolicy getResultByOrderID(String orderID);
+
+	/**
+	 * 根据房屋ID获取房屋投保状态
+	 */
+	List<RoomInsureStatusInfo> getRoomInsureStatusByRoomID(String roomID);
+
+	/**
+	 * 根据MID获取用户保单列表
+	 */
+	List<InsurancePolicyInfo> getUserInsurancePolicyList(String userMid);
+
+	/**
+	 * 根据ID获取详细结果
+	 */
+	InsurancePolicyDetailInfo getInsurancePolicyDetailInfo(String id);
+
+}

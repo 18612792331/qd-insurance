@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+  	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.coupon.request.BindCouponsRequest</class-a>
+		<class-b>com.qding.promotion.common.struct.request.BindCouponRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>couponsCode</a>
+			<b>code</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.coupon.request.GetAllCouponsRequest</class-a>
+		<class-b>com.qding.promotion.common.struct.request.GetAllCouponUserByMidRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_4_0.struct.coupon.request.GetAllCouponsRequest</class-a>
+		<class-b>com.qding.promotion.common.struct.request.GetAllCouponUserByMidRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.coupon.response.data.GetAllCouponsResponseData</class-a>
+		<class-b>com.qding.promotion.common.struct.response.GetAllCouponUserByMidResponse</class-b>
+		<field>
+			<a>list</a>
+			<b>couponList</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.coupon.Coupon</class-a>
+		<class-b>com.qding.promotion.common.dto.PromotionCouponUserDto</class-b>
+		<field>
+			<a>startTime</a>
+			<b>validStart</b>
+		</field>
+		<field>
+			<a>endTime</a>
+			<b>validEnd</b>
+		</field>
+		<field>
+			<a>batchId</a>
+			<b>templateId</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.coupon.CouponsBatchNameConvert">
+			<a>batchName</a>
+			<b>counterParams</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.coupon.CouponProductNoConvert">
+			<a>productNoNames</a>
+			<b>productNos</b>
+		</field>	
+		<field>
+			<a>couponTemplateType</a>
+			<b>templateType</b>
+		</field>	
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.coupon.CouponBatch</class-a>
+		<class-b>com.qding.promotion.common.dto.TemplateWithCouponUserDto</class-b>
+		<field>
+			<a>coupons</a>
+			<b>couponUserDtoList</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.coupon.CouponsBatchNameConvert">
+			<a>name</a>
+			<b>template.counterParams</b>
+		</field>
+		<field>
+			<a>id</a>
+			<b>template.id</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.coupon.request.GetOrderCouponsRequest</class-a>
+		<class-b>com.qding.promotion.common.struct.request.GetOrderAvailableCouponListRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_4_0.struct.coupon.request.GetOrderCouponsRequest</class-a>
+		<class-b>com.qding.promotion.common.struct.request.GetOrderAvailableCouponListRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.coupon.response.data.GetOrderCouponsResponseData</class-a>
+		<class-b>com.qding.promotion.common.struct.response.GetOrderAvailableCouponListResponse</class-b>
+		<field>
+			<a>commonCoupons</a>
+			<b>commonList</b>
+		</field>
+		<field>
+			<a>specialCoupons</a>
+			<b>specialList</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.coupon.request.GetUserCouponsRequest</class-a>
+		<class-b>com.qding.promotion.common.struct.request.GetUserCouponListRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_4_0.struct.coupon.request.GetUserCouponsRequest</class-a>
+		<class-b>com.qding.promotion.common.struct.request.GetUserCouponListRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.coupon.response.data.GetUserCouponsResponseData</class-a>
+		<class-b>com.qding.promotion.common.struct.response.GetUserCouponListResponse</class-b>
+		<field>
+			<a>commonCoupons</a>
+			<b>commonList</b>
+		</field>
+		<field>
+			<a>specialCoupons</a>
+			<b>specialList</b>
+		</field>
+	</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.promotion.common.struct.response.CouponListResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_4_0.struct.coupon.response.data.GetCouponListResponseData</class-b>
+		<field>
+			<a>couponList</a>
+			<b>commonCoupons</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.promotion.common.struct.response.CouponListResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_2_0.struct.coupon.response.data.GetCouponsBymidResponseData</class-b>
+		<field>
+			<a>couponList</a>
+			<b>commonCoupons</b>
+		</field>
+	</mapping>
+
+	<mapping>
+	<class-a>com.qding.promotion.common.dto.PromotionCouponUserDto</class-a>
+	<class-b>com.qding.api.call.app.qding.v1_4_0.struct.coupon.Coupon</class-b>
+	<field>
+		<a>validStart</a>
+		<b>startTime</b>
+	</field>
+	<field>
+		<a>validEnd</a>
+		<b>endTime</b>
+	</field>
+	<field>
+		<a>note</a>
+		<b>batchName</b>
+	</field>
+	<field>
+		<a>desc</a>
+		<b>desc</b>
+	</field>
+	<field>
+		<a>note</a>
+		<b>note</b>
+	</field>
+	<field custom-converter="com.qding.api.dozer.convert.coupon.CouponProductNoConvert">
+		<a>productNos</a>
+		<b>productNoNames</b>
+	</field>
+<!--	<field custom-converter="com.qding.api.dozer.convert.coupon.CouponProjectNameConcert">
+		<a>projectIds</a>
+		<b>projectName</b>
+	</field>-->
+	<field custom-converter="com.qding.api.dozer.convert.coupon.CouponIsAllProjectConcert">
+		<a>projectIds</a>
+		<b>isAllProject</b>
+	</field>
+
+</mapping>
+
+
+	<mapping>
+		<class-a>com.qding.promotion.common.dto.PromotionCouponUserDto</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_2_0.struct.coupon.CouponDto</class-b>
+		<field>
+			<a>validStart</a>
+			<b>startTime</b>
+		</field>
+		<field>
+			<a>validEnd</a>
+			<b>endTime</b>
+		</field>
+		<field>
+			<a>note</a>
+			<b>title</b>
+		</field>
+		<field>
+			<a>desc</a>
+			<b>ruleDesc</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_4_0.struct.coupon.Coupon</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_2_0.struct.coupon.CouponDto</class-b>
+		<field>
+			<a>note</a>
+			<b>title</b>
+		</field>
+		<field>
+			<a>desc</a>
+			<b>ruleDesc</b>
+		</field>
+	</mapping>
+
+</mappings>  

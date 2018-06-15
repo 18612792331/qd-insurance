@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+      <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.wallet.request.AccountWalletHomePageRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.PredepositInfoRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+	  </mapping> 
+	 
+	  <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.wallet.AccountCollect</class-a>
+		<class-b>com.qding.useraccount.struct.response.PredepositInfoResponse</class-b>
+		<field custom-converter="com.qding.api.dozer.convert.wallet.GetStringByBigDecimaConvert">
+			<a>availableAmount</a>
+			<b>availableAmount</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.wallet.GetStringByBigDecimaConvert">
+			<a>depositAmount</a>
+			<b>depositAmount</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.wallet.GetStringByBigDecimaConvert">
+			<a>expenditureAmount</a>
+			<b>expenditureAmount</b>
+		</field>
+		
+	  </mapping> 
+	  
+     <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.wallet.request.AccountPayDetailRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.PredepositDetailRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>pageno</b>
+		</field>
+		<field>
+			<a>pageSize</a>
+			<b>pagesize</b>
+		</field>
+	 </mapping> 
+	 
+     <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.wallet.request.AccountBalanceDetailRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.PredepositDetailRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>pageno</b>
+		</field>
+		<field>
+			<a>pageSize</a>
+			<b>pagesize</b>
+		</field>
+	  </mapping> 
+	 
+      <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.wallet.request.AccountRefundDetailRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.PredepositRestoreDetailRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>pageNo</a>
+			<b>pageno</b>
+		</field>
+		<field>
+			<a>pageSize</a>
+			<b>pagesize</b>
+		</field>
+	 </mapping> 
+	
+      <mapping>
+		<class-a>com.qding.useraccount.struct.response.PredepositDetailResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.wallet.response.data.AccountBalanceDetailResponseData</class-b>
+		<field>
+			<a>details</a>
+			<b>list</b>
+		</field>
+		<field>
+			<a>total</a>
+			<b>totalCount</b>
+		</field>
+	 </mapping>
+	 
+	<mapping>
+		<class-a>com.qding.useraccount.struct.PredepositDetailInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.wallet.BalanceDetail</class-b>
+		<field custom-converter="com.qding.api.dozer.convert.wallet.GetStringByBigDecimaConvert">
+			<a>availablePredepositCash</a>
+			<b>availablePredepositCash</b>
+		</field>
+		<field  custom-converter="com.qding.api.dozer.convert.wallet.GetProductNameByNoConvert">
+			<a>productNo</a>
+			<b>productName</b> <!-- 需要去字典库查询业态编号对应的业态名称 -->
+		</field>
+		<field  custom-converter="com.qding.api.dozer.convert.wallet.GetPayTypeNameByTypeConvert">
+			<a>payType</a>
+			<b>payTypeName</b> <!-- 支付类型，枚举获取-->
+		</field>
+		<field  custom-converter="com.qding.api.dozer.convert.wallet.GetBuinessTypeNameByTypeConvert">
+			<a>businessType</a>
+			<b>businessTypeName</b> <!-- 业务类型，枚举获得 -->
+		</field>
+		<field  custom-converter="com.qding.api.dozer.convert.wallet.GetOptTypeNameByTypeConvert">
+			<a>optType</a>
+			<b>optTypeValue</b> <!-- 支付或收入类型，枚举获得 -->
+		</field>
+		<field>
+		  <a>productNo</a>
+		  <b>productNo</b>
+		</field>
+		<field>
+		  <a>orderId</a>
+		  <b>orderCode</b>
+		</field>
+		<field>
+			<a>isFamilyPay</a>
+			<b>isFamilyPay</b>
+		</field>
+		
+	 </mapping> 
+	
+	 <mapping>
+		<class-a>com.qding.useraccount.struct.response.PredepositDetailResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.wallet.response.data.AccountPayDetailResponseData</class-b>
+		<field>
+			<a>details</a>
+			<b>list</b>
+		</field>
+		<field>
+			<a>total</a>
+			<b>totalCount</b>
+		</field>
+	 </mapping>
+	
+	<mapping>
+		<class-a>com.qding.useraccount.struct.response.PredepositDetailResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.wallet.response.data.AccountRefundDetailResponseData</class-b>
+		<field>
+			<a>details</a>
+			<b>list</b>
+		</field>
+		<field>
+			<a>total</a>
+			<b>totalCount</b>
+		</field>
+	 </mapping>
+
+	<mapping>
+		<class-a>com.qding.useraccount.struct.PredepositDetailInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.wallet.MoneyDetail</class-b>
+		<field  custom-converter="com.qding.api.dozer.convert.wallet.GetProductNameByNoConvert">
+			<a>productNo</a>
+			<b>productName</b> <!-- 需要去字典库查询业态编号对应的业态名称 -->
+		</field>
+		<field  custom-converter="com.qding.api.dozer.convert.wallet.GetProductSkipTypeByNoConvert">
+			<a>productNo</a>
+			<b>skipType</b> <!-- 检查订单详情跳转方式 -->
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.wallet.GetStringByBigDecimaConvert">
+			<a>optPredepositCash</a>
+			<b>optPredepositCash</b>
+		</field>
+		<field  custom-converter="com.qding.api.dozer.convert.wallet.GetPayTypeNameByTypeConvert">
+			<a>payType</a>
+			<b>payTypeName</b> <!-- 支付类型，枚举获取-->
+		</field>
+		<field>
+		  <a>productNo</a>
+		  <b>productNo</b>
+		</field>
+		<field>
+		  <a>orderId</a>
+		  <b>orderCode</b>
+		</field>
+	 </mapping> 
+	
+	 
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.wallet.response.data.ChargeWalletResponseData</class-a>
+		<class-b>com.qding.useraccount.struct.response.CreateOrderResponse</class-b>
+		<field>
+			<a>entity.memberId</a>
+			<b>mid</b>
+		</field>
+		<field>
+			<a>entity.orderCode</a>
+			<b>orderCode</b>
+		</field>
+		<field>
+			<a>entity.totalPrice</a>
+			<b>totalPrice</b>
+		</field>
+		<field>
+			<a>entity.shouldPay</a>
+			<b>totalRealpay</b>
+		</field>
+	</mapping>
+	
+	
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.wallet.response.data.GetChargeValuesResponseData</class-a>
+		<class-b>com.qding.solr.struct.response.RechargeSkuResponse</class-b>
+		<field>
+			<a>list</a>
+			<b>skus</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.wallet.ChargeSku</class-a>
+		<class-b>com.qding.solr.struct.sku.RechargeSkuDetailInfo</class-b>
+		<field>
+			<a>goodsName</a>
+			<b>name</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_1.struct.wallet.request.SettingPayPasswordRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.UserPayPwdSaveRequest</class-b>
+		<field>
+			<a>memberId</a>
+			<b>userPayPasswordInfo.memberId</b>
+		</field>
+		<field>
+			<a>password</a>
+			<b>userPayPasswordInfo.payPassword</b>
+		</field>
+		<field>
+			<a>questions</a>
+			<b>memberPasswordQuestionInfoList</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_1.struct.wallet.SettingSecurityQuestion</class-a>
+		<class-b>com.qding.useraccount.struct.MemberPasswordQuestionInfo</class-b>
+		<field>
+			<a>id</a>
+			<b>questionId</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_1.struct.wallet.CheckSecurityQuestion</class-a>
+		<class-b>com.qding.useraccount.struct.MemberPasswordQuestionInfo</class-b>
+		<field>
+			<a>id</a>
+			<b>questionId</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_1.struct.wallet.GetSecurityQuestion</class-a>
+		<class-b>com.qding.useraccount.struct.PasswordQuestionInfo</class-b>
+		<field>
+			<a>question</a>
+			<b>description</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_1.struct.wallet.response.data.GetSecurityQuestionsResponseData</class-a>
+		<class-b>com.qding.useraccount.struct.response.PasswordQuestionListResponse</class-b>
+		<field>
+			<a>list</a>
+			<b>passwordQuestionInfoList</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_1.struct.wallet.response.data.GetMySecurityQuestionsResponseData</class-a>
+		<class-b>com.qding.useraccount.struct.response.PasswordQuestionListResponse</class-b>
+		<field>
+			<a>list</a>
+			<b>passwordQuestionInfoList</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_1.struct.wallet.request.CheckPayPasswordRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.UserPayPwdCheckRequest</class-b>
+		<field>
+			<a>password</a>
+			<b>payPassword</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_1.struct.wallet.request.UpdatePayPasswordRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.UserPayPwdUpdatePwdRequest</class-b>
+		<field>
+			<a>oldPassword</a>
+			<b>oldPwd</b>
+		</field>
+		<field>
+			<a>newPassword</a>
+			<b>newPwd</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_1.struct.wallet.request.ForgetPayPasswordRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.UserPayPwdForgetPwdRequest</class-b>
+		<field>
+			<a>password</a>
+			<b>newPwd</b>
+		</field>
+		<field>
+			<a>questions</a>
+			<b>memberPasswordQuestionInfoList</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_1.struct.wallet.request.CheckSecurityQuestionRequest</class-a>
+		<class-b>com.qding.useraccount.struct.request.PasswordQuestionCheckRequest</class-b>
+		<field>
+			<a>questions</a>
+			<b>memberPasswordQuestionInfoList</b>
+		</field>
+	</mapping>
+	
+</mappings>  

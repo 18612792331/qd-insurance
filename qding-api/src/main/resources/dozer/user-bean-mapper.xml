@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net  
+       http://dozer.sourceforge.net/schema/beanmapping.xsd">
+
+    <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.user.request.UpdateMobileRequest</class-a>
+		<class-b>com.qding.passport.struct.request.ModifyMemberMobileRequest</class-b>
+		<field>
+			<a>newMobile</a>
+			<b>mobile</b>
+		</field>
+	</mapping> 
+       
+    <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.user.request.UpdateMobileRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.response.data.UpdateMobileResponseData</class-b>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetMemberByIdConvert">
+			<a>memberId</a>
+			<b>entity.member</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetAccountInfoByAccountIdConvert">
+			<a>accountId</a>
+			<b>entity.user</b>
+		</field>
+	</mapping> 
+	
+       
+    <mapping>
+		<class-a>com.qding.passport.struct.response.RegisterResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.response.data.UserRegisterResponseData</class-b>
+		
+		<field custom-converter="com.qding.api.dozer.convert.user.GetMemberInfoByAccountIdConvert">
+			<a>accountId</a>
+			<b>entity.member</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetAccountInfoByAccountIdConvert">
+			<a>accountId</a>
+			<b>entity.user</b>
+		</field>
+		
+	</mapping> 
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.user.request.InviteUserRequest</class-a>
+		<class-b>com.qding.member.model.Invitation</class-b>
+		
+		<field>
+			<a>hkIndentity</a>
+			<b>role</b>
+		</field>
+		<field>
+			<a>name</a>
+			<b>memberName</b>
+		</field>
+		<field>
+			<a>desc</a>
+			<b>description</b>
+		</field>
+	</mapping> 
+	
+	<mapping>
+		<class-a>com.qding.passport.struct.AccountInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.Account</class-b>
+		<field>
+			<a>headImg</a>
+			<b>accountAvatar</b>
+		</field>
+		<field>
+			<a>id</a>
+			<b>accountId</b>
+		</field>
+		<field>
+			<a>nickName</a>
+			<b>accountNickName</b>
+		</field>
+		<field>
+			<a>sourceType</a>
+			<b>accountSourceType</b>
+		</field>
+		<field>
+			<a>type</a>
+			<b>accountType</b>
+		</field>
+	</mapping> 
+	
+	<mapping>
+		<class-a>com.qding.passport.struct.MemberInfo</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.Member</class-b>
+		<field>
+			<a>id</a>
+			<b>memberId</b>
+		</field>
+		<field>
+			<a>name</a>
+			<b>memberName</b>
+		</field>
+		<field>
+			<a>nickName</a>
+			<b>memberNickName</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.neighbor.MemberImgConvert">
+			<a>headImg</a>
+			<b>memberAvatar</b>
+		</field>
+		<field>
+			<a>mobile</a>
+			<b>memberMobile</b>
+		</field>
+		<field>
+			<a>signature</a>
+			<b>memberSignature</b>
+		</field>
+		<field>
+			<a>gender</a>
+			<b>memberGender</b>
+		</field>
+		<field>
+			<a>birthday</a>
+			<b>memberBirthday</b>
+		</field>
+		<field>
+			<a>status</a>
+			<b>memberStatus</b>
+		</field>
+		<field>
+			<a>familyStatus</a>
+			<b>homeSituationIndex</b>
+		</field>
+	</mapping>
+	
+
+	 <mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.user.request.UpdateUserInfoRequest</class-a>
+		<class-b>com.qding.passport.struct.request.ModifyMemberRequest</class-b>
+		<field>
+			<a>memberInfo.memberId</a>
+			<b>id</b>
+		</field>
+		<field>
+			<a>memberInfo.memberAvatar</a>
+			<b>headImg</b>
+		</field>
+		<field>
+			<a>memberInfo.memberBirthday</a>
+			<b>birthday</b>
+		</field>
+		<field>
+			<a>memberInfo.memberGender</a>
+			<b>gender</b>
+		</field>
+		<field>
+			<a>memberInfo.memberName</a>
+			<b>name</b>
+		</field>
+		<field>
+			<a>memberInfo.memberNickName</a>
+			<b>nickName</b>
+		</field>
+		<field>
+			<a>memberInfo.memberSignature</a>
+			<b>signature</b>
+		</field>
+		<field>
+			<a>memberInfo.memberStatus</a>
+			<b>status</b>
+		</field>
+	
+	</mapping>
+
+    <mapping>
+        <class-a>com.qding.api.call.app.qding.v3_0_0.struct.user.request.UpdateUserInfoRequest</class-a>
+        <class-b>com.qding.passport.struct.request.ModifyMemberRequest</class-b>
+        <field>
+            <a>memberInfo.memberId</a>
+            <b>id</b>
+        </field>
+        <field>
+            <a>memberInfo.memberAvatar</a>
+            <b>headImg</b>
+        </field>
+        <field>
+            <a>memberInfo.memberBirthday</a>
+            <b>birthday</b>
+        </field>
+        <field>
+            <a>memberInfo.memberGender</a>
+            <b>gender</b>
+        </field>
+        <field>
+            <a>memberInfo.memberName</a>
+            <b>name</b>
+        </field>
+        <field>
+            <a>memberInfo.memberNickName</a>
+            <b>nickName</b>
+        </field>
+        <field>
+            <a>memberInfo.memberSignature</a>
+            <b>signature</b>
+        </field>
+        <field>
+            <a>memberInfo.memberStatus</a>
+            <b>status</b>
+        </field>
+        <field>
+            <a>memberInfo.homeSituationIndex</a>
+            <b>familyStatus</b>
+        </field>
+    </mapping>
+
+    <mapping>
+		<class-a>com.qding.passport.struct.response.LoginResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.response.data.UserLoginResponseData</class-b>
+	
+		<field>
+			<a>accountInfo</a>
+			<b>entity.user</b>
+		</field>
+		<field>
+			<a>memberInfo</a>
+			<b>entity.member</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.passport.struct.response.LoginResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_2.struct.user.response.data.UserLoginResponseData</class-b>
+
+		<field>
+			<a>accountInfo</a>
+			<b>entity.user</b>
+		</field>
+		<field>
+			<a>memberInfo</a>
+			<b>entity.member</b>
+		</field>
+	</mapping>
+
+
+
+	<mapping>
+		<class-a>com.qding.passport.struct.response.LoginResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_0_0.struct.user.response.data.UserLoginResponseData</class-b>
+
+		<field>
+			<a>accountInfo</a>
+			<b>entity.user</b>
+		</field>
+		<field>
+			<a>memberInfo</a>
+			<b>entity.member</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.passport.struct.response.UnionLoginResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.response.data.ThirdLoginResponseData</class-b>
+		<field>
+			<a>accountInfo</a>
+			<b>entity.user</b>
+		</field>
+		<field>
+			<a>memberInfo</a>
+			<b>entity.member</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.passport.struct.response.UnionLoginResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_8_0.struct.user.response.data.WeChatSPLoginResponseData</class-b>
+		<field>
+			<a>accountInfo</a>
+			<b>entity.user</b>
+		</field>
+		<field>
+			<a>memberInfo</a>
+			<b>entity.member</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.user.request.UpdateUserInfoRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.response.data.UpdateUserInfoResponseData</class-b>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetMemberByIdConvert">
+			<a>memberInfo.memberId</a>
+			<b>entity.member</b>
+		</field>
+		
+		<field custom-converter="com.qding.api.dozer.convert.user.GetAccountInfoByAccountIdConvert">
+			<a>accountId</a>
+			<b>entity.user</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.user.request.GetUserInfoRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.response.data.GetUserInfoResponseData</class-b>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetMemberByIdConvert">
+			<a>memberId</a>
+			<b>entity.member</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetAccountInfoByAccountIdConvert">
+			<a>accountId</a>
+			<b>entity.user</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.user.request.UpdateUserPassWordRequest</class-a>
+		<class-b>com.qding.passport.struct.request.UpdataPassWordRequest</class-b>
+		<field>
+			<a>accountId</a>
+			<b>userId</b>
+		</field>
+	</mapping> 
+	
+	<mapping>
+		<class-a>com.qding.member.model.MemberRoom</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.MemberRoom</class-b>
+		<field>
+			<a>role</a>
+			<b>hkIndentity</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.member.model.MemberRoom</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.ProjectRoom</class-b>
+		<field>
+			<a>role</a>
+			<b>hkIndentity</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.member.model.dto.MemberBindRoomDTO</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.ProjectRoom</class-b>
+		<field>
+			<a>role</a>
+			<b>hkIndentity</b>
+		</field>
+		<field>
+			<a>applyId</a>
+			<b>bindId</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.member.model.Invitation</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.Invitation</class-b>
+		<field>
+			<a>role</a>
+			<b>hkIndentity</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.api.call.app.qding.v1_3_0.struct.user.request.BindMobileRequest</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.response.data.BindMobileResponseData</class-b>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetMemberInfoByAccountIdConvert">
+			<a>accountId</a>
+			<b>entity.member</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetAccountInfoByAccountIdConvert">
+			<a>accountId</a>
+			<b>entity.user</b>
+		</field>
+	</mapping>
+	
+	
+	<mapping>
+		<class-a>com.qding.member.model.MemberAddress</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.Addresses</class-b>
+		<field>
+			<a>businessType</a>
+			<b>addressBusinessType</b>
+		</field>
+		<field>
+			<a>roomAddress</a>
+			<b>street</b>
+		</field>
+		<field>
+			<a>version</a>
+			<b>version</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.user.SetAddressConvert">
+			<a>version</a>
+			<b>isSetting</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetRoomNameByIdConvert">
+			<a>roomId</a>
+			<b>roomName</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.member.model.MemberAddress</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.request.UpdateUserForReceiveMessageReuqest</class-b>
+		<field>
+			<a>businessType</a>
+			<b>addressBusinessType</b>
+		</field>
+		<field>
+			<a>roomAddress</a>
+			<b>street</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.member.model.MemberAddress</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.request.AddUserForReceiveMessageReuqest</class-b>
+		<field>
+			<a>businessType</a>
+			<b>addressBusinessType</b>
+		</field>
+		<field>
+			<a>roomAddress</a>
+			<b>street</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.member.model.MemberAddress</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_5_0.struct.user.Addresses</class-b>
+		<field>
+			<a>businessType</a>
+			<b>addressBusinessType</b>
+		</field>
+		<field>
+			<a>roomAddress</a>
+			<b>street</b>
+		</field>
+		<field>
+			<a>version</a>
+			<b>version</b>
+		</field>
+		<field>
+			<a>roomId</a>
+			<b>roomId</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.user.SetAddressConvert">
+			<a>version</a>
+			<b>isSetting</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetRoomNameByIdConvert">
+			<a>roomId</a>
+			<b>roomName</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.member.model.MemberAddress</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_5_0.struct.user.request.UpdateUserForReceiveMessageReuqest</class-b>
+		<field>
+			<a>businessType</a>
+			<b>addressBusinessType</b>
+		</field>
+		<field>
+			<a>roomAddress</a>
+			<b>street</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.member.model.MemberAddress</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_2_0.struct.user.request.AddAdressReuqest</class-b>
+		<field>
+			<a>businessType</a>
+			<b>addressBusinessType</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.qding.member.model.MemberAddress</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_2_0.struct.user.request.UpdateAdressReuqest</class-b>
+		<field>
+			<a>businessType</a>
+			<b>addressBusinessType</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.member.model.MemberAddress</class-a>
+		<class-b>com.qding.api.call.app.qding.v2_5_0.struct.user.request.AddUserForReceiveMessageReuqest</class-b>
+		<field>
+			<a>businessType</a>
+			<b>addressBusinessType</b>
+		</field>
+		<field>
+			<a>roomAddress</a>
+			<b>street</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.passport.struct.response.RegisterResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v3_0_0.struct.user.response.data.UserRegisterResponseData</class-b>
+
+		<field custom-converter="com.qding.api.dozer.convert.user.GetMemberInfoByAccountIdConvert">
+			<a>accountId</a>
+			<b>entity.member</b>
+		</field>
+		<field custom-converter="com.qding.api.dozer.convert.user.GetAccountInfoByAccountIdConvert">
+			<a>accountId</a>
+			<b>entity.user</b>
+		</field>
+	</mapping>
+
+	<mapping>
+		<class-a>com.qding.passport.struct.response.GetAccountResponse</class-a>
+		<class-b>com.qding.api.call.app.qding.v1_3_0.struct.user.AccountMember</class-b>
+		<field>
+			<a>memberInfo</a>
+			<b>member</b>
+		</field>
+		<field>
+			<a>accountInfo</a>
+			<b>user</b>
+		</field>
+	</mapping>
+</mappings>  

@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.qding</groupId>
+		<artifactId>qding-insurance</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>insurance-service</artifactId>
+	<name>insurance-service</name>
+	<packaging>jar</packaging>
+	<url>http://maven.apache.org</url>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<dependencies>
+	    <dependency>
+            <groupId>com.qdingnet</groupId>
+            <artifactId>imessage-client</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>com.qding.dcenter</groupId>
+			<artifactId>dcenter-common</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+			<version>2.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.qding</groupId>
+			<artifactId>insurance-common</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.qding</groupId>
+			<artifactId>brick-remote</artifactId>
+			<exclusions>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>com.qding.passport</groupId>
+			<artifactId>passport-common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.qding.useraccount</groupId>
+			<artifactId>useraccount-common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.qdingnet</groupId>
+			<artifactId>manager-common</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.qding</groupId>
+			<artifactId>finance-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.qding.dictionary</groupId>
+			<artifactId>dictionary-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.baidu.disconf</groupId>
+			<artifactId>disconf-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.qding.message</groupId>
+			<artifactId>message-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.octo.captcha</groupId>
+			<artifactId>jcaptcha-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.qdingnet</groupId>
+			<artifactId>schedule-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.longfor</groupId>
+			<artifactId>crm-mdm-api</artifactId>
+			<version>${crm.mdm.api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.18.1</version>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <qding.log.leval>INFO</qding.log.leval>
+                <qding.log.path>D:/output/insurance</qding.log.path>
+                <qding.conf.path>D:/platform/insurance/</qding.conf.path>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>online</id>
+            <properties>
+                <qding.log.leval>INFO</qding.log.leval>
+                <qding.log.path>/data/logs/insurance</qding.log.path>
+                <qding.conf.path>/data/qdconf/insurance/</qding.conf.path>
+            </properties>
+        </profile>
+    </profiles>
+</project>

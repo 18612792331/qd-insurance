@@ -1,0 +1,238 @@
+package com.qding.insurance.controller;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.qding.framework.common.basemodel.ResultPage;
+import com.qding.framework.common.util.JsonUtil;
+import com.qding.insurance.domain.CompensateRecord;
+import com.qding.insurance.param.CompensateRecordParam;
+import com.qding.insurance.param.CompensateRecordRec;
+import com.qding.insurance.service.ICompensateRecordService;
+import com.qding.insurance.vo.CompensateRecordPageResult;
+import com.qding.insurance.vo.CompensateRecordResult;
+import com.qding.insurance.vo.ModelResult;
+
+@Controller
+@RestController
+@RequestMapping("/compensateRecord")
+public class CompensateRecordController {
+
+	Logger logger = Logger.getLogger(CompensateRecordController.class);
+	@Autowired
+	private ICompensateRecordService compensateRecordService;
+	@RequestMapping(value = "aaa")
+	@ResponseBody
+	public List<CompensateRecord> getaaa(){
+		List<CompensateRecord> list = 
+				compensateRecordService.getCompensateRecordListByPolicyIDandStatus("10", 2);
+		return list;
+	}
+
+	/**
+	 * 查询条件检索数据
+	 */
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelResult<CompensateRecordPageResult> list(HttpServletRequest request, CompensateRecordParam param) {
+		ModelResult<CompensateRecordPageResult> modelResult = new ModelResult<CompensateRecordPageResult>();
+		try {
+			ResultPage<CompensateRecordPageResult> resultPage = compensateRecordService.getResultPage(param);
+			modelResult.setCode(ModelResult.CODE_SUCCESS);
+			modelResult.setMessage("查询成功");
+			modelResult.setResultPage(resultPage);
+		} catch (Exception e) {
+			modelResult.setCode(ModelResult.CODE_SYSTEM_ERROR);
+			logger.error("list exception :" + e.getMessage(), e);
+			modelResult.setMessage("查询失败");
+		}
+		return modelResult;
+	}
+
+	/**
+	 * 根据保障内容ID查询理赔记录详情
+	 */
+	@RequestMapping(value = "findByPolicyGuaranteeItemId", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelResult<CompensateRecordResult> findByGuaranteePlanId(HttpServletRequest request, String policyGuaranteeItemId) {
+		ModelResult<CompensateRecordResult> modelResult = new ModelResult<CompensateRecordResult>();
+		try {
+			List<CompensateRecordResult> list = compensateRecordService.findByPolicyGuaranteeItemId(policyGuaranteeItemId);
+			modelResult.setCode(ModelResult.CODE_SUCCESS);
+			modelResult.setMessage("查询成功");
+			modelResult.setList(list);
+		} catch (Exception e) {
+			modelResult.setCode(ModelResult.CODE_SYSTEM_ERROR);
+			logger.error("findByGuaranteePlanId exception :" + e.getMessage(), e);
+			modelResult.setMessage("查询失败");
+		}
+		return modelResult;
+	}
+
+	/**
+	 * 根据单证ID查询理赔记录
+	 */
+	@RequestMapping(value = "findByPolicyId", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelResult<CompensateRecord> findByPolicyId(HttpServletRequest request, String policyId) {
+		ModelResult<CompensateRecord> modelResult = new ModelResult<CompensateRecord>();
+		try {
+			List<CompensateRecord> list = compensateRecordService.getResultByPolicyId(policyId);
+			modelResult.setCode(ModelResult.CODE_SUCCESS);
+			modelResult.setMessage("查询成功");
+			modelResult.setList(list);
+		} catch (Exception e) {
+			modelResult.setCode(ModelResult.CODE_SYSTEM_ERROR);
+			logger.error("findByPolicyId exception :" + e.getMessage(), e);
+			modelResult.setMessage("查询失败");
+		}
+		return modelResult;
+	}
+
+	/**
+	 * 添加理赔记录
+	 */
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelResult<CompensateRecordRec> add(CompensateRecordRec compensateRecordrec) {
+		logger.info("Save CompensateRecord :" + JsonUtil.Java2Json(compensateRecordrec));
+
+		ModelResult<CompensateRecordRec> modelResult = new ModelResult<CompensateRecordRec>();
+
+		try {
+			compensateRecordService.insertCompensateRecord(compensateRecordrec);
+			modelResult.setCode(ModelResult.CODE_SUCCESS);
+			modelResult.setMessage("添加成功");
+
+		} catch (Exception e) {
+
+			modelResult.setCode(ModelResult.CODE_SYSTEM_ERROR);
+			logger.error("findByPolicyId exception :" + e.getMessage(), e);
+			modelResult.setMessage(e.getMessage());
+
+		}
+
+		return modelResult;
+
+	}
+	
+	/**
+	 * 理赔记录ID查询
+	 */
+	@RequestMapping(value = "findById", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelResult<CompensateRecord> findById(String id) {
+		logger.info("findById :" + JsonUtil.Java2Json(id));
+
+		ModelResult<CompensateRecord> modelResult = new ModelResult<CompensateRecord>();
+
+		try {
+			CompensateRecord compensateRecord =compensateRecordService.findById(id);
+			modelResult.setEntity(compensateRecord);
+			modelResult.setCode(ModelResult.CODE_SUCCESS);
+			modelResult.setMessage("查询成功");
+
+		} catch (Exception e) {
+
+			modelResult.setCode(ModelResult.CODE_SYSTEM_ERROR);
+			logger.error("findByPolicyId exception :" + e.getMessage(), e);
+			modelResult.setMessage("查询失败");
+
+		}
+
+		return modelResult;
+
+	}
+	
+	/**
+	 * 按ID修改同步状态
+	 */
+	@RequestMapping(value = "updateDataStatus", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelResult<CompensateRecord> updateDataStatus(String id,int dataStatus) {
+		logger.info("updateDataStatus :" + JsonUtil.Java2Json(id)+"---"+ JsonUtil.Java2Json(dataStatus));
+
+		ModelResult<CompensateRecord> modelResult = new ModelResult<CompensateRecord>();
+
+		try {
+			compensateRecordService.updateDataStatus(id,dataStatus);
+			
+			modelResult.setCode(ModelResult.CODE_SUCCESS);
+			modelResult.setMessage("修改成功");
+
+		} catch (Exception e) {
+
+			modelResult.setCode(ModelResult.CODE_SYSTEM_ERROR);
+			logger.error("findByPolicyId exception :" + e.getMessage(), e);
+			modelResult.setMessage(e.getMessage());
+
+		}
+
+		return modelResult;
+
+	}
+	/**
+	 * 按ID修改 理赔状态为 已完成
+	 */
+	@RequestMapping(value = "updateDataStatusFinished", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelResult<CompensateRecord> updateDataStatusFinished(String id) {
+		logger.info("updateDataStatusFinished :" + JsonUtil.Java2Json(id));
+
+		ModelResult<CompensateRecord> modelResult = new ModelResult<CompensateRecord>();
+
+		try {
+			compensateRecordService.updateDataStatusFinished(id);
+			
+			modelResult.setCode(ModelResult.CODE_SUCCESS);
+			modelResult.setMessage("修改成功");
+
+		} catch (Exception e) {
+
+			modelResult.setCode(ModelResult.CODE_SYSTEM_ERROR);
+			logger.error("findByPolicyId exception :" + e.getMessage(), e);
+			modelResult.setMessage(e.getMessage());
+
+		}
+
+		return modelResult;
+
+	}
+	
+	/**
+	 * 按ID修改 理赔状态为 已撤销
+	 */
+	@RequestMapping(value = "updateDataStatusCanceled", method = RequestMethod.GET)
+	@ResponseBody
+	public ModelResult<CompensateRecord> updateDataStatusCanceled(String id) {
+		logger.info("updateDataStatusCanceled :" + JsonUtil.Java2Json(id));
+
+		ModelResult<CompensateRecord> modelResult = new ModelResult<CompensateRecord>();
+
+		try {
+			compensateRecordService.updateDataStatusCanceled(id);
+			
+			modelResult.setCode(ModelResult.CODE_SUCCESS);
+			modelResult.setMessage("修改成功");
+
+		} catch (Exception e) {
+
+			modelResult.setCode(ModelResult.CODE_SYSTEM_ERROR);
+			logger.error("findByPolicyId exception :" + e.getMessage(), e);
+			modelResult.setMessage(e.getMessage());
+
+		}
+
+		return modelResult;
+
+	}
+}
